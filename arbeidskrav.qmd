@@ -4,4 +4,15 @@ format: html
 editor: visual
 ---
 
-## Heihei 
+## Heihei
+
+```{r}
+library(tidyverse)
+library(readr)
+library(readxl)
+```
+
+```{r}
+ny_data <- read_excel("ny_data.xlsx")
+tidligere_data <- read_excel("tidligere_data.xlsx")
+```
