@@ -4,7 +4,7 @@ format: html
 editor: visual
 ---
 
-## Heihei
+# Analyse av pendlevaner og trafikkutvikling på Haugalandet
 
 ```{r}
 library(tidyverse)
@@ -16,3 +16,31 @@ library(readxl)
 ny_data <- read_excel("ny_data.xlsx")
 tidligere_data <- read_excel("tidligere_data.xlsx")
 ```
+
+## **1.0 Introduksjon**
+
+## **2.0 Pendlevaner på Haugalandet**
+
+### 2.1 Data
+
+### 2.2 Modell for analyse av pendlevaner
+
+### 2.3 Myndighetene og virkemiddel for valg av kjøretøy
+
+### 2.4 Deskriptiv statistikk
+
+### 2.5 Resultater
+
+## **3.0 Trafikkutvikling på Haugalandet**
+
+### 3.1 Data
+
+### 3.2 Årsdøgntrafikk
+
+### 3.3 Timetrafikk
+
+### 3.4 Resultater
+
+## **4.0 Konklusjon**
+
+## **5.0 Referanser**
