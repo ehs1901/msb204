@@ -92,6 +92,40 @@ nrow(merged_data)
 
 ### 2.3 Myndighetene og virkemiddel for valg av kjøretøy
 
+Når myndighetene ønsker å påvirke valg av kjøretøy i en samfunnsøkonomisk ønsket retning, er det flere faktorer de kan fokusere på.
+De mest effektive tiltakene vil ofte være økonomiske insentiver, reguleringer og bevisstgjøring, som alle kan bidra til å fremme mer bærekraftige valg.
+Her er noen av de viktigste faktorene myndighetene kan og bør fokusere på:
+
+### 1. **Økonomiske insentiver og avgifter**:
+
+-   **Skatteinsentiver for miljøvennlige biler**: Reduksjon i avgifter på elbiler, hybridbiler eller andre lavutslippsbiler, kombinert med høyere avgifter på fossildrevne kjøretøy, kan gjøre miljøvennlige valg økonomisk mer attraktive.
+-   **Bompenger og veiavgifter**: Myndighetene kan differensiere bompenger basert på utslipp, slik at biler med høyt CO₂-utslipp betaler mer. Dette vil kunne påvirke valg av kjøretøy mot lavutslippsalternativer.
+-   **Subsidier for elektriske biler**: Støtte til innkjøp av elektriske kjøretøy eller tilskudd til hjemmeladere kan redusere den økonomiske terskelen for å velge miljøvennlige kjøretøy.
+
+### 2. **Infrastrukturutvikling**:
+
+-   **Utbygging av ladestasjoner for elbiler**: Et utvidet nettverk av ladestasjoner vil redusere "rekkeviddeangsten" for elbilkjøpere og gjøre det enklere å velge elektriske kjøretøy.
+-   **Tilrettelegging for sykkel og kollektivtransport**: Ved å forbedre og subsidere kollektivtransport, sykkelveier og fotgjengertilgang kan myndighetene redusere avhengigheten av privatbiler, spesielt i byområder.
+
+### 3. **Reguleringer og lovgivning**:
+
+-   **Utslippsstandarder**: Myndighetene kan innføre strenge utslippskrav for biler, der bilprodusenter pålegges å produsere kjøretøy med lavere utslipp for å møte reguleringer.
+-   **Forbud mot fossilbiler**: Etter hvert som teknologi og infrastruktur forbedres, kan myndighetene vurdere å sette en tidsfrist for forbud mot salg av nye fossilbiler, slik som Norge har satt som mål for 2025.
+
+### 4. **Informasjon og bevisstgjøringskampanjer**:
+
+-   **Opplysningskampanjer**: Myndighetene kan gjennomføre kampanjer for å øke bevisstheten rundt miljøkonsekvensene av bilvalg, og fremme fordeler ved å velge elbiler eller hybridbiler.
+-   **Merking av kjøretøy**: Klar og tydelig merking av kjøretøy med hensyn til utslipp, drivstoffeffektivitet og total eierkostnad kan hjelpe forbrukere med å ta mer informerte beslutninger.
+
+### 5. **Tilgang til spesialtiltak for miljøvennlige kjøretøy**:
+
+-   **Fordeler som gratis parkering og tilgang til kollektivfelt**: Myndighetene kan tilby insentiver som tilgang til kollektivfelt, billigere eller gratis parkering for elbiler og andre miljøvennlige alternativer, noe som gjør dem mer attraktive i hverdagen.
+
+### Konklusjon:
+
+Myndighetene har flere verktøy for å påvirke kjøretøyvalg i en samfunnsøkonomisk ønsket retning.
+Kombinasjonen av økonomiske insentiver, infrastrukturtjenester, reguleringer og informasjon kan bidra til å øke andelen miljøvennlige kjøretøy og redusere klimagassutslipp, som igjen har positive samfunnsøkonomiske effekter.
+
 ### 2.4 Deskriptiv statistikk
 
 ### 2.5 Resultater
