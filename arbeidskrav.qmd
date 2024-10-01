@@ -127,6 +127,8 @@ I dette avsnittet skisserer vi en modell for å analysere pendlevaner basert på
 Modellen fokuserer på hvilke faktorer som påvirker sannsynligheten for å velge ulike reisemåter.
 Dette med hensyn til både individuelle kjennetegn, særtrekk ved en bestemt kombinasjon av bosted og arbeidsplass, samt egenskaper ved ulike reisemåter.
 
+multinomial logit-modell?
+
 ### 2.3 Myndighetene og virkemiddel for valg av kjøretøy
 
 Når myndighetene ønsker å påvirke valg av kjøretøy i en samfunnsøkonomisk ønsket retning, er det flere faktorer de kan fokusere på.
