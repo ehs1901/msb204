@@ -1,12 +1,17 @@
 ---
-title: "arbeidskrav"
-format: html
+title: "Analyse av pendlevaner og trafikkutvikling på Haugalandet"
+format: pdf
 editor: visual
 ---
 
-# Analyse av pendlevaner og trafikkutvikling på Haugalandet
+**MSB204 Transportmodeller og regionalutvikling**
+
+**Hanna Sundal Bjerkreim, Henriette Hansen, Ingrid Strømme & Emilie Hansen Sørhaug**
 
 ```{r}
+#| label: setup 
+#| echo: false
+#| output: false
 library(tidyverse)
 library(readr)
 library(readxl)
@@ -14,81 +19,113 @@ library(dplyr)
 library(stringr)
 ```
 
+## **1.0 Introduksjon**
+
+Arbeidsreisen utgjør en vesentlig del av daglige reisevaner og spiller en sentral rolle i transportøkonomiske analyser.
+Arbeidsreisen kan gjennomføres på flere måter, som for eksempel til fots, med sykkel, privatbil, kollektivtransport eller andre transportmidler.
+Valg av transportmiddel for arbeidreisen påvirkes av en rekke faktorer, der i blant bosted og arbeidssted.
+Pendling reflekterer samspillet mellom bostedsvalg og arbeidsplassens beliggenhet, og har stor betydning for trafikkbelastning og transportinfrastruktur.
+
+Formålet med denne oppgaven er å studere pendlevaner og trafikkutvikling på Haugalandet.
+Første del av oppgaven tar sikte på å analysere pendledata på Haugalandet ut i fra innsamlede data fra et spørreskjema.
+Det skisseres videre en modell for å analysere sannsynligheten for å velge ulike reisemåter for arbeidsreisen.
+Det vil videre diskuteres hvilke faktorer myndighetene kan og bør gjøre noe med for å påvirke kjøretøysvalg i en samfunnsøkonomisk ønsket retning.
+I andre del av oppgaven studeres trafikkdata fra ulike målestasjoner på Haugalandet for å vurdere trafikkmønstre og utvikling over tid.
+
+## **2.0 Pendlevaner på Haugalandet**
+
+I den første delen av oppgaven skal vi se nærmere på pendlevaner på Haugalandet.
+Pendlevaner omfatter ulike aspekter ved arbeidsreisen, inkludert valg av transportmiddel, reiseavstand, og frekvensen av reiser.
+Regionen er preget av både urbane og rurale områder, noe som kan påvirke reisevaner og transportmuligheter.
+
+### 2.1 Data
+
+Dataene som benyttes i oppgaven er tverrsnittsdata, innsamlet gjennom et spørreskjema.
+Vi benyttet spørreskjemaene om reisevaner på Haugalandet, utarbeidet av studentene i MSB204 høsten 2022, som et utgangspunkt for vår egen spørreundersøkelse.
+Vi gjorde flere justeringer ved å legge til nye spørsmål og fjerne de som vi vurderte som mindre relevante.
+Vi har vært noe uheldig med endringene vi gjorde, da vår egen spørreundersøkelse er blitt noe ulik den fra 2022.
+Dette har gjort det vanskelig å slå sammen datasettene, da spørsmålene er utformet ulikt og dermed ikke direkte sammenlignbare.
+Vi innser at vi var litt korttenkte i denne prosessen, noe som har skapt utfordringer i analysen av dataene.
+Til tross for disse utfordringene har vi gjort vårt beste for å kombinere dataene fra vår egen spørreundersøkelse med dataene fra 2022.
+Resultatet er et samlet datasett med 160 observasjoner, som gir oss et grunnlag for videre analyse av pendlevanene på Haugalandet.
+
 ```{r}
+#| echo: false
+# Laste inn datasett
 ny_data <- read_excel("ny_data.xlsx")
 tidligere_data <- read_excel("tidligere_data.xlsx")
 ```
 
 ```{r}
+#| echo: false
 # Fjerne mellomrom og linjeskift fra kolonnenavnene i 'tidligere_data'
 colnames(tidligere_data) <- str_trim(gsub("\r\n", "", colnames(tidligere_data)))
-
-# Omdøpe variabler i 'tidligere_data' for å matche variablene i 'ny_data'
-tidligere_data <- tidligere_data %>%
-  rename(
-    `Kjønn` = `Hvilket kjønn identifiserer du som?`,  # Omdøp "Hvilket kjønn identifiserer du som?" til "Kjønn"
-    `Alder` = `Din alder`,  # Omdøp "Din alder" til "Alder"
-    `Utdanning` = `Hva er din høyeste utdanning?`,  # Omdøp utdanning
-    `Næring` = `I hvilken næring jobber du?`,  # Omdøp næring
-    `Inntektsgruppe` = `Hvilken inntektsgruppe hører du til?`,  # Omdøp inntektsgruppe
-    `Antall personer i husstanden` = `Hvor mange personer bor i din husstand?`,  # Omdøp antall personer
-    `Antall med førerkort` = `Hvor mange i husstanden har førerkort?`,  # Omdøp førerkort
-    `Transportmåte disponibelt` = `Hva har du til disposisjon?`,  # Omdøp transportmåte
-    `Hvordan kommer du deg til jobb` = `Hva har du reist med siste uken?`,  # Omdøp hvordan du kommer deg til jobb
-    `Tid brukt til jobb` = `Hvor lang er din pendletid til jobb?`,  # Omdøp tid brukt til jobb
-    `Postnummer` = `Hva er ditt postnummer (bosted)`,  # Omdøp postnummer
-    `Postnummer arbeidssted` = `Hva er ditt postnummer (arbeidsplass)`,  # Omdøp postnummer arbeidssted
-    `Fast oppmøte` = `Har du fast oppmøtested?`,  # Omdøp fast oppmøte
-    `Parkering ved jobb` = `Er det gode parkeringsmuligheter nær din arbeidsplass?`  # Omdøp parkering
-  )
-
-# Omdøpe variabler i 'ny_data' (hvis nødvendig) for å matche samme tema
-ny_data <- ny_data %>%
-  rename(
-    `Kjønn` = `Hvilket kjønn identifiserer du deg som?`,  # Omdøp "Hvilket kjønn identifiserer du deg som?" til "Kjønn"
-    `Alder` = `Hva er alderen din?`,  # Omdøp "Hva er alderen din?" til "Alder"
-    `Utdanning` = `Hva er din høyeste utdanning?`,  # Omdøp utdanning
-    `Næring` = `I hvilken næring jobber du?`,  # Omdøp næring
-    `Inntektsgruppe` = `Hvilken inntektsgruppe tilhører du?`,  # Omdøp inntektsgruppe
-    `Antall personer i husstanden` = `Hvor mange bor i din husstand?`,  # Omdøp antall personer
-    `Antall med førerkort` = `Hvor mange har førerkort i din husstand?`,  # Omdøp førerkort
-    `Transportmåte disponibelt` = `Hvilke muligheter har du tilgjengelig for reise til jobb?`,  # Omdøp transportmåte
-    `Hvordan kommer du deg til jobb` = `Hvilke muligheter bruker du for å reise til jobb?`,  # Omdøp hvordan du kommer deg til jobb
-    `Tid brukt til jobb` = `Hvor lang tid bruker du til jobb`,  # Omdøp tid brukt til jobb
-    `Postnummer` = `Hvilket postnummer er din husstand plassert under?`,  # Omdøp postnummer
-    `Postnummer arbeidssted` = `Hvilket postnummer er arbeidsplassen din plasser under?`,  # Omdøp postnummer arbeidssted
-    `Fast oppmøte` = `Har du fast oppmøte til jobb?`,  # Omdøp fast oppmøte
-    `Parkering ved jobb` = `Har du parkeringsmuligheter på jobb?`  # Omdøp parkering
-  )
 ```
 
 ```{r}
-# Velge felles variabler (tema) i begge datasettene
-common_columns <- c("Starttidspunkt", "Kjønn", "Alder", "Utdanning", "Næring", "Inntektsgruppe",
-                    "Antall personer i husstanden", "Antall med førerkort", "Transportmåte disponibelt",
-                    "Hvordan kommer du deg til jobb", "Tid brukt til jobb", "Postnummer",
-                    "Postnummer arbeidssted", "Fast oppmøte", "Parkering ved jobb")
+#| echo: false
+# Omdøpe variabler i 'tidligere_data' for å matche variablene i 'ny_data'
+tidligere_data <- tidligere_data %>%
+  rename(
+    `Kjønn` = `Hvilket kjønn identifiserer du som?`,  
+    `Alder` = `Din alder`,  
+    `Utdanning` = `Hva er din høyeste utdanning?`,  
+    `Næring` = `I hvilken næring jobber du?`,  
+    `Inntektsgruppe` = `Hvilken inntektsgruppe hører du til?`, 
+    `Antall personer i husstanden` = `Hvor mange personer bor i din husstand?`,  
+    `Antall med førerkort` = `Hvor mange i husstanden har førerkort?`,  
+    `Transportmåte disponibelt` = `Hva har du til disposisjon?`,  
+    `Hvordan kommer du deg til jobb` = `Hva har du reist med siste uken?`,
+    `Tid brukt til jobb` = `Hvor lang er din pendletid til jobb?`,
+    `Postnummer` = `Hva er ditt postnummer (bosted)`, 
+    `Postnummer arbeidssted` = `Hva er ditt postnummer (arbeidsplass)`,  
+    `Fast oppmøte` = `Har du fast oppmøtested?`,
+    `Parkering ved jobb` = `Er det gode parkeringsmuligheter nær din arbeidsplass?`
+    )
+```
 
+```{r}
+#| echo: false
+# Omdøpe variabler i 'ny_data' for å matche variablene i 'tidligere_data'
+ny_data <- ny_data %>%
+  rename(
+    `Kjønn` = `Hvilket kjønn identifiserer du deg som?`,  
+    `Alder` = `Hva er alderen din?`,  
+    `Utdanning` = `Hva er din høyeste utdanning?`,  
+    `Næring` = `I hvilken næring jobber du?`, 
+    `Inntektsgruppe` = `Hvilken inntektsgruppe tilhører du?`,  
+    `Antall personer i husstanden` = `Hvor mange bor i din husstand?`,  
+    `Antall med førerkort` = `Hvor mange har førerkort i din husstand?`,
+    `Transportmåte disponibelt` = `Hvilke muligheter har du tilgjengelig for reise til jobb?`,
+    `Hvordan kommer du deg til jobb` = `Hvilke muligheter bruker du for å reise til jobb?`,
+    `Tid brukt til jobb` = `Hvor lang tid bruker du til jobb`, 
+    `Postnummer` = `Hvilket postnummer er din husstand plassert under?`,  
+    `Postnummer arbeidssted` = `Hvilket postnummer er arbeidsplassen din plasser under?`,
+    `Fast oppmøte` = `Har du fast oppmøte til jobb?`, 
+    `Parkering ved jobb` = `Har du parkeringsmuligheter på jobb?` 
+    )
+```
+
+```{r}
+#| echo: false
+# Velge felles variabler i begge datasettene
+common_columns <- c("Starttidspunkt", "Kjønn", "Alder", "Utdanning", "Næring", "Inntektsgruppe", "Antall personer i husstanden", "Antall med førerkort", "Transportmåte disponibelt","Hvordan kommer du deg til jobb", "Tid brukt til jobb", "Postnummer", "Postnummer arbeidssted", "Fast oppmøte", "Parkering ved jobb")
+```
+
+```{r}
+#| echo: false
 # Slå sammen datasettene
 merged_data <- bind_rows(
   select(ny_data, all_of(common_columns)),
   select(tidligere_data, all_of(common_columns))
-)
-
-# Se resultatet
-head(merged_data)
-
-# Sjekk at du har fått 160 observasjoner
-nrow(merged_data)
+  )
 ```
 
-## **1.0 Introduksjon**
-
-## **2.0 Pendlevaner på Haugalandet**
-
-### 2.1 Data
-
 ### 2.2 Modell for analyse av pendlevaner
+
+I dette avsnittet skisserer vi en modell for å analysere pendlevaner basert på innsamlede data.
+Modellen fokuserer på hvilke faktorer som påvirker sannsynligheten for å velge ulike reisemåter.
+Dette med hensyn til både individuelle kjennetegn, særtrekk ved en bestemt kombinasjon av bosted og arbeidsplass, samt egenskaper ved ulike reisemåter.
 
 ### 2.3 Myndighetene og virkemiddel for valg av kjøretøy
 
@@ -96,32 +133,30 @@ Når myndighetene ønsker å påvirke valg av kjøretøy i en samfunnsøkonomisk
 De mest effektive tiltakene vil ofte være økonomiske insentiver, reguleringer og bevisstgjøring, som alle kan bidra til å fremme mer bærekraftige valg.
 Her er noen av de viktigste faktorene myndighetene kan og bør fokusere på:
 
-### 1. **Økonomiske insentiver og avgifter**:
+#### 1. **Økonomiske insentiver og avgifter**:
 
 -   **Skatteinsentiver for miljøvennlige biler**: Reduksjon i avgifter på elbiler, hybridbiler eller andre lavutslippsbiler, kombinert med høyere avgifter på fossildrevne kjøretøy, kan gjøre miljøvennlige valg økonomisk mer attraktive.
 -   **Bompenger og veiavgifter**: Myndighetene kan differensiere bompenger basert på utslipp, slik at biler med høyt CO₂-utslipp betaler mer. Dette vil kunne påvirke valg av kjøretøy mot lavutslippsalternativer.
 -   **Subsidier for elektriske biler**: Støtte til innkjøp av elektriske kjøretøy eller tilskudd til hjemmeladere kan redusere den økonomiske terskelen for å velge miljøvennlige kjøretøy.
 
-### 2. **Infrastrukturutvikling**:
+#### 2. **Infrastrukturutvikling**:
 
 -   **Utbygging av ladestasjoner for elbiler**: Et utvidet nettverk av ladestasjoner vil redusere "rekkeviddeangsten" for elbilkjøpere og gjøre det enklere å velge elektriske kjøretøy.
 -   **Tilrettelegging for sykkel og kollektivtransport**: Ved å forbedre og subsidere kollektivtransport, sykkelveier og fotgjengertilgang kan myndighetene redusere avhengigheten av privatbiler, spesielt i byområder.
 
-### 3. **Reguleringer og lovgivning**:
+#### 3. **Reguleringer og lovgivning**:
 
 -   **Utslippsstandarder**: Myndighetene kan innføre strenge utslippskrav for biler, der bilprodusenter pålegges å produsere kjøretøy med lavere utslipp for å møte reguleringer.
 -   **Forbud mot fossilbiler**: Etter hvert som teknologi og infrastruktur forbedres, kan myndighetene vurdere å sette en tidsfrist for forbud mot salg av nye fossilbiler, slik som Norge har satt som mål for 2025.
 
-### 4. **Informasjon og bevisstgjøringskampanjer**:
+#### 4. **Informasjon og bevisstgjøringskampanjer**:
 
 -   **Opplysningskampanjer**: Myndighetene kan gjennomføre kampanjer for å øke bevisstheten rundt miljøkonsekvensene av bilvalg, og fremme fordeler ved å velge elbiler eller hybridbiler.
 -   **Merking av kjøretøy**: Klar og tydelig merking av kjøretøy med hensyn til utslipp, drivstoffeffektivitet og total eierkostnad kan hjelpe forbrukere med å ta mer informerte beslutninger.
 
-### 5. **Tilgang til spesialtiltak for miljøvennlige kjøretøy**:
+#### 5. **Tilgang til spesialtiltak for miljøvennlige kjøretøy**:
 
 -   **Fordeler som gratis parkering og tilgang til kollektivfelt**: Myndighetene kan tilby insentiver som tilgang til kollektivfelt, billigere eller gratis parkering for elbiler og andre miljøvennlige alternativer, noe som gjør dem mer attraktive i hverdagen.
-
-### Konklusjon:
 
 Myndighetene har flere verktøy for å påvirke kjøretøyvalg i en samfunnsøkonomisk ønsket retning.
 Kombinasjonen av økonomiske insentiver, infrastrukturtjenester, reguleringer og informasjon kan bidra til å øke andelen miljøvennlige kjøretøy og redusere klimagassutslipp, som igjen har positive samfunnsøkonomiske effekter.
@@ -130,15 +165,15 @@ Kombinasjonen av økonomiske insentiver, infrastrukturtjenester, reguleringer og
 
 ### 2.5 Resultater
 
-## **3.0 Trafikkutvikling på Haugalandet**
+## **3.0 Trafikkutvikling på Haugalandet (*Henriette*)**
 
-### 3.1 Data
+### 3.1 Data (*Henriette*)
 
-### 3.2 Årsdøgntrafikk
+### 3.2 Årsdøgntrafikk (*Henriette*)
 
-### 3.3 Timetrafikk
+### 3.3 Timetrafikk (*Henriette*)
 
-### 3.4 Resultater
+### 3.4 Resultater (*Henriette*)
 
 ## **4.0 Konklusjon**
 
