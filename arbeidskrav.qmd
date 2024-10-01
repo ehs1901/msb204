@@ -17,6 +17,9 @@ library(readr)
 library(readxl)
 library(dplyr)
 library(stringr)
+library(nnet)
+library(broom)
+library(knitr)
 ```
 
 ## **1.0 Introduksjon**
@@ -72,15 +75,15 @@ tidligere_data <- tidligere_data %>%
     `Utdanning` = `Hva er din høyeste utdanning?`,  
     `Næring` = `I hvilken næring jobber du?`,  
     `Inntektsgruppe` = `Hvilken inntektsgruppe hører du til?`, 
-    `Antall personer i husstanden` = `Hvor mange personer bor i din husstand?`,  
-    `Antall med førerkort` = `Hvor mange i husstanden har førerkort?`,  
-    `Transportmåte disponibelt` = `Hva har du til disposisjon?`,  
-    `Hvordan kommer du deg til jobb` = `Hva har du reist med siste uken?`,
-    `Tid brukt til jobb` = `Hvor lang er din pendletid til jobb?`,
+    `Antall_personer_i_husstanden` = `Hvor mange personer bor i din husstand?`,  
+    `Antall_med_førerkort` = `Hvor mange i husstanden har førerkort?`,  
+    `Transportmåte_disponibelt` = `Hva har du til disposisjon?`,  
+    `Hvordan_kommer_du_deg_til_jobb` = `Hva har du reist med siste uken?`,
+    `Tid_brukt_til_jobb` = `Hvor lang er din pendletid til jobb?`,
     `Postnummer` = `Hva er ditt postnummer (bosted)`, 
-    `Postnummer arbeidssted` = `Hva er ditt postnummer (arbeidsplass)`,  
-    `Fast oppmøte` = `Har du fast oppmøtested?`,
-    `Parkering ved jobb` = `Er det gode parkeringsmuligheter nær din arbeidsplass?`
+    `Postnummer_arbeidssted` = `Hva er ditt postnummer (arbeidsplass)`,  
+    `Fast_oppmøte` = `Har du fast oppmøtested?`,
+    `Parkering_ved_jobb` = `Er det gode parkeringsmuligheter nær din arbeidsplass?`
     )
 ```
 
@@ -94,22 +97,22 @@ ny_data <- ny_data %>%
     `Utdanning` = `Hva er din høyeste utdanning?`,  
     `Næring` = `I hvilken næring jobber du?`, 
     `Inntektsgruppe` = `Hvilken inntektsgruppe tilhører du?`,  
-    `Antall personer i husstanden` = `Hvor mange bor i din husstand?`,  
-    `Antall med førerkort` = `Hvor mange har førerkort i din husstand?`,
-    `Transportmåte disponibelt` = `Hvilke muligheter har du tilgjengelig for reise til jobb?`,
-    `Hvordan kommer du deg til jobb` = `Hvilke muligheter bruker du for å reise til jobb?`,
-    `Tid brukt til jobb` = `Hvor lang tid bruker du til jobb`, 
+    `Antall_personer_i_husstanden` = `Hvor mange bor i din husstand?`,  
+    `Antall_med_førerkort` = `Hvor mange har førerkort i din husstand?`,
+    `Transportmåte_disponibelt` = `Hvilke muligheter har du tilgjengelig for reise til jobb?`,
+    `Hvordan_kommer_du_deg_til_jobb` = `Hvilke muligheter bruker du for å reise til jobb?`,
+    `Tid_brukt_til_jobb` = `Hvor lang tid bruker du til jobb`, 
     `Postnummer` = `Hvilket postnummer er din husstand plassert under?`,  
-    `Postnummer arbeidssted` = `Hvilket postnummer er arbeidsplassen din plasser under?`,
-    `Fast oppmøte` = `Har du fast oppmøte til jobb?`, 
-    `Parkering ved jobb` = `Har du parkeringsmuligheter på jobb?` 
+    `Postnummer_arbeidssted` = `Hvilket postnummer er arbeidsplassen din plasser under?`,
+    `Fast_oppmøte` = `Har du fast oppmøte til jobb?`, 
+    `Parkering_ved_jobb` = `Har du parkeringsmuligheter på jobb?` 
     )
 ```
 
 ```{r}
 #| echo: false
 # Velge felles variabler i begge datasettene
-common_columns <- c("Starttidspunkt", "Kjønn", "Alder", "Utdanning", "Næring", "Inntektsgruppe", "Antall personer i husstanden", "Antall med førerkort", "Transportmåte disponibelt","Hvordan kommer du deg til jobb", "Tid brukt til jobb", "Postnummer", "Postnummer arbeidssted", "Fast oppmøte", "Parkering ved jobb")
+common_columns <- c("Starttidspunkt", "Kjønn", "Alder", "Utdanning", "Næring", "Inntektsgruppe", "Antall_personer_i_husstanden", "Antall_med_førerkort", "Transportmåte_disponibelt","Hvordan_kommer_du_deg_til_jobb", "Tid_brukt_til_jobb", "Postnummer", "Postnummer_arbeidssted", "Fast_oppmøte", "Parkering_ved_jobb")
 ```
 
 ```{r}
@@ -121,13 +124,30 @@ merged_data <- bind_rows(
   )
 ```
 
+```{r}
+#| echo: false
+# Erstatte "Fossil bil" med "Bil (Bensin/Diesel)"
+# Erstatte "El-bil" og "Hybrid bil" med "Bil ( Elektrisk/Hybrid)
+
+merged_data <- merged_data %>%
+  mutate(`Hvordan_kommer_du_deg_til_jobb` = gsub("\\bFossil bil\\b", "Bil (Bensin / Diesel)", `Hvordan_kommer_du_deg_til_jobb`, ignore.case = TRUE)) %>%
+  mutate(`Hvordan_kommer_du_deg_til_jobb` = gsub("\\bHybrid bil\\b", "Bil (Elektrisk / Hybrid)", `Hvordan_kommer_du_deg_til_jobb`, ignore.case = TRUE)) %>%
+  mutate(`Hvordan_kommer_du_deg_til_jobb` = gsub("\\bEl-bil\\b", "Bil (Elektrisk / Hybrid)", `Hvordan_kommer_du_deg_til_jobb`, ignore.case = TRUE))
+
+
+merged_data <- merged_data %>%
+  mutate(`Transportmåte_disponibelt` = gsub("\\bFossil bil\\b", "Bil (Bensin / Diesel)", `Transportmåte_disponibelt`, ignore.case = TRUE)) %>%
+  mutate(`Transportmåte_disponibelt` = gsub("\\bHybrid bil\\b", "Bil (Elektrisk / Hybrid)", `Transportmåte_disponibelt`, ignore.case = TRUE)) %>%
+  mutate(`Transportmåte_disponibelt` = gsub("\\bEl-bil\\b", "Bil (Elektrisk / Hybrid)", `Transportmåte_disponibelt`, ignore.case = TRUE))
+```
+
 ### 2.2 Modell for analyse av pendlevaner
 
 I dette avsnittet skisserer vi en modell for å analysere pendlevaner basert på innsamlede data.
 Modellen fokuserer på hvilke faktorer som påvirker sannsynligheten for å velge ulike reisemåter.
 Dette med hensyn til både individuelle kjennetegn, særtrekk ved en bestemt kombinasjon av bosted og arbeidsplass, samt egenskaper ved ulike reisemåter.
 
-multinomial logit-modell?
+**multinomial logit-modell?**
 
 ### 2.3 Myndighetene og virkemiddel for valg av kjøretøy
 
@@ -135,28 +155,28 @@ Når myndighetene ønsker å påvirke valg av kjøretøy i en samfunnsøkonomisk
 De mest effektive tiltakene vil ofte være økonomiske insentiver, reguleringer og bevisstgjøring, som alle kan bidra til å fremme mer bærekraftige valg.
 Her er noen av de viktigste faktorene myndighetene kan og bør fokusere på:
 
-#### 1. **Økonomiske insentiver og avgifter**:
+**1. Økonomiske insentiver og avgifter:**
 
 -   **Skatteinsentiver for miljøvennlige biler**: Reduksjon i avgifter på elbiler, hybridbiler eller andre lavutslippsbiler, kombinert med høyere avgifter på fossildrevne kjøretøy, kan gjøre miljøvennlige valg økonomisk mer attraktive.
 -   **Bompenger og veiavgifter**: Myndighetene kan differensiere bompenger basert på utslipp, slik at biler med høyt CO₂-utslipp betaler mer. Dette vil kunne påvirke valg av kjøretøy mot lavutslippsalternativer.
 -   **Subsidier for elektriske biler**: Støtte til innkjøp av elektriske kjøretøy eller tilskudd til hjemmeladere kan redusere den økonomiske terskelen for å velge miljøvennlige kjøretøy.
 
-#### 2. **Infrastrukturutvikling**:
+**2. Infrastrukturutvikling:**
 
 -   **Utbygging av ladestasjoner for elbiler**: Et utvidet nettverk av ladestasjoner vil redusere "rekkeviddeangsten" for elbilkjøpere og gjøre det enklere å velge elektriske kjøretøy.
 -   **Tilrettelegging for sykkel og kollektivtransport**: Ved å forbedre og subsidere kollektivtransport, sykkelveier og fotgjengertilgang kan myndighetene redusere avhengigheten av privatbiler, spesielt i byområder.
 
-#### 3. **Reguleringer og lovgivning**:
+**3. Reguleringer og lovgivning:**
 
 -   **Utslippsstandarder**: Myndighetene kan innføre strenge utslippskrav for biler, der bilprodusenter pålegges å produsere kjøretøy med lavere utslipp for å møte reguleringer.
 -   **Forbud mot fossilbiler**: Etter hvert som teknologi og infrastruktur forbedres, kan myndighetene vurdere å sette en tidsfrist for forbud mot salg av nye fossilbiler, slik som Norge har satt som mål for 2025.
 
-#### 4. **Informasjon og bevisstgjøringskampanjer**:
+**4. Informasjon og bevisstgjøringskampanjer:**
 
 -   **Opplysningskampanjer**: Myndighetene kan gjennomføre kampanjer for å øke bevisstheten rundt miljøkonsekvensene av bilvalg, og fremme fordeler ved å velge elbiler eller hybridbiler.
 -   **Merking av kjøretøy**: Klar og tydelig merking av kjøretøy med hensyn til utslipp, drivstoffeffektivitet og total eierkostnad kan hjelpe forbrukere med å ta mer informerte beslutninger.
 
-#### 5. **Tilgang til spesialtiltak for miljøvennlige kjøretøy**:
+**5. Tilgang til spesialtiltak for miljøvennlige kjøretøy:**
 
 -   **Fordeler som gratis parkering og tilgang til kollektivfelt**: Myndighetene kan tilby insentiver som tilgang til kollektivfelt, billigere eller gratis parkering for elbiler og andre miljøvennlige alternativer, noe som gjør dem mer attraktive i hverdagen.
 
@@ -164,6 +184,9 @@ Myndighetene har flere verktøy for å påvirke kjøretøyvalg i en samfunnsøko
 Kombinasjonen av økonomiske insentiver, infrastrukturtjenester, reguleringer og informasjon kan bidra til å øke andelen miljøvennlige kjøretøy og redusere klimagassutslipp, som igjen har positive samfunnsøkonomiske effekter.
 
 ### 2.4 Deskriptiv statistikk
+
+Vi skal nå presentere en deskriptiv oversikt når det gjelder valg av reisemåter for arbeidsreiser på Haugalandet.
+Vi skal kommentere kritiske avstander for valg av ulike reisemåter og undersøker om det er systematiske forskjeller etter kjønn, alder, inntekt, utdanning og yrke.
 
 ### 2.5 Resultater
 
