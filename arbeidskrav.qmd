@@ -225,7 +225,25 @@ transport_count %>%
 
 ```
 
-###  Emilie har testet å lage en **multinomial logit-modell** (eller chat har testet) :P 
+**Kommentar til den deskriptive statistikken:**
+På Haugalandet ser vi at privatbiler fortsatt er den dominerende formen for transport til og fra jobb.
+Av totalt 156 registrerte arbeidsreiser bruker 84 personer biler som går på bensin eller diesel, mens 66 personer benytter seg av elektriske eller hybride biler.
+Dette viser at mens fossildrevne biler fortsatt er den mest brukte transportformen, begynner elbiler og hybrider å ta en stadig større andel av reisene.
+
+Kollektivtransport i form av buss er også et alternativ for 29 personer, men dette tallet er relativt lavt sammenlignet med bilbrukere.
+Når det gjelder miljøvennlige alternativer som sykling og gange, velger 22 personer å sykle, mens 18 går til jobb.
+Elsykler har begynt å gjøre sitt inntog, men foreløpig er det kun 5 personer som velger denne løsningen.
+
+Andre transportmidler er mindre vanlige.
+Kun 4 personer bruker andre transportformer, mens motorsykkel, el-sparkesykkel og annet hver står for svært små andeler, med henholdsvis 3 og 2 brukere.
+Dette viser at mens biler fortsatt dominerer, begynner mer miljøvennlige alternativer sakte å vinne terreng.
+
+Det er også viktig å kommentere at i spørreundersøkelsen ble deltakerne gitt muligheten til å velge flere alternativer for transportmiddel til arbeidsplassen.
+Dette betyr at én person kan ha krysset av for både bil og gange.
+Dette gir en mer nyansert innsikt i reisevanene på Haugalandet, siden mange har fleksible eller varierte måter å komme seg til arbeid på, avhengig av daglige behov eller værforhold.
+Derfor kan antall registrerte transportmidler overstige det faktiske antallet personer som har deltatt i undersøkelsen.
+
+### Emilie har testet å lage en **multinomial logit-modell** (eller chat har testet) :P
 
 Men eg prøvde å forklara chat at me ønska å laga ein multinomial logit-modell ut i fra både merge_data og den tabellen hanna lagte.
 Altså å bruke tabellen som variablen i stedenfor "Hvordan_kommer_du_deg_til_jobb" fra merge_data.
