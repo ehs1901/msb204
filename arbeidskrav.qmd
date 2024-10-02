@@ -134,12 +134,24 @@ merged_data <- merged_data %>%
   mutate(`Hvordan_kommer_du_deg_til_jobb` = gsub("\\bHybrid bil\\b", "Bil (Elektrisk / Hybrid)", `Hvordan_kommer_du_deg_til_jobb`, ignore.case = TRUE)) %>%
   mutate(`Hvordan_kommer_du_deg_til_jobb` = gsub("\\bEl-bil\\b", "Bil (Elektrisk / Hybrid)", `Hvordan_kommer_du_deg_til_jobb`, ignore.case = TRUE))
 
-
 merged_data <- merged_data %>%
   mutate(`Transportmåte_disponibelt` = gsub("\\bFossil bil\\b", "Bil (Bensin / Diesel)", `Transportmåte_disponibelt`, ignore.case = TRUE)) %>%
   mutate(`Transportmåte_disponibelt` = gsub("\\bHybrid bil\\b", "Bil (Elektrisk / Hybrid)", `Transportmåte_disponibelt`, ignore.case = TRUE)) %>%
   mutate(`Transportmåte_disponibelt` = gsub("\\bEl-bil\\b", "Bil (Elektrisk / Hybrid)", `Transportmåte_disponibelt`, ignore.case = TRUE))
+
+# Erstatte "EL sykkel" med "EL-sykkel"
+# Erstatte "Ingen av de over" med "Annet"
+merged_data <- merged_data %>%
+  mutate(Hvordan_kommer_du_deg_til_jobb = gsub("\\bEL sykkel\\b", "El-sykkel", Hvordan_kommer_du_deg_til_jobb, ignore.case = TRUE)) %>%
+  mutate(Hvordan_kommer_du_deg_til_jobb = gsub("\\bIngen av de over\\b", "Annet", Hvordan_kommer_du_deg_til_jobb, ignore.case = TRUE))
+
+merged_data <- merged_data %>%
+  mutate(Transportmåte_disponibelt = gsub("\\bEL sykkel\\b", "El-sykkel", Transportmåte_disponibelt, ignore.case = TRUE)) %>%
+  mutate(Transportmåte_disponibelt = gsub("\\bIngen av de over\\b", "Annet", Transportmåte_disponibelt, ignore.case = TRUE))
+
 ```
+
+\
 
 ### 2.2 Modell for analyse av pendlevaner
 
@@ -187,6 +199,33 @@ Kombinasjonen av økonomiske insentiver, infrastrukturtjenester, reguleringer og
 
 Vi skal nå presentere en deskriptiv oversikt når det gjelder valg av reisemåter for arbeidsreiser på Haugalandet.
 Vi skal kommentere kritiske avstander for valg av ulike reisemåter og undersøker om det er systematiske forskjeller etter kjønn, alder, inntekt, utdanning og yrke.
+
+```{r}
+#| echo: false
+# Splitt transportmåtene som er separert med semikolon
+transport_modes <- merged_data %>%
+  separate_rows(Hvordan_kommer_du_deg_til_jobb, sep = ";") %>%
+  mutate(Hvordan_kommer_du_deg_til_jobb = str_trim(Hvordan_kommer_du_deg_til_jobb))  
+
+# Fjern rader med NA i kolonnen "Hvordan_kommer_du_deg_til_jobb"
+transport_modes <- transport_modes %>%
+  filter(!is.na(Hvordan_kommer_du_deg_til_jobb))
+
+# Tell antall ganger hver transportmåte har blitt valgt
+transport_count <- transport_modes %>%
+  group_by(Hvordan_kommer_du_deg_til_jobb) %>%
+  summarise(Antall = n()) %>%
+  arrange(desc(Antall))
+
+# Vis tabellen med kable
+transport_count %>%
+  kable(col.names = c("Transportmåte", "Antall"), 
+        caption = "Antall personer per transportmåte",
+        align = "l")  # Justerer kolonner til venstre
+
+```
+
+\
 
 ### 2.5 Resultater
 
