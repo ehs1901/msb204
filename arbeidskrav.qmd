@@ -20,6 +20,7 @@ library(stringr)
 library(nnet)
 library(broom)
 library(knitr)
+library(kableExtra)
 ```
 
 ## **1.0 Introduksjon**
@@ -138,7 +139,10 @@ merged_data <- merged_data %>%
   mutate(`Transportmåte_disponibelt` = gsub("\\bFossil bil\\b", "Bil (Bensin / Diesel)", `Transportmåte_disponibelt`, ignore.case = TRUE)) %>%
   mutate(`Transportmåte_disponibelt` = gsub("\\bHybrid bil\\b", "Bil (Elektrisk / Hybrid)", `Transportmåte_disponibelt`, ignore.case = TRUE)) %>%
   mutate(`Transportmåte_disponibelt` = gsub("\\bEl-bil\\b", "Bil (Elektrisk / Hybrid)", `Transportmåte_disponibelt`, ignore.case = TRUE))
+```
 
+```{r}
+#| echo: false
 # Erstatte "EL sykkel" med "EL-sykkel"
 # Erstatte "Ingen av de over" med "Annet"
 merged_data <- merged_data %>%
@@ -150,8 +154,6 @@ merged_data <- merged_data %>%
   mutate(Transportmåte_disponibelt = gsub("\\bIngen av de over\\b", "Annet", Transportmåte_disponibelt, ignore.case = TRUE))
 
 ```
-
-\
 
 ### 2.2 Modell for analyse av pendlevaner
 
@@ -198,36 +200,39 @@ Kombinasjonen av økonomiske insentiver, infrastrukturtjenester, reguleringer og
 ### 2.4 Deskriptiv statistikk
 
 Vi skal nå presentere en deskriptiv oversikt når det gjelder valg av reisemåter for arbeidsreiser på Haugalandet.
-Vi skal kommentere kritiske avstander for valg av ulike reisemåter og undersøker om det er systematiske forskjeller etter kjønn, alder, inntekt, utdanning og yrke.
+Vi skal kommentere kritiske avstander for valg av ulike reisemåter og undersøker om det er systematiske forskjeller etter kjønn, alder, inntekt og utdanning.
+
+Tabell 1 viser en oversikt over antall personer per transpportmåte.
 
 ```{r}
 #| echo: false
 # Splitt transportmåtene som er separert med semikolon
-transport_modes <- merged_data %>%
+transport_splitt <- merged_data %>%
   separate_rows(Hvordan_kommer_du_deg_til_jobb, sep = ";") %>%
-  mutate(Hvordan_kommer_du_deg_til_jobb = str_trim(Hvordan_kommer_du_deg_til_jobb))  
+  mutate(Hvordan_kommer_du_deg_til_jobb = str_trim(Hvordan_kommer_du_deg_til_jobb)) %>%
+  filter(Hvordan_kommer_du_deg_til_jobb != "")
 
 # Fjern rader med NA i kolonnen "Hvordan_kommer_du_deg_til_jobb"
-transport_modes <- transport_modes %>%
+transport_splitt <- transport_splitt %>%
   filter(!is.na(Hvordan_kommer_du_deg_til_jobb))
 
 # Tell antall ganger hver transportmåte har blitt valgt
-transport_count <- transport_modes %>%
+transport_deskriptiv <- transport_splitt %>%
   group_by(Hvordan_kommer_du_deg_til_jobb) %>%
   summarise(Antall = n()) %>%
   arrange(desc(Antall))
 
 # Vis tabellen med kable
-transport_count %>%
+transport_deskriptiv %>%
   kable(col.names = c("Transportmåte", "Antall"), 
         caption = "Antall personer per transportmåte",
-        align = "l")  # Justerer kolonner til venstre
+        align = "l")  %>%
+  kable_styling("striped", full_width = F)
 
 ```
 
-**Kommentar til den deskriptive statistikken:**
-På Haugalandet ser vi at privatbiler fortsatt er den dominerende formen for transport til og fra jobb.
-Av totalt 156 registrerte arbeidsreiser bruker 84 personer biler som går på bensin eller diesel, mens 66 personer benytter seg av elektriske eller hybride biler.
+På Haugalandet ser vi at privatbiler er den dominerende formen for transport til og fra jobb.
+84 personer bruker biler som går på bensin eller diesel, mens 66 personer benytter seg av elektriske eller hybride biler.
 Dette viser at mens fossildrevne biler fortsatt er den mest brukte transportformen, begynner elbiler og hybrider å ta en stadig større andel av reisene.
 
 Kollektivtransport i form av buss er også et alternativ for 29 personer, men dette tallet er relativt lavt sammenlignet med bilbrukere.
@@ -242,6 +247,78 @@ Det er også viktig å kommentere at i spørreundersøkelsen ble deltakerne gitt
 Dette betyr at én person kan ha krysset av for både bil og gange.
 Dette gir en mer nyansert innsikt i reisevanene på Haugalandet, siden mange har fleksible eller varierte måter å komme seg til arbeid på, avhengig av daglige behov eller værforhold.
 Derfor kan antall registrerte transportmidler overstige det faktiske antallet personer som har deltatt i undersøkelsen.
+
+For å undersøke kritiske avstander for valg av ulike reisemåter har vi valgt å se nærmere på tidsbruken på arbeidsreisen.
+Tabell 2 presenterer en oversikt over antall personer per transportmåte fordelt på tid.
+For enkelhetens skyld har vi slått sammen flere av transportmåtene.
+Bil-kategorien inkluderer både fossil, elektrisk og hybridbil.
+Vi har også valgt å slå sammen sykkel, el-sykkel og el-sparekesykkel til en samlekategori kalt "sykkel".
+
+```{r}
+#| echo: false
+# Gjøre alle observasjoner i 'Tid_brukt_til_jobb' til samme format
+transport_splitt <- transport_splitt %>%
+  mutate(Tid_brukt_til_jobb = case_when(
+    str_detect(Tid_brukt_til_jobb, regex("0\\s*-\\s*9\\s*min(utt)?", ignore_case = TRUE)) ~ "0-9 min",
+    str_detect(Tid_brukt_til_jobb, regex("10\\s*-\\s*19\\s*min(utt)?", ignore_case = TRUE)) ~ "10-19 min",
+    str_detect(Tid_brukt_til_jobb, regex("20\\s*-\\s*29\\s*min(utt)?", ignore_case = TRUE)) ~ "20-29 min",
+    str_detect(Tid_brukt_til_jobb, regex("30\\s*-\\s*39\\s*min(utt)?", ignore_case = TRUE)) ~ "30-39 min",
+    str_detect(Tid_brukt_til_jobb, regex("40\\s*-\\s*49\\s*min(utt)?", ignore_case = TRUE)) ~ "40-49 min",
+    str_detect(Tid_brukt_til_jobb, regex("50\\s*-\\s*59\\s*min(utt)?", ignore_case = TRUE)) ~ "50-59 min",
+    str_detect(Tid_brukt_til_jobb, regex("over\\s*60\\s*min(utt)?", ignore_case = TRUE)) ~ "Over 60 min",
+    TRUE ~ NA_character_  # Håndtere NA eller ukjente verdier
+  ))
+
+```
+
+```{r}
+#| echo: false
+transport_tid <- transport_splitt %>%
+  mutate(Hvordan_kommer_du_deg_til_jobb = case_when(
+    Hvordan_kommer_du_deg_til_jobb %in% c("Bil (Bensin / Diesel)", "Bil (Elektrisk / Hybrid)") ~ "Bil",
+    Hvordan_kommer_du_deg_til_jobb %in% c("Sykkel", "El-sykkel", "El-sparkesykkel") ~ "Sykkel",
+    TRUE ~ Hvordan_kommer_du_deg_til_jobb  # Behold originale verdier for andre transportmåter
+  )) %>%
+  group_by(Hvordan_kommer_du_deg_til_jobb, Tid_brukt_til_jobb) %>%
+  summarise(Antall = n(), .groups = 'drop') %>%
+  filter(!is.na(Tid_brukt_til_jobb)) %>%  # Fjerner rader med NA i tid
+  arrange(Tid_brukt_til_jobb)  # Sorterer fra lavest til høyest tid
+
+# Spesifiser rekkefølgen av transportmåter
+transport_tid$Hvordan_kommer_du_deg_til_jobb <- factor(transport_tid$Hvordan_kommer_du_deg_til_jobb,
+                                                      levels = c("Bil", "Sykkel", "Buss", "Gange", "Motorsykkel", "Annet"),
+                                                      ordered = TRUE)
+
+# Omforme til bredt format
+transport_tid_bredt <- transport_tid %>%
+  pivot_wider(names_from = Hvordan_kommer_du_deg_til_jobb, values_from = Antall, values_fill = list(Antall = 0)) %>%
+  rename(Tid = Tid_brukt_til_jobb)  # Endre kolonnenavn fra Tid_brukt_til_jobb til Tid
+
+# Omorganisere kolonnene for å plassere "Annet" sist
+transport_tid_bredt <- transport_tid_bredt %>%
+  select(Tid, everything(), -Annet, Annet)
+
+# Vis tabellen med kable
+transport_tid_bredt %>%
+  kable(caption = "Antall personer per transportmåte fordelt på tid",
+        align = "l")  %>%
+  kable_styling("striped", full_width = F)
+
+```
+
+I de korteste tidsintervallene, 0-9 min og 10-19 min, er bil det dominerende transportmiddelet, med totalt 89 personer som velger dette alternativet.
+I samme tidsintervall er bruken av buss begrenset, med 19 personer, noe som kan tyde på at busstilbudet er utilstrekkelig eller at bussene ikke er effektive nok for slike korte distanser.
+Gange og sykkel ser ut til å være aktuelle for korte reiser, med henholdsvis 8 og 13 personer i tidsintervallet 0-9 min, og 5 og 9 personer i tidstintervallet 10-19 min.
+
+Når vi ser på reiser fra 20-39 minutter, er det fortsatt en betydelig andel som bruker bil, med 39 personer registrert.
+Bussbruken synker en del for lengre reiser, med bare 10 personer registrert på reiser med varighet fra 20-39 minutter.
+Gange og sykkelbruk viser også en nedgang i disse lengre tidsintervallene, noe som kan tyde på at disse alternativene oppfattes som mindre praktiske når avstanden øker.
+
+I de lengste tidsintervallene 40-49 min og 50-60+ minm er det henholdsvis 13 og 6 personer som velger bil.
+Det er ikke registrert noe bussbruk eller gange i disse tidsintervallene.
+Det er derimot registrert en person som benytter seg av sykkel for reiser over 60 minutter.
+
+Videre skal vi undersøker om det er systematiske forskjeller etter kjønn, alder, inntekt og utdanning.....
 
 ### Emilie har testet å lage en **multinomial logit-modell** (eller chat har testet) :P
 
@@ -296,8 +373,6 @@ transport_model <- multinom(Hvordan_kommer_du_deg_til_jobb ~ Tid_brukt_til_jobb 
 summary(transport_model)
 ```
 
-### 2.5 Resultater
-
 ## **3.0 Trafikkutvikling på Haugalandet (*Henriette*)**
 
 ### 3.1 Data (*Henriette*)
@@ -305,8 +380,6 @@ summary(transport_model)
 ### 3.2 Årsdøgntrafikk (*Henriette*)
 
 ### 3.3 Timetrafikk (*Henriette*)
-
-### 3.4 Resultater (*Henriette*)
 
 ## **4.0 Konklusjon**
 
