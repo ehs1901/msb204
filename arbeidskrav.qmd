@@ -21,6 +21,7 @@ library(nnet)
 library(broom)
 library(knitr)
 library(kableExtra)
+library(stargazer)
 ```
 
 ## **1.0 Introduksjon**
@@ -318,26 +319,18 @@ I de lengste tidsintervallene 40-49 min og 50-60+ minm er det henholdsvis 13 og 
 Det er ikke registrert noe bussbruk eller gange i disse tidsintervallene.
 Det er derimot registrert en person som benytter seg av sykkel for reiser over 60 minutter.
 
-Videre skal vi undersøker om det er systematiske forskjeller etter kjønn, alder, inntekt og utdanning.....
+Videre skal vi undersøker om det er systematiske forskjeller etter kjønn, alder og inntekt.
 
 ```{r}
 #| echo: false
-# 1. Forberedelse av data: Velg kun relevante variabler og fjern NA-verdier fra transport_splitt
+# 1. Forberedelse av data: Velg kun relevante variabler og fjern NA-verdier
 kjonn_transport <- transport_splitt %>%
-  # Velg kun relevante kolonner fra transport_splitt datasettet
+  # Velg relevante kolonner
   select(Kjønn, Hvordan_kommer_du_deg_til_jobb) %>%
-  # Fjern rader med NA-verdier i både Kjønn og Hvordan_kommer_du_deg_til_jobb
+  # Fjern NA-verdier i både Kjønn og Hvordan_kommer_du_deg_til_jobb
   filter(!is.na(Kjønn) & !is.na(Hvordan_kommer_du_deg_til_jobb))
 
-# 2. Omkategorisering (valgfritt, hvis du vil gruppere transportmidler)
-kjonn_transport <- kjonn_transport %>%
-  mutate(Hvordan_kommer_du_deg_til_jobb = case_when(
-    Hvordan_kommer_du_deg_til_jobb %in% c("Bil (Bensin / Diesel)", "Bil (Elektrisk / Hybrid)") ~ "Bil",
-    Hvordan_kommer_du_deg_til_jobb %in% c("Sykkel", "El-sykkel", "El-sparkesykkel") ~ "Sykkel",
-    TRUE ~ Hvordan_kommer_du_deg_til_jobb  # Behold andre verdier som de er
-  ))
-
-# 3. Visualisering: Fordeling av transportmiddel etter kjønn
+# 2. Visualisering: Fordeling av transportmiddel etter kjønn
 ggplot(kjonn_transport, aes(x = Kjønn, fill = Hvordan_kommer_du_deg_til_jobb)) +
   geom_bar(position = "fill") +
   ylab("Prosent") +
@@ -353,6 +346,16 @@ ggplot(kjonn_transport, aes(x = Kjønn, fill = Hvordan_kommer_du_deg_til_jobb)) 
     legend.position = "bottom"  # Plasser legenden nederst for å spare plass
   )
 ```
+
+**Kommentar til tabell:** Diagrammet viser fordelingen av transportmiddelvalg mellom kvinner og menn på Haugalandet.
+Resultatene indikerer at det er små kjønnsforskjeller i valg av transportmiddel.
+Både kvinner og menn benytter bil som sitt primære transportmiddel, men kvinner ser ut til å ha en noe større andel som benytter elektrisk eller hybrid bil, mens menn har en noe høyere andel som bruker bensin- eller dieseldrevne biler.
+
+For andre transportmidler som buss, gange og sykkel, er fordelingen mellom kvinner og menn relativt lik.
+Det er en liten forskjell i bussbruk, der kvinner i noe større grad bruker buss enn menn.
+El-sparkesykkel, el-sykkel og andre alternativer utgjør en liten andel av transportmidlene for begge kjønn.
+
+Samlet sett viser diagrammet at kjønn i liten grad påvirker valg av transportmiddel, og at det overordnede bildet viser at både kvinner og menn i stor grad foretrekker bil som sitt hovedtransportmiddel.
 
 ```{r}
 #| echo: false
@@ -388,47 +391,24 @@ ggplot(alder_transport, aes(x = Alder, fill = Hvordan_kommer_du_deg_til_jobb)) +
   )
 ```
 
-```{r}
-#| echo: false
-# 1. Forberedelse av data: Velg relevante variabler fra transport_splitt
-inntekt_transport <- transport_splitt %>%
-  # Velg relevante kolonner
-  select(Inntektsgruppe, Hvordan_kommer_du_deg_til_jobb) %>%
-  # Fjern rader med NA-verdier i både Inntektsgruppe og Hvordan_kommer_du_deg_til_jobb
-  filter(!is.na(Inntektsgruppe) & !is.na(Hvordan_kommer_du_deg_til_jobb)) %>%
-  # Omkategorisere inntektsgruppene i henhold til tidligere beskrivelse
-  mutate(Inntektsgruppe = case_when(
-    Inntektsgruppe %in% c("0 - 199 000", "0- 199 000") ~ "0 - 199 000",
-    Inntektsgruppe %in% c("200 000 - 300 000", "200 000- 399 000", "300 000 - 500 000") ~ "200 000 - 499 000",  # Slå sammen inntektskategorier
-    Inntektsgruppe %in% c("700 000 +", "700 000- 999 000") ~ "700 000 - 999 000",  # Slå sammen inntektskategoriene
-    Inntektsgruppe == "1 000 000+" ~ "1 000 000 +",  # Endre navn på kategorien
-    TRUE ~ Inntektsgruppe  # Behold andre verdier som de er
-  )) %>%
-  # Fjern rader med "Ønsker ikke å oppgi", "Foretrekker å ikke si" og NA-verdier
-  filter(!Inntektsgruppe %in% c("Ønsker ikke å oppgi", "Foretrekker å ikke si") & !is.na(Inntektsgruppe))
+Diagrammet viser fordelingen av transportmiddelvalg blant ulike aldersgrupper på Haugalandet, med klare forskjeller basert på alder.
+For de yngste gruppene (0-18 år og 15-25 år) er buss og gange de mest brukte transportmidlene, noe som trolig skyldes begrenset tilgang til bil.
+I aldersgruppen 15-25 år ser vi også økt bruk av el-sparkesykkel.
 
-# 2. Visualisering: Fordeling av transportmiddel etter inntektsgruppe
-ggplot(inntekt_transport, aes(x = Inntektsgruppe, fill = Hvordan_kommer_du_deg_til_jobb)) +
-  geom_bar(position = "fill") +
-  ylab("Prosent") +
-  xlab("Inntektsnivå") +
-  ggtitle("Fordeling av transportmiddel etter inntektsgruppe") +
-  scale_y_continuous(labels = scales::percent) +
-  scale_fill_brewer(palette = "Paired") +  # Bruk en mer kontrasterende fargepalett
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),  # Roter x-akse etiketter
-    plot.title = element_text(size = 14, face = "bold"),  # Juster tittelstørrelse
-    axis.text = element_text(size = 12),  # Juster størrelse på akselabels
-   
-   legend.position = "bottom"  # Plasser legenden nederst for å spare plass
-  )
-```
+I gruppene 19-26 år og 27-35 år øker bilbruken betydelig, mens kollektivtransport fortsatt er viktig for mange.
+Fra 36 år og oppover blir bil det mest brukte transportmiddelet, med en relativt jevn fordeling mellom bensin/diesel og elektrisk/hybrid.
+Samtidig reduseres bruken av kollektivtransport, gange, og sykkel.
+
+For eldre voksne (56 år og oppover) dominerer fortsatt bil, men det er en økning i bruk av el-sykkel.
+Blant de eldste (65+) er gange det mest brukte transportmiddelet, trolig på grunn av kortere avstander og redusert tilgang til bil.
+
+Samlet sett øker bilbruken med alderen, mens yngre grupper er mer avhengige av kollektivtransport og gange.
+Eldres valg av enklere transportmidler kan skyldes helse og livsstilsendringer.
 
 ```{r}
 #| echo: false
 # 1. Forberedelse av data: Velg kun relevante variabler og slå sammen inntektskategorier
-inntekt_transport_justert <- inntekt_transport %>%
+inntekt_transport_justert <- transport_splitt %>%
   # Endre navnet til riktig variabel og slå sammen inntektskategorier
   rename(Inntektsgruppe = Inntektsgruppe) %>%
   mutate(Inntektsgruppe = case_when(
@@ -467,31 +447,16 @@ ggplot(inntekt_transport_justert, aes(x = Inntektsgruppe, fill = Hvordan_kommer_
   )
 ```
 
-```{r}
-#| echo: false
-# 1. Forberedelse av data: Velg kun relevante variabler og fjern NA-verdier
-kjonn_transport <- transport_splitt %>%
-  # Velg relevante kolonner
-  select(Kjønn, Hvordan_kommer_du_deg_til_jobb) %>%
-  # Fjern NA-verdier i både Kjønn og Hvordan_kommer_du_deg_til_jobb
-  filter(!is.na(Kjønn) & !is.na(Hvordan_kommer_du_deg_til_jobb))
+**Kommentar til tabell:** Diagrammet viser fordelingen av transportmiddelvalg blant ulike inntektsgrupper.
+Det er tydelige forskjeller i valg av transportmiddel avhengig av inntektsnivå.
+Blant de med lavest inntekt (0–199 000 kroner) er gange og sykkel de mest brukte transportmidlene, mens bruk av bil er minimal.
+I inntektsgruppen 200 000–499 000 kroner ser vi en økning i bilbruk, spesielt for biler med elektrisk eller hybrid teknologi, men også bensin- og dieseldrevne biler blir mer brukt.
+Buss og gange forblir viktige transportmidler i denne gruppen.
 
-# 2. Visualisering: Fordeling av transportmiddel etter kjønn
-ggplot(kjonn_transport, aes(x = Kjønn, fill = Hvordan_kommer_du_deg_til_jobb)) +
-  geom_bar(position = "fill") +
-  ylab("Prosent") +
-  xlab("Kjønn") +
-  ggtitle("Fordeling av transportmiddel etter kjønn") +
-  scale_y_continuous(labels = scales::percent) +
-  scale_fill_brewer(palette = "Paired") +  # Bruk en mer kontrasterende fargepalett
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 0, hjust = 0.5),  # Ingen rotasjon for kjønn
-    plot.title = element_text(size = 14, face = "bold"),  # Juster tittelstørrelse
-    axis.text = element_text(size = 12),  # Juster størrelse på akselabels
-    legend.position = "bottom"  # Plasser legenden nederst for å spare plass
-  )
-```
+For inntektsgruppen 500 000–700 000 kroner er bil det dominerende transportmiddelet, mens kollektivtransport og gange reduseres betraktelig.
+Denne trenden fortsetter i gruppen 700 000–999 000 kroner, hvor bruken av bil, særlig elektriske og hybride biler, er størst.
+I gruppen med inntekt over 1 000 000 kroner er bruken av bil også svært høy, og andre transportmidler som sykkel og kollektivtransport benyttes sjelden.
+Dette indikerer at høy inntekt er sterkt knyttet til bilbruk, mens lavere inntektsgrupper i større grad er avhengige av rimeligere transportalternativer som gange, sykkel og kollektivtransport.
 
 ### Emilie har testet å lage en **multinomial logit-modell** (eller chat har testet) :P
 
@@ -501,14 +466,22 @@ clean_data <- transport_splitt %>%
 ```
 
 ```{r}
+<<<<<<< HEAD
 model3 <- multinom(Hvordan_kommer_du_deg_til_jobb ~ Tid_brukt_til_jobb + Inntektsgruppe + Alder + Kjønn, data = clean_data)
+=======
+model_3 <- multinom(Hvordan_kommer_du_deg_til_jobb ~ Tid_brukt_til_jobb + Inntektsgruppe + Alder + Kjønn + Utdanning, data = clean_data)
+>>>>>>> fcd73b1313cd973bb0695871eff43637e8196c1b
 ```
 
 ```{r}
 library(stargazer)
 
 # Lag en profesjonell tabell av modellresultater
+<<<<<<< HEAD
 stargazer(model3, type = "text")
+=======
+stargazer(model_3, type = "text")
+>>>>>>> fcd73b1313cd973bb0695871eff43637e8196c1b
 ```
 
 Chat forteller ⬇️
