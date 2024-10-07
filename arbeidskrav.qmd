@@ -466,22 +466,13 @@ clean_data <- transport_splitt %>%
 ```
 
 ```{r}
-<<<<<<< HEAD
-model3 <- multinom(Hvordan_kommer_du_deg_til_jobb ~ Tid_brukt_til_jobb + Inntektsgruppe + Alder + Kjønn, data = clean_data)
-=======
 model_3 <- multinom(Hvordan_kommer_du_deg_til_jobb ~ Tid_brukt_til_jobb + Inntektsgruppe + Alder + Kjønn + Utdanning, data = clean_data)
->>>>>>> fcd73b1313cd973bb0695871eff43637e8196c1b
 ```
 
 ```{r}
 library(stargazer)
-
 # Lag en profesjonell tabell av modellresultater
-<<<<<<< HEAD
-stargazer(model3, type = "text")
-=======
 stargazer(model_3, type = "text")
->>>>>>> fcd73b1313cd973bb0695871eff43637e8196c1b
 ```
 
 Chat forteller ⬇️
