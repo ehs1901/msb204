@@ -323,6 +323,42 @@ Videre skal vi undersøker om det er systematiske forskjeller etter kjønn, alde
 
 ```{r}
 #| echo: false
+# 1. Forberedelse av data: Velg kun relevante variabler og fjern NA-verdier
+kjonn_transport <- transport_splitt %>%
+  # Velg relevante kolonner
+  select(Kjønn, Hvordan_kommer_du_deg_til_jobb) %>%
+  # Fjern NA-verdier i både Kjønn og Hvordan_kommer_du_deg_til_jobb
+  filter(!is.na(Kjønn) & !is.na(Hvordan_kommer_du_deg_til_jobb))
+
+# 2. Visualisering: Fordeling av transportmiddel etter kjønn
+ggplot(kjonn_transport, aes(x = Kjønn, fill = Hvordan_kommer_du_deg_til_jobb)) +
+  geom_bar(position = "fill") +
+  ylab("Prosent") +
+  xlab("Kjønn") +
+  ggtitle("Fordeling av transportmiddel etter kjønn") +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_brewer(palette = "Paired") +  # Bruk en mer kontrasterende fargepalett
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 0, hjust = 0.5),  # Ingen rotasjon for kjønn
+    plot.title = element_text(size = 14, face = "bold"),  # Juster tittelstørrelse
+    axis.text = element_text(size = 12),  # Juster størrelse på akselabels
+    legend.position = "bottom"  # Plasser legenden nederst for å spare plass
+  )
+```
+
+**Kommentar til tabell:** Diagrammet viser fordelingen av transportmiddelvalg mellom kvinner og menn på Haugalandet.
+Resultatene indikerer at det er små kjønnsforskjeller i valg av transportmiddel.
+Både kvinner og menn benytter bil som sitt primære transportmiddel, men kvinner ser ut til å ha en noe større andel som benytter elektrisk eller hybrid bil, mens menn har en noe høyere andel som bruker bensin- eller dieseldrevne biler.
+
+For andre transportmidler som buss, gange og sykkel, er fordelingen mellom kvinner og menn relativt lik.
+Det er en liten forskjell i bussbruk, der kvinner i noe større grad bruker buss enn menn.
+El-sparkesykkel, el-sykkel og andre alternativer utgjør en liten andel av transportmidlene for begge kjønn.
+
+Samlet sett viser diagrammet at kjønn i liten grad påvirker valg av transportmiddel, og at det overordnede bildet viser at både kvinner og menn i stor grad foretrekker bil som sitt hovedtransportmiddel.
+
+```{r}
+#| echo: false
 # 1. Forberedelse av data: Velg kun relevante variabler fra transport_splitt og fjern NA-verdier
 alder_transport <- transport_splitt %>%
   # Velg relevante kolonner fra transport_splitt datasettet
@@ -372,7 +408,7 @@ Eldres valg av enklere transportmidler kan skyldes helse og livsstilsendringer.
 ```{r}
 #| echo: false
 # 1. Forberedelse av data: Velg kun relevante variabler og slå sammen inntektskategorier
-inntekt_transport_justert <- inntekt_transport %>%
+inntekt_transport_justert <- transport_splitt %>%
   # Endre navnet til riktig variabel og slå sammen inntektskategorier
   rename(Inntektsgruppe = Inntektsgruppe) %>%
   mutate(Inntektsgruppe = case_when(
@@ -422,42 +458,6 @@ Denne trenden fortsetter i gruppen 700 000–999 000 kroner, hvor bruken av bil,
 I gruppen med inntekt over 1 000 000 kroner er bruken av bil også svært høy, og andre transportmidler som sykkel og kollektivtransport benyttes sjelden.
 Dette indikerer at høy inntekt er sterkt knyttet til bilbruk, mens lavere inntektsgrupper i større grad er avhengige av rimeligere transportalternativer som gange, sykkel og kollektivtransport.
 
-```{r}
-#| echo: false
-# 1. Forberedelse av data: Velg kun relevante variabler og fjern NA-verdier
-kjonn_transport <- transport_splitt %>%
-  # Velg relevante kolonner
-  select(Kjønn, Hvordan_kommer_du_deg_til_jobb) %>%
-  # Fjern NA-verdier i både Kjønn og Hvordan_kommer_du_deg_til_jobb
-  filter(!is.na(Kjønn) & !is.na(Hvordan_kommer_du_deg_til_jobb))
-
-# 2. Visualisering: Fordeling av transportmiddel etter kjønn
-ggplot(kjonn_transport, aes(x = Kjønn, fill = Hvordan_kommer_du_deg_til_jobb)) +
-  geom_bar(position = "fill") +
-  ylab("Prosent") +
-  xlab("Kjønn") +
-  ggtitle("Fordeling av transportmiddel etter kjønn") +
-  scale_y_continuous(labels = scales::percent) +
-  scale_fill_brewer(palette = "Paired") +  # Bruk en mer kontrasterende fargepalett
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 0, hjust = 0.5),  # Ingen rotasjon for kjønn
-    plot.title = element_text(size = 14, face = "bold"),  # Juster tittelstørrelse
-    axis.text = element_text(size = 12),  # Juster størrelse på akselabels
-    legend.position = "bottom"  # Plasser legenden nederst for å spare plass
-  )
-```
-
-**Kommentar til tabell:** Diagrammet viser fordelingen av transportmiddelvalg mellom kvinner og menn på Haugalandet.
-Resultatene indikerer at det er små kjønnsforskjeller i valg av transportmiddel.
-Både kvinner og menn benytter bil som sitt primære transportmiddel, men kvinner ser ut til å ha en noe større andel som benytter elektrisk eller hybrid bil, mens menn har en noe høyere andel som bruker bensin- eller dieseldrevne biler.
-
-For andre transportmidler som buss, gange og sykkel, er fordelingen mellom kvinner og menn relativt lik.
-Det er en liten forskjell i bussbruk, der kvinner i noe større grad bruker buss enn menn.
-El-sparkesykkel, el-sykkel og andre alternativer utgjør en liten andel av transportmidlene for begge kjønn.
-
-Samlet sett viser diagrammet at kjønn i liten grad påvirker valg av transportmiddel, og at det overordnede bildet viser at både kvinner og menn i stor grad foretrekker bil som sitt hovedtransportmiddel.
-
 ### Emilie har testet å lage en **multinomial logit-modell** (eller chat har testet) :P
 
 Men eg prøvde å forklara chat at me ønska å laga ein multinomial logit-modell ut i fra både merge_data og den tabellen hanna lagte.
@@ -481,18 +481,14 @@ clean_data <- transport_splitt %>%
 ```
 
 ```{r}
-transport_splitt <- multinom(Hvordan_kommer_du_deg_til_jobb ~ Tid_brukt_til_jobb + Inntektsgruppe + Alder + Kjønn + Utdanning, data = clean_data)
-```
-
-```{r}
-summary(transport_splitt)
+model_3 <- multinom(Hvordan_kommer_du_deg_til_jobb ~ Tid_brukt_til_jobb + Inntektsgruppe + Alder + Kjønn + Utdanning, data = clean_data)
 ```
 
 ```{r}
 library(stargazer)
 
 # Lag en profesjonell tabell av modellresultater
-stargazer(transport_splitt, type = "text")
+stargazer(model_3, type = "text")
 ```
 
 Chat forteller ⬇️
