@@ -495,39 +495,20 @@ ggplot(kjonn_transport, aes(x = Kjønn, fill = Hvordan_kommer_du_deg_til_jobb)) 
 
 ### Emilie har testet å lage en **multinomial logit-modell** (eller chat har testet) :P
 
-Men eg prøvde å forklara chat at me ønska å laga ein multinomial logit-modell ut i fra både merge_data og den tabellen hanna lagte.
-Altså å bruke tabellen som variablen i stedenfor "Hvordan_kommer_du_deg_til_jobb" fra merge_data.
-Men det va veldig vanskelig, og mye rare koder som aldri fungerte.
-Det gir sikkert meining siden at det ikke ska gå siden observasjonanen i tabellen ikke sammsvare med observasjonene i datasette om dåkker fatte....
-?
-
-Derfor foreslo char noe om å slå sammen for eksempel el-sykkel og sykkel som bare sykkel for å redusera antall kategorier og derfor lettare å tolka ein nultinominal logit-modell.
-Han ga meg deia kodene:
-
-Resultate fra modellen e fortsatt veldig "stort" og ikke så lett å tolka, men i hvertfall lettare og mer oversiktilig nå enn kan det va før me kombinerte kategoriene.
-Når eg spør chat om han kan tolka finne han svar som for eksempel "*En positiv koeffisient for Bil med Alder26-35 betyr at personer i denne aldersgruppen er mer sannsynlig å velge bil sammenlignet med referansekategorien*." og "*En negativ koeffisient for Buss med KjønnMann betyr at menn er mindre sannsynlig å velge buss enn kvinner*."
-
-Chat sa i hvertfall at ein **multinomial logit-modell** va reelt for oss å bruka ...
-*"Multinomial logit-modellen egner seg spesielt godt når du har flere alternativer å velge mellom, som i ditt tilfelle – ulike transportmidler (sykkel, buss, bil, elbil osv.). Modellen beregner sannsynligheten for at en person velger en bestemt reisemåte gitt visse faktorer."*
-
 ```{r}
 clean_data <- transport_splitt %>%
-  filter(!is.na(Hvordan_kommer_du_deg_til_jobb), !is.na(Tid_brukt_til_jobb), !is.na(Kjønn), !is.na(Inntektsgruppe), !is.na(Alder), !is.na(Utdanning))
+  filter(!is.na(Hvordan_kommer_du_deg_til_jobb), !is.na(Tid_brukt_til_jobb), !is.na(Kjønn), !is.na(Inntektsgruppe), !is.na(Alder))
 ```
 
 ```{r}
-transport_splitt <- multinom(Hvordan_kommer_du_deg_til_jobb ~ Tid_brukt_til_jobb + Inntektsgruppe + Alder + Kjønn + Utdanning, data = clean_data)
-```
-
-```{r}
-summary(transport_splitt)
+model3 <- multinom(Hvordan_kommer_du_deg_til_jobb ~ Tid_brukt_til_jobb + Inntektsgruppe + Alder + Kjønn, data = clean_data)
 ```
 
 ```{r}
 library(stargazer)
 
 # Lag en profesjonell tabell av modellresultater
-stargazer(transport_splitt, type = "text")
+stargazer(model3, type = "text")
 ```
 
 Chat forteller ⬇️
