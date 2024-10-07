@@ -21,6 +21,7 @@ library(nnet)
 library(broom)
 library(knitr)
 library(kableExtra)
+library(stargazer)
 ```
 
 ## **1.0 Introduksjon**
