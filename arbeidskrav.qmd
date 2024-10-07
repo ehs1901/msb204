@@ -321,6 +321,82 @@ Det er derimot registrert en person som benytter seg av sykkel for reiser over 6
 Videre skal vi undersøker om det er systematiske forskjeller etter kjønn, alder, inntekt og utdanning.....
 
 ```{r}
+# 1. Forberedelse av data: Velg kun relevante variabler og fjern NA-verdier fra transport_splitt
+kjonn_transport <- transport_splitt %>%
+  # Velg kun relevante kolonner fra transport_splitt datasettet
+  select(Kjønn, Hvordan_kommer_du_deg_til_jobb) %>%
+  # Fjern rader med NA-verdier i både Kjønn og Hvordan_kommer_du_deg_til_jobb
+  filter(!is.na(Kjønn) & !is.na(Hvordan_kommer_du_deg_til_jobb))
+
+# 2. Omkategorisering (valgfritt, hvis du vil gruppere transportmidler)
+kjonn_transport <- kjonn_transport %>%
+  mutate(Hvordan_kommer_du_deg_til_jobb = case_when(
+    Hvordan_kommer_du_deg_til_jobb %in% c("Bil (Bensin / Diesel)", "Bil (Elektrisk / Hybrid)") ~ "Bil",
+    Hvordan_kommer_du_deg_til_jobb %in% c("Sykkel", "El-sykkel", "El-sparkesykkel") ~ "Sykkel",
+    TRUE ~ Hvordan_kommer_du_deg_til_jobb  # Behold andre verdier som de er
+  ))
+
+# 3. Visualisering: Fordeling av transportmiddel etter kjønn
+ggplot(kjonn_transport, aes(x = Kjønn, fill = Hvordan_kommer_du_deg_til_jobb)) +
+  geom_bar(position = "fill") +
+  ylab("Prosent") +
+  xlab("Kjønn") +
+  ggtitle("Fordeling av transportmiddel etter kjønn") +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_brewer(palette = "Paired") +  # Bruk en mer kontrasterende fargepalett
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 0, hjust = 0.5),  # Ingen rotasjon for kjønn
+    plot.title = element_text(size = 14, face = "bold"),  # Juster tittelstørrelse
+    axis.text = element_text(size = 12),  # Juster størrelse på akselabels
+    legend.position = "bottom"  # Plasser legenden nederst for å spare plass
+  )
+```
+
+```{r}
+# 1. Forberedelse av data: Velg kun relevante variabler (Inntekt og Transportmiddel)
+inntekt_transport <- transport_splitt %>%
+  select(Inntekt, Hvordan_kommer_du_deg_til_jobb) %>%
+  filter(!is.na(Inntektsgruppe), !is.na(Hvordan_kommer_du_deg_til_jobb))  # Fjerne NA-verdier
+
+# 2. Forenkle transportmidler (slå sammen enkelte kategorier hvis ønskelig)
+inntekt_transport <- inntekt_transport %>%
+  mutate(Hvordan_kommer_du_deg_til_jobb = case_when(
+    Hvordan_kommer_du_deg_til_jobb %in% c("Bil (Bensin / Diesel)", "Bil (Elektrisk / Hybrid)") ~ "Bil",
+    Hvordan_kommer_du_deg_til_jobb %in% c("Sykkel", "El-sykkel", "El-sparkesykkel") ~ "Sykkel",
+    TRUE ~ Hvordan_kommer_du_deg_til_jobb  # Behold originale verdier for andre transportmidler
+  ))
+
+# 3. Visualisering: Fordeling av transportmiddel etter inntekt
+ggplot(inntekt_transport, aes(x = Inntekt, fill = Hvordan_kommer_du_deg_til_jobb)) +
+  geom_bar(position = "fill") +
+  ylab("Prosent") +
+  xlab("Inntektsnivå") +
+  ggtitle("Fordeling av transportmiddel etter inntekt") +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_brewer(palette = "Paired") +  # Bruk en mer kontrasterende fargepalett
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Roter x-akse etiketter
+    plot.title = element_text(size = 14, face = "bold"),  # Juster tittelstørrelse
+    axis.text = element_text(size = 12),  # Juster størrelse på akselabels
+    legend.position = "bottom"  # Plasser legenden nederst for å spare plass
+  )
+
+# 4. Statistisk test: Kjikvadrattest for å se om det er en sammenheng mellom inntekt og transportmiddel
+inntekt_transport_tabell <- table(inntekt_transport$Inntekt, inntekt_transport$Hvordan_kommer_du_deg_til_jobb)
+kjikvadrat_resultat <- chisq.test(inntekt_transport_tabell)
+
+# 5. Skriv ut resultatene av kjikvadrattesten
+print(kjikvadrat_resultat)
+
+# Valgfritt: Vis tabellen med frekvensfordeling
+inntekt_transport_tabell %>%
+  kable(caption = "Frekvensfordeling av transportmiddel etter inntektsnivå") %>%
+  kable_styling("striped", full_width = F)
+```
+
+```{r}
 # 1. Forberedelse av data: Velg kun relevante variabler og slå sammen inntektskategorier
 inntekt_transport_justert <- inntekt_transport %>%
   # Endre navnet til riktig variabel og slå sammen inntektskategorier
