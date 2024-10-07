@@ -321,6 +321,7 @@ Det er derimot registrert en person som benytter seg av sykkel for reiser over 6
 Videre skal vi undersøker om det er systematiske forskjeller etter kjønn, alder, inntekt og utdanning.....
 
 ```{r}
+#| echo: false
 # 1. Forberedelse av data: Velg kun relevante variabler og fjern NA-verdier fra transport_splitt
 kjonn_transport <- transport_splitt %>%
   # Velg kun relevante kolonner fra transport_splitt datasettet
@@ -354,25 +355,64 @@ ggplot(kjonn_transport, aes(x = Kjønn, fill = Hvordan_kommer_du_deg_til_jobb)) 
 ```
 
 ```{r}
-# 1. Forberedelse av data: Velg kun relevante variabler (Inntekt og Transportmiddel)
+#| echo: false
+# 1. Forberedelse av data: Velg kun relevante variabler fra transport_splitt og fjern NA-verdier
+alder_transport <- transport_splitt %>%
+  # Velg relevante kolonner fra transport_splitt datasettet
+  select(Alder, Hvordan_kommer_du_deg_til_jobb) %>%
+  # Fjern rader med NA-verdier i både Alder og Hvordan_kommer_du_deg_til_jobb
+  filter(!is.na(Alder) & !is.na(Hvordan_kommer_du_deg_til_jobb))
+
+# 2. Omkategorisering (valgfritt, hvis du vil slå sammen aldersgrupper)
+# Hvis du ønsker å slå sammen aldersgrupper, kan du gjøre det her (valgfritt):
+# alder_transport <- alder_transport %>%
+#   mutate(Alder = case_when(
+#     Alder %in% c("0-18", "19-25") ~ "0-25",  # Slå sammen unge aldersgrupper (hvis ønskelig)
+#     TRUE ~ Alder  # Behold andre aldersgrupper som de er
+#   ))
+
+# 3. Visualisering: Fordeling av transportmiddel etter alder
+ggplot(alder_transport, aes(x = Alder, fill = Hvordan_kommer_du_deg_til_jobb)) +
+  geom_bar(position = "fill") +
+  ylab("Prosent") +
+  xlab("Aldersgruppe") +
+  ggtitle("Fordeling av transportmiddel etter aldersgruppe") +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_brewer(palette = "Paired") +  # Bruk en mer kontrasterende fargepalett
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Roter etiketter for bedre lesbarhet
+    plot.title = element_text(size = 14, face = "bold"),  # Juster tittelstørrelse
+    axis.text = element_text(size = 12),  # Juster størrelse på akselabels
+    legend.position = "bottom"  # Plasser legenden nederst for å spare plass
+  )
+```
+
+```{r}
+#| echo: false
+# 1. Forberedelse av data: Velg relevante variabler fra transport_splitt
 inntekt_transport <- transport_splitt %>%
-  select(Inntekt, Hvordan_kommer_du_deg_til_jobb) %>%
-  filter(!is.na(Inntektsgruppe), !is.na(Hvordan_kommer_du_deg_til_jobb))  # Fjerne NA-verdier
+  # Velg relevante kolonner
+  select(Inntektsgruppe, Hvordan_kommer_du_deg_til_jobb) %>%
+  # Fjern rader med NA-verdier i både Inntektsgruppe og Hvordan_kommer_du_deg_til_jobb
+  filter(!is.na(Inntektsgruppe) & !is.na(Hvordan_kommer_du_deg_til_jobb)) %>%
+  # Omkategorisere inntektsgruppene i henhold til tidligere beskrivelse
+  mutate(Inntektsgruppe = case_when(
+    Inntektsgruppe %in% c("0 - 199 000", "0- 199 000") ~ "0 - 199 000",
+    Inntektsgruppe %in% c("200 000 - 300 000", "200 000- 399 000", "300 000 - 500 000") ~ "200 000 - 499 000",  # Slå sammen inntektskategorier
+    Inntektsgruppe %in% c("700 000 +", "700 000- 999 000") ~ "700 000 - 999 000",  # Slå sammen inntektskategoriene
+    Inntektsgruppe == "1 000 000+" ~ "1 000 000 +",  # Endre navn på kategorien
+    TRUE ~ Inntektsgruppe  # Behold andre verdier som de er
+  )) %>%
+  # Fjern rader med "Ønsker ikke å oppgi", "Foretrekker å ikke si" og NA-verdier
+  filter(!Inntektsgruppe %in% c("Ønsker ikke å oppgi", "Foretrekker å ikke si") & !is.na(Inntektsgruppe))
 
-# 2. Forenkle transportmidler (slå sammen enkelte kategorier hvis ønskelig)
-inntekt_transport <- inntekt_transport %>%
-  mutate(Hvordan_kommer_du_deg_til_jobb = case_when(
-    Hvordan_kommer_du_deg_til_jobb %in% c("Bil (Bensin / Diesel)", "Bil (Elektrisk / Hybrid)") ~ "Bil",
-    Hvordan_kommer_du_deg_til_jobb %in% c("Sykkel", "El-sykkel", "El-sparkesykkel") ~ "Sykkel",
-    TRUE ~ Hvordan_kommer_du_deg_til_jobb  # Behold originale verdier for andre transportmidler
-  ))
-
-# 3. Visualisering: Fordeling av transportmiddel etter inntekt
-ggplot(inntekt_transport, aes(x = Inntekt, fill = Hvordan_kommer_du_deg_til_jobb)) +
+# 2. Visualisering: Fordeling av transportmiddel etter inntektsgruppe
+ggplot(inntekt_transport, aes(x = Inntektsgruppe, fill = Hvordan_kommer_du_deg_til_jobb)) +
   geom_bar(position = "fill") +
   ylab("Prosent") +
   xlab("Inntektsnivå") +
-  ggtitle("Fordeling av transportmiddel etter inntekt") +
+  ggtitle("Fordeling av transportmiddel etter inntektsgruppe") +
   scale_y_continuous(labels = scales::percent) +
   scale_fill_brewer(palette = "Paired") +  # Bruk en mer kontrasterende fargepalett
   theme_minimal() +
@@ -380,23 +420,13 @@ ggplot(inntekt_transport, aes(x = Inntekt, fill = Hvordan_kommer_du_deg_til_jobb
     axis.text.x = element_text(angle = 45, hjust = 1),  # Roter x-akse etiketter
     plot.title = element_text(size = 14, face = "bold"),  # Juster tittelstørrelse
     axis.text = element_text(size = 12),  # Juster størrelse på akselabels
-    legend.position = "bottom"  # Plasser legenden nederst for å spare plass
+   
+   legend.position = "bottom"  # Plasser legenden nederst for å spare plass
   )
-
-# 4. Statistisk test: Kjikvadrattest for å se om det er en sammenheng mellom inntekt og transportmiddel
-inntekt_transport_tabell <- table(inntekt_transport$Inntekt, inntekt_transport$Hvordan_kommer_du_deg_til_jobb)
-kjikvadrat_resultat <- chisq.test(inntekt_transport_tabell)
-
-# 5. Skriv ut resultatene av kjikvadrattesten
-print(kjikvadrat_resultat)
-
-# Valgfritt: Vis tabellen med frekvensfordeling
-inntekt_transport_tabell %>%
-  kable(caption = "Frekvensfordeling av transportmiddel etter inntektsnivå") %>%
-  kable_styling("striped", full_width = F)
 ```
 
 ```{r}
+#| echo: false
 # 1. Forberedelse av data: Velg kun relevante variabler og slå sammen inntektskategorier
 inntekt_transport_justert <- inntekt_transport %>%
   # Endre navnet til riktig variabel og slå sammen inntektskategorier
@@ -438,6 +468,7 @@ ggplot(inntekt_transport_justert, aes(x = Inntektsgruppe, fill = Hvordan_kommer_
 ```
 
 ```{r}
+#| echo: false
 # 1. Forberedelse av data: Velg kun relevante variabler og fjern NA-verdier
 kjonn_transport <- transport_splitt %>%
   # Velg relevante kolonner
@@ -460,15 +491,6 @@ ggplot(kjonn_transport, aes(x = Kjønn, fill = Hvordan_kommer_du_deg_til_jobb)) 
     axis.text = element_text(size = 12),  # Juster størrelse på akselabels
     legend.position = "bottom"  # Plasser legenden nederst for å spare plass
   )
-```
-
-```{}
-```
-
-```{}
-```
-
-```{}
 ```
 
 ### Emilie har testet å lage en **multinomial logit-modell** (eller chat har testet) :P
