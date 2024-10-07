@@ -4,7 +4,7 @@ format: pdf
 editor: visual
 ---
 
-**MSB204 Transportmodeller og regionalutvikling**
+**MSB204 Transportmodeller og regionalutvikling :)**
 
 **Hanna Sundal Bjerkreim, Henriette Hansen, Ingrid Strømme & Emilie Hansen Sørhaug**
 
