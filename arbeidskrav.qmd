@@ -320,6 +320,81 @@ Det er derimot registrert en person som benytter seg av sykkel for reiser over 6
 
 Videre skal vi undersøker om det er systematiske forskjeller etter kjønn, alder, inntekt og utdanning.....
 
+```{r}
+# 1. Forberedelse av data: Velg kun relevante variabler og slå sammen inntektskategorier
+inntekt_transport_justert <- inntekt_transport %>%
+  # Endre navnet til riktig variabel og slå sammen inntektskategorier
+  rename(Inntektsgruppe = Inntektsgruppe) %>%
+  mutate(Inntektsgruppe = case_when(
+    Inntektsgruppe %in% c("0 - 199 000", "0- 199 000") ~ "0 - 199 000",
+    Inntektsgruppe %in% c("200 000 - 300 000", "200 000- 399 000", "300 000 - 500 000") ~ "200 000 - 499 000",  # Slå sammen inntektskategorier
+    Inntektsgruppe %in% c("700 000 +", "700 000- 999 000") ~ "700 000 - 999 000",  # Slå sammen inntektskategoriene
+    Inntektsgruppe == "1 000 000+" ~ "1 000 000 +",  # Endre navn på kategorien
+    TRUE ~ Inntektsgruppe  # Behold andre verdier som de er
+  )) %>%
+  # Fjern kategoriene "Ønsker ikke å oppgi", "Foretrekker å ikke si" og rader med NA-verdier i Inntektsgruppe
+  filter(!Inntektsgruppe %in% c("Ønsker ikke å oppgi", "Foretrekker å ikke si") & !is.na(Inntektsgruppe)) %>%
+  # Fjerne eventuelle NA-verdier i andre relevante kolonner også
+  drop_na(Inntektsgruppe)
+
+# 2. Angi rekkefølgen på inntektsgruppene slik at "1 000 000 +" vises til slutt
+inntekt_transport_justert$Inntektsgruppe <- factor(inntekt_transport_justert$Inntektsgruppe, 
+                                                   levels = c("0 - 199 000", "200 000 - 499 000", 
+                                                              "500 000 - 700 000", "700 000 - 999 000", 
+                                                              "1 000 000 +"),
+                                                   ordered = TRUE)
+
+# 3. Visualisering: Fordeling av transportmiddel etter justert inntektsgruppe
+ggplot(inntekt_transport_justert, aes(x = Inntektsgruppe, fill = Hvordan_kommer_du_deg_til_jobb)) +
+  geom_bar(position = "fill") +
+  ylab("Prosent") +
+  xlab("Inntektsnivå") +
+  ggtitle("Fordeling av transportmiddel etter inntektsgruppe") +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_brewer(palette = "Paired") +  # Bruk en mer kontrasterende fargepalett
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),  # Roter x-akse etiketter
+    plot.title = element_text(size = 14, face = "bold"),  # Juster tittelstørrelse
+    axis.text = element_text(size = 12),  # Juster størrelse på akselabels
+    legend.position = "bottom"  # Plasser legenden nederst for å spare plass
+  )
+```
+
+```{r}
+# 1. Forberedelse av data: Velg kun relevante variabler og fjern NA-verdier
+kjonn_transport <- transport_splitt %>%
+  # Velg relevante kolonner
+  select(Kjønn, Hvordan_kommer_du_deg_til_jobb) %>%
+  # Fjern NA-verdier i både Kjønn og Hvordan_kommer_du_deg_til_jobb
+  filter(!is.na(Kjønn) & !is.na(Hvordan_kommer_du_deg_til_jobb))
+
+# 2. Visualisering: Fordeling av transportmiddel etter kjønn
+ggplot(kjonn_transport, aes(x = Kjønn, fill = Hvordan_kommer_du_deg_til_jobb)) +
+  geom_bar(position = "fill") +
+  ylab("Prosent") +
+  xlab("Kjønn") +
+  ggtitle("Fordeling av transportmiddel etter kjønn") +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_brewer(palette = "Paired") +  # Bruk en mer kontrasterende fargepalett
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 0, hjust = 0.5),  # Ingen rotasjon for kjønn
+    plot.title = element_text(size = 14, face = "bold"),  # Juster tittelstørrelse
+    axis.text = element_text(size = 12),  # Juster størrelse på akselabels
+    legend.position = "bottom"  # Plasser legenden nederst for å spare plass
+  )
+```
+
+```{}
+```
+
+```{}
+```
+
+```{}
+```
+
 ### Emilie har testet å lage en **multinomial logit-modell** (eller chat har testet) :P
 
 Men eg prøvde å forklara chat at me ønska å laga ein multinomial logit-modell ut i fra både merge_data og den tabellen hanna lagte.
