@@ -358,23 +358,21 @@ El-sparkesykkel, el-sykkel og andre alternativer utgjør en liten andel av trans
 Samlet sett viser diagrammet at kjønn i liten grad påvirker valg av transportmiddel, og at det overordnede bildet viser at både kvinner og menn i stor grad foretrekker bil som sitt hovedtransportmiddel.
 
 ```{r}
-#| echo: false
 # 1. Forberedelse av data: Velg kun relevante variabler fra transport_splitt og fjern NA-verdier
-alder_transport <- transport_splitt %>%
+alder_transport <- transport_splitt |> 
   # Velg relevante kolonner fra transport_splitt datasettet
-  select(Alder, Hvordan_kommer_du_deg_til_jobb) %>%
+  select(Alder, Hvordan_kommer_du_deg_til_jobb) |> 
   # Fjern rader med NA-verdier i både Alder og Hvordan_kommer_du_deg_til_jobb
-  filter(!is.na(Alder) & !is.na(Hvordan_kommer_du_deg_til_jobb))
+  filter(!is.na(Alder) & !is.na(Hvordan_kommer_du_deg_til_jobb)) |> 
+  # Omkategorisering av aldersgrupper
+  mutate(Alder = case_when(
+    Alder %in% c("0-18", "15-25", "19-26") ~ "0-26",  # Slå sammen de yngste aldersgruppene
+    Alder %in% c("26-35", "27-35") ~ "27-35",          # Slå sammen 26-35 og 27-35 til en gruppe
+    Alder %in% c("56-64", "56-65") ~ "56-64",          # Slå sammen 56-64 og 56-65 til en gruppe
+    TRUE ~ Alder                                        # Behold andre aldersgrupper som de er
+  ))
 
-# 2. Omkategorisering (valgfritt, hvis du vil slå sammen aldersgrupper)
-# Hvis du ønsker å slå sammen aldersgrupper, kan du gjøre det her (valgfritt):
-# alder_transport <- alder_transport %>%
-#   mutate(Alder = case_when(
-#     Alder %in% c("0-18", "19-25") ~ "0-25",  # Slå sammen unge aldersgrupper (hvis ønskelig)
-#     TRUE ~ Alder  # Behold andre aldersgrupper som de er
-#   ))
-
-# 3. Visualisering: Fordeling av transportmiddel etter alder
+# 2. Visualisering: Fordeling av transportmiddel etter alder
 ggplot(alder_transport, aes(x = Alder, fill = Hvordan_kommer_du_deg_til_jobb)) +
   geom_bar(position = "fill") +
   ylab("Prosent") +
