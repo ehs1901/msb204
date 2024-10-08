@@ -181,14 +181,14 @@ Denne tilnærmingen muliggjør en dypere analyse av hvordan ulike demografiske o
 stargazer(model_3, type = "text")
 ```
 
-## Funn fra modellen 
+#### Funn fra modellen
 
 **Tid brukt til jobb:**
 
 -   **10-19 minutter:** Bil (Bensin / Diesel) har en signifikant positiv koeffisient på **83.791**, noe som indikerer en sterk preferanse for denne transporttypen når reisetiden er kort.
 -   **Over 60 minutter:** Bruk av Bil (Bensin / Diesel) viser en negativ koeffisient **på -31.171**, noe som tyder på en nedgang i preferansen for bilreiser ved lengre pendletid.
 
-**Inntektsgrupper:** 	
+**Inntektsgrupper:**
 
 -   **700 000+ kroner:** Størst økning i sannsynligheten for å bruke Bil (Elektrisk / Hybrid) med en koeffisient på 143.790, som tydelig reflekterer en høyere tilbøyelighet blant høyinntektstakere til å velge miljøvennlige kjøretøy.
 
@@ -504,59 +504,6 @@ For inntektsgruppen 500 000–700 000 kroner er bil det dominerende transportmid
 Denne trenden fortsetter i gruppen 700 000–999 000 kroner, hvor bruken av bil, særlig elektriske og hybride biler, er størst.
 I gruppen med inntekt over 1 000 000 kroner er bruken av bil også svært høy, og andre transportmidler som sykkel og kollektivtransport benyttes sjelden.
 Dette indikerer at høy inntekt er sterkt knyttet til bilbruk, mens lavere inntektsgrupper i større grad er avhengige av rimeligere transportalternativer som gange, sykkel og kollektivtransport.
-
-### Emilie har testet å lage en **multinomial logit-modell** (eller chat har testet) :P
-
-```{r}
-clean_data <- transport_splitt %>%
-  filter(!is.na(Hvordan_kommer_du_deg_til_jobb), !is.na(Tid_brukt_til_jobb), !is.na(Kjønn), !is.na(Inntektsgruppe), !is.na(Alder))
-```
-
-```{r}
-model_3 <- multinom(Hvordan_kommer_du_deg_til_jobb ~ Tid_brukt_til_jobb + Inntektsgruppe + Alder + Kjønn + Utdanning, data = clean_data)
-```
-
-```{r}
-library(stargazer)
-# Lag en profesjonell tabell av modellresultater
-stargazer(model_3, type = "text")
-```
-
-Chat forteller ⬇️
-
-Ut fra tabellene du har sendt, her er en oppsummering av de viktigste funnene fra modellen som ser på hvordan ulike variabler påvirker valg av transportmiddel.
-Tabellen viser estimerte koeffisienter for hver transportmiddelkategory basert på tid brukt til jobb, inntektsgrupper, aldersgrupper og andre demografiske variabler:
-
-### Tid brukt til jobb
-
--   **Kortere reisetid (10-19 minutter)** ser ut til å øke sannsynligheten for å velge bil (både bensin/diesel og elektrisk/hybrid), buss, og de fleste andre transportmidler, unntatt gange, hvor det er en negativ sammenheng.
--   **Lengre reisetid (over 60 minutter)** reduserer signifikant sannsynligheten for å velge bensin/diesel biler, og har en negativ effekt på bruken av buss og gange, men øker sannsynligheten for å velge motorsykkel.
-
-### Inntektsgrupper
-
--   **Høyere inntektsgrupper (700 000+ NOK)** har en tendens til å velge mer kostbare transportmidler som el-sykkel og biler, spesielt elektriske/hybride modeller.
--   **Lavere inntektsgrupper** viser større preferanse for billigere transportmidler som gange og motorsykkel.
-
-### Alder
-
--   **Yngre aldersgrupper (15-25 og 19-26 år)** har en mindre tendens til å velge biler sammenlignet med eldre grupper.
--   **Eldre aldersgrupper (46-55, 56-64 år)** viser signifikant lavere sannsynlighet for å velge transportmidler som krever fysisk aktivitet, som sykkel og gange.
-
-### Kjønn
-
--   **Menn** viser en lavere preferanse for de fleste transportmidler sammenlignet med kvinner, spesielt for bil (elektrisk/hybrid) og gange.
-
-### Utdanning
-
--   Personer med **høyere utdanning (Mastergrad)** viser lavere sannsynlighet for å velge bil og høyere for miljøvennlige alternativer som sykkel.
--   Lavere utdanningsnivå viser en sterkere preferanse for bil (bensin/diesel) og motorsykkel.
-
-### Generelle observasjoner
-
--   Koeffisientene er signifikante på forskjellige nivåer (p-verdier under 0.1, 0.05, og 0.01), som indikerer styrken på de statistiske bevisene for hver effekt.
--   Konstantleddene og AIC-verdier indikerer modellens tilpasning og gir et grunnlag for å sammenligne med andre modeller om nødvendig.
-
-Disse funnene gir en dyp innsikt i hvordan demografiske og økonomiske faktorer påvirker valg av transportmiddel, og kan være nyttige for å forme transportpolitikk og planleggingsstrategier som adresserer spesifikke behov til ulike befolkningssegmenter.
 
 ## **3.0 Trafikkutvikling på Haugalandet (*Henriette*)**
 
