@@ -358,6 +358,7 @@ El-sparkesykkel, el-sykkel og andre alternativer utgjør en liten andel av trans
 Samlet sett viser diagrammet at kjønn i liten grad påvirker valg av transportmiddel, og at det overordnede bildet viser at både kvinner og menn i stor grad foretrekker bil som sitt hovedtransportmiddel.
 
 ```{r}
+#| echo: false
 # 1. Forberedelse av data: Velg kun relevante variabler fra transport_splitt og fjern NA-verdier
 alder_transport <- transport_splitt |> 
   # Velg relevante kolonner fra transport_splitt datasettet
@@ -455,6 +456,8 @@ For inntektsgruppen 500 000–700 000 kroner er bil det dominerende transportmid
 Denne trenden fortsetter i gruppen 700 000–999 000 kroner, hvor bruken av bil, særlig elektriske og hybride biler, er størst.
 I gruppen med inntekt over 1 000 000 kroner er bruken av bil også svært høy, og andre transportmidler som sykkel og kollektivtransport benyttes sjelden.
 Dette indikerer at høy inntekt er sterkt knyttet til bilbruk, mens lavere inntektsgrupper i større grad er avhengige av rimeligere transportalternativer som gange, sykkel og kollektivtransport.
+
+**Bruk nest logit modell**
 
 ### Emilie har testet å lage en **multinomial logit-modell** (eller chat har testet) :P
 
