@@ -506,7 +506,6 @@ Denne trenden fortsetter i gruppen 700 000–999 000 kroner, hvor bruken av bil,
 I gruppen med inntekt over 1 000 000 kroner er bruken av bil også svært høy, og andre transportmidler som sykkel og kollektivtransport benyttes sjelden.
 Dette indikerer at høy inntekt er sterkt knyttet til bilbruk, mens lavere inntektsgrupper i større grad er avhengige av rimeligere transportalternativer som gange, sykkel og kollektivtransport.
 
-
 **Bruk nest logit modell**
 
 ### Emilie har testet å lage en **multinomial logit-modell** (eller chat har testet) :P
@@ -561,7 +560,6 @@ Tabellen viser estimerte koeffisienter for hver transportmiddelkategory basert p
 -   Konstantleddene og AIC-verdier indikerer modellens tilpasning og gir et grunnlag for å sammenligne med andre modeller om nødvendig.
 
 Disse funnene gir en dyp innsikt i hvordan demografiske og økonomiske faktorer påvirker valg av transportmiddel, og kan være nyttige for å forme transportpolitikk og planleggingsstrategier som adresserer spesifikke behov til ulike befolkningssegmenter.
-
 
 ## **3.0 Trafikkutvikling på Haugalandet (*Henriette*)**
 
