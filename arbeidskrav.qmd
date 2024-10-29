@@ -465,6 +465,7 @@ Dette tillot oss å trimme og fjerne tomme verdier fra dataene, slik at kun gyld
 Videre fjernet vi rader med manglende data og lagde en oppsummering som viser antall ganger hvert transportmiddel ble valgt, hvilket gir oss en klarere oversikt over preferansene i datasettet.
 
 ```{r}
+#| echo: false
 clean_data <- transport_splitt %>%
   filter(!is.na(Hvordan_kommer_du_deg_til_jobb), !is.na(Tid_brukt_til_jobb), !is.na(Kjønn), !is.na(Inntektsgruppe), !is.na(Alder))
 ```
