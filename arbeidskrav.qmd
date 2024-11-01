@@ -185,7 +185,7 @@ Denne modellen evner til å håndtere avhengige variabler med flere kategorier, 
 I et universalt valgsett, antar vi at alle alternativer er tilgjengelige for alle beslutningstakere.
 En multinomial logit-modell basert på et universalt valgsett kan utrykkes på følgende måte:
 
-![](images/Skjermbilde 2024-11-01 kl. 09.29.55.png){width="473"}
+![](images/Skjermbilde%202024-11-01%20kl.%2009.29.55.png){width="473"}
 
 ```{r}
 #| echo: false
@@ -273,7 +273,7 @@ Her er noen av de viktigste faktorene myndighetene kan og bør fokusere på:
 
 -   **Subsidier for elektriske biler**: Støtte til innkjøp av elektriske kjøretøy eller tilskudd til hjemmeladere kan redusere den økonomiske terskelen for å velge miljøvennlige kjøretøy.
 
-    <https://www.nettavisen.no/billig/str%C3%B8m/fordeler-og-ulemper-ved-elbiler/>
+    @johannes2023
 
 **2. Infrastrukturutvikling:**
 
@@ -281,9 +281,7 @@ Her er noen av de viktigste faktorene myndighetene kan og bør fokusere på:
 
 -   **Tilrettelegging for sykkel og kollektivtransport**: Ved å forbedre og subsidere kollektivtransport, sykkelveier og fotgjengertilgang kan myndighetene redusere avhengigheten av privatbiler, spesielt i byområder.
 
-    <https://www.regjeringen.no/no/aktuelt/det-skal-bli-bedre-og-enklere-a-lade-bilen/id2950345/>
-
-    <https://www.regjeringen.no/contentassets/75a2e25ed8af4eb5ae32b63c1b3d8353/handlingsplan-for-kollektivtransport.pdf>
+    @samferdselsdepartementet2022 , @zotero-280
 
 **3. Reguleringer og lovgivning:**
 
@@ -291,7 +289,7 @@ Her er noen av de viktigste faktorene myndighetene kan og bør fokusere på:
 
 -   **Forbud mot fossilbiler**: Etter hvert som teknologi og infrastruktur forbedres, kan myndighetene vurdere å sette en tidsfrist for forbud mot salg av nye fossilbiler, slik som Norge har satt som mål for 2025.
 
-    <https://www.tv2.no/broom/forbud-mot-bensin-og-dieselbiler-kan-bli-utsatt/15554926/>
+    @as2023
 
 **4. Informasjon og bevisstgjøringskampanjer:**
 
@@ -299,13 +297,13 @@ Her er noen av de viktigste faktorene myndighetene kan og bør fokusere på:
 
 -   **Merking av kjøretøy**: Klar og tydelig merking av kjøretøy med hensyn til utslipp, drivstoffeffektivitet og total eierkostnad kan hjelpe forbrukere med å ta mer informerte beslutninger.
 
-    <https://www.regjeringen.no/no/tema/transport-og-kommunikasjon/veg_og_vegtrafikk/faktaartikler-vei-og-ts/norge-er-elektrisk/id2677481/>
+    @samferdselsdepartementet2021
 
 **5. Tilgang til spesialtiltak for miljøvennlige kjøretøy:**
 
 -   **Fordeler som gratis parkering og tilgang til kollektivfelt**: Myndighetene kan tilby insentiver som tilgang til kollektivfelt, billigere eller gratis parkering for elbiler og andre miljøvennlige alternativer, noe som gjør dem mer attraktive i hverdagen.
 
-    <https://www.regjeringen.no/contentassets/65662b6bb87641d186edf4493fba1e77/2022-06-16-bruksfordeler-elbil-nett.pdf>
+    @[bruksfordeler-elbil-nett.pdf](https://www.regjeringen.no/contentassets/65662b6bb87641d186edf4493fba1e77/2022-06-16-bruksfordeler-elbil-nett.pdf){.uri}
 
 Myndighetene har flere verktøy for å påvirke kjøretøyvalg i en samfunnsøkonomisk ønsket retning.
 Kombinasjonen av økonomiske insentiver, infrastrukturtjenester, reguleringer og informasjon kan bidra til å øke andelen miljøvennlige kjøretøy og redusere klimagassutslipp, som igjen har positive samfunnsøkonomiske effekter.
@@ -566,3 +564,5 @@ Dette indikerer at høy inntekt er sterkt knyttet til bilbruk, mens lavere innte
 ## **5.0 Referanser**
 
 Erik Biørn, Version of September 17, 2008 , ECON5115 - ECONOMETRICS: MICROECONOMETRICS AND DISCRETE CHOICE, <https://www.uio.no/studier/emner/sv/oekonomi/ECON5115/h08/undervisningsmateriale/NestedLogit.pdf>
+
+2022-06-16-bruksfordeler-elbil-nett.pd <https://www.regjeringen.no/contentassets/65662b6bb87641d186edf4493fba1e77/2022-06-16-bruksfordeler-elbil-nett.pdf>
