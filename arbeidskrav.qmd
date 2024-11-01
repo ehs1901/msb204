@@ -5,7 +5,7 @@ editor: visual
 bibliography: references.bib
 ---
 
-**MSB204 Transportmodeller og regionalutvikling :)**
+**MSB204 Transportmodeller og regionalutvikling**
 
 **Hanna Sundal Bjerkreim, Henriette Hansen, Ingrid Strømme & Emilie Hansen Sørhaug**
 
@@ -157,9 +157,106 @@ merged_data <- merged_data %>%
 
 ```
 
+```{r}
+#| echo: false
+# Splitt transportmåtene som er separert med semikolon
+transport_splitt <- merged_data %>%
+  separate_rows(Hvordan_kommer_du_deg_til_jobb, sep = ";") %>%
+  mutate(Hvordan_kommer_du_deg_til_jobb = str_trim(Hvordan_kommer_du_deg_til_jobb)) %>%
+  filter(Hvordan_kommer_du_deg_til_jobb != "")
+
+# Fjern rader med NA i kolonnen "Hvordan_kommer_du_deg_til_jobb"
+transport_splitt <- transport_splitt %>%
+  filter(!is.na(Hvordan_kommer_du_deg_til_jobb))
+
+# Tell antall ganger hver transportmåte har blitt valgt
+transport_deskriptiv <- transport_splitt %>%
+  group_by(Hvordan_kommer_du_deg_til_jobb) %>%
+  summarise(Antall = n()) %>%
+  arrange(desc(Antall))
+```
+
 ### 2.2 Modell for analyse av pendlevaner
 
-Dette avnsittet kommer lenger nede i arbeidskravet da vi hadde problemer med rekkefølgen på R-kodene.
+I dette avsnittet skisserer vi en modell for å analysere pendlevaner basert på innsamlede data.
+Vi har valgt å benytte oss av en **multinomial logit-modell** for å estimere sannsynligheter for valg av ulike transportmidler.
+Denne modellen evner til å håndtere avhengige variabler med flere kategorier, den tillater oss også å undersøke hvordan ulike uavhengige variabler, slik som idividuelle kjennetegn, geografisk plassering av bosted og arbeidssted påvirker valg av transportmiddel @zotero-204
+
+I et universalt valgsett, antar vi at alle alternativer er tilgjengelige for alle beslutningstakere.
+En multinomial logit-modell basert på et universalt valgsett kan utrykkes på følgende måte:
+
+![](images/Skjermbilde 2024-11-01 kl. 09.29.55.png){width="473"}
+
+```{r}
+#| echo: false
+clean_data <- transport_splitt %>%
+  filter(!is.na(Hvordan_kommer_du_deg_til_jobb), !is.na(Tid_brukt_til_jobb), !is.na(Kjønn), !is.na(Inntektsgruppe), !is.na(Alder))
+```
+
+```{r}
+#| echo: false
+#| output: false
+model_3 <- multinom(Hvordan_kommer_du_deg_til_jobb ~ Tid_brukt_til_jobb + Inntektsgruppe + Alder + Kjønn + Parkering_ved_jobb, data = clean_data)
+```
+
+Vi benytter *multinom()-*funksjonen for å tilpasse en multinomial logit-modell, som effektivt håndterer kategoriske avhengige variabler ved å estimere sannsynlighetene for hver transportkategori basert på uavhengige faktorer som alder, kjønn, tid brukt til jobb, inntekt og parkering ved jobb.
+Denne tilnærmingen muliggjør en dypere analyse av hvordan ulike demografiske og logistiske faktorer påvirker valg av transportmiddel @zotero-204
+
+```{r}
+#| echo: false
+# Lag en profesjonell tabell av modellresultater
+stargazer(model_3, type = "text")
+```
+
+#### Funn fra modellen
+
+**Tid brukt til jobb:**
+
+-   **10-19 minutter:** Bil (Bensin / Diesel) har en signifikant positiv koeffisient på **83.791**, noe som indikerer en sterk preferanse for denne transporttypen når reisetiden er kort.
+-   **Over 60 minutter:** Bruk av Bil (Bensin / Diesel) viser en negativ koeffisient **på -31.171**, noe som tyder på en nedgang i preferansen for bilreiser ved lengre pendletid.
+
+**Inntektsgrupper:**
+
+-   **700 000+ kroner:** Størst økning i sannsynligheten for å bruke Bil (Elektrisk / Hybrid) med en koeffisient på 143.790, som tydelig reflekterer en høyere tilbøyelighet blant høyinntektstakere til å velge miljøvennlige kjøretøy.
+
+-   **0 – 199 000 kroner:** Viser en negativ koeffisient på -39.072 for Bil (Elektrisk / Hybrid), noe som indikerer en lavere sannsynlighet for å velge denne typen transportmiddel blant de med lavere inntekt
+
+**Aldersgruppe:**
+
+-   **46-55 år:** Viser den største aversjonen mot å bruke Bil (Bensin / Diesel), med en koeffisient på -81.724, som kan indikere en sterk preferanse for alternative transportformer i denne aldersgruppen.
+
+-   **65+ år:** Har en positiv koeffisient på 91.600 for å bruke Bil (Bensin / Diesel), noe som reflekterer økt avhengighet eller preferanse for personbil i de eldre aldersgruppene.
+
+**Kjønn:**
+
+-   **Menn:** Viser en negativ koeffisient på -72.909 for valg av Bil (Bensin / Diesel) sammenlignet med kvinner, noe som tyder på mindre preferanse for bilbruk blant menn.
+
+**Parkering ved jobb:**
+
+-   **Tilgjengelig parkering:** Positiv koeffisient på 68.712 for Bil (Bensin / Diesel) når parkering er tilgjengelig ved jobb, noe som bekrefter at tilgang til parkering sterkt påvirker valget av bil som transportmiddel.
+
+#### P - Verdi
+
+Fra våres resultater er det relativt få variabler med høye p-verdier, noe som indikere at de fleste variablene i modellen har en statistisk signifikant effekt på avhenigige variabler.
+
+**Parkering ved jobb ("Nei")** har en p-verdi på rundt 0.601, som er relativt høy sammenlignet med andre variabler i modellen.
+Dette betyr at effekten av ikke å ha parkering ved jobb ikke er statistisk signifikant når det gjelder valg av transportmiddel, noe som kan tyde på at tilgang til parkering kanskje ikke er en sterk prediktor for transportmiddelvalg i denne modellen.
+
+**Inntektsgruppe (0 - 999 000)** har en p-verdi på 0.649, som også indikerer mangel på statistisk signifikans.
+Dette kan tyde på at inntekt i denne høyeste kategorien ikke nødvendigvis påvirker valg av transportmiddel på en signifikant måte sammenlignet med referansekategorien.
+
+#### Nested Logit-model
+
+En Nested Logit-modell ville teoretisk sett vært bedre egnet for å analysere vårt datasett da denne modellen gjør det mulig å ta hensyn til korrelasjon mellom beslektede valgalternativer, noe som er svært relevant i vårt case gitt de ulike transportmidlene @NestedLogit.pdf
+
+Vi valgte imidlertid å benytte oss av den multinomial logit-modell da den i utgangspunktet referer til det samme som Nested Logit-modellen.
+Disse modellene er typer av statistiske modeller som brukes til å modellere avhengighetsforholdet, og ofte for å analysere valgdata der individene velger mellom flere alternative muligheter som for eksempel transportmidler.
+
+Selv om Nested Logit-modellen teoretisk sett kunne tilbytt fordeler ved å håndtere korrelasjoner mellom relaterte valgmuligheter, sto vi overfor tekniske barrierer under dens implementering i R-studio.
+Disse utfordringene knyttet seg til begrensninger i vår datahåndteringskompetanse og utfordringer i R.
+Derfor valgte vi å fortsette med den multinomiale logit-modellen, som allerede var etablert og tilpasset vårt datasett.
+
+Ved å anvende og analysere modellen håper vi å kunne gi konkrete anbefalinger til myndighetene om hvilke tiltak som kan implementeres for å influere transportvalg i en mer bærekraftig og samfunnsøkonomisk ønsket retning.
 
 ### 2.3 Myndighetene og virkemiddel for valg av kjøretøy
 
@@ -171,7 +268,8 @@ Her er noen av de viktigste faktorene myndighetene kan og bør fokusere på:
 
 -   **Skatteinsentiver for miljøvennlige biler**: Reduksjon i avgifter på elbiler, hybridbiler eller andre lavutslippsbiler, kombinert med høyere avgifter på fossildrevne kjøretøy, kan gjøre miljøvennlige valg økonomisk mer attraktive.
 
--   **Bompenger og veiavgifter**: Myndighetene kan differensiere bompenger basert på utslipp, slik at biler med høyt CO₂-utslipp betaler mer. Dette vil kunne påvirke valg av kjøretøy mot lavutslippsalternativer.
+-   **Bompenger og veiavgifter**: Myndighetene kan differensiere bompenger basert på utslipp, slik at biler med høyt CO₂-utslipp betaler mer.
+    Dette vil kunne påvirke valg av kjøretøy mot lavutslippsalternativer.
 
 -   **Subsidier for elektriske biler**: Støtte til innkjøp av elektriske kjøretøy eller tilskudd til hjemmeladere kan redusere den økonomiske terskelen for å velge miljøvennlige kjøretøy.
 
@@ -221,22 +319,6 @@ Tabell 1 viser en oversikt over antall personer per transpportmåte.
 
 ```{r}
 #| echo: false
-# Splitt transportmåtene som er separert med semikolon
-transport_splitt <- merged_data %>%
-  separate_rows(Hvordan_kommer_du_deg_til_jobb, sep = ";") %>%
-  mutate(Hvordan_kommer_du_deg_til_jobb = str_trim(Hvordan_kommer_du_deg_til_jobb)) %>%
-  filter(Hvordan_kommer_du_deg_til_jobb != "")
-
-# Fjern rader med NA i kolonnen "Hvordan_kommer_du_deg_til_jobb"
-transport_splitt <- transport_splitt %>%
-  filter(!is.na(Hvordan_kommer_du_deg_til_jobb))
-
-# Tell antall ganger hver transportmåte har blitt valgt
-transport_deskriptiv <- transport_splitt %>%
-  group_by(Hvordan_kommer_du_deg_til_jobb) %>%
-  summarise(Antall = n()) %>%
-  arrange(desc(Antall))
-
 # Vis tabellen med kable
 transport_deskriptiv %>%
   kable(col.names = c("Transportmåte", "Antall"), 
@@ -470,84 +552,6 @@ For inntektsgruppen 500 000–700 000 kroner er bil det dominerende transportmid
 Denne trenden fortsetter i gruppen 700 000–999 000 kroner, hvor bruken av bil, særlig elektriske og hybride biler, er størst.
 I gruppen med inntekt over 1 000 000 kroner er bruken av bil også svært høy, og andre transportmidler som sykkel og kollektivtransport benyttes sjelden.
 Dette indikerer at høy inntekt er sterkt knyttet til bilbruk, mens lavere inntektsgrupper i større grad er avhengige av rimeligere transportalternativer som gange, sykkel og kollektivtransport.
-
-### 2.2 Modell for analyse av pendlevaner
-
-I dette avsnittet skisserer vi en modell for å analysere pendlevaner basert på innsamlede data.
-Vi har valgt å benytte oss av en **multinomial logit-modell** for å estimere sannsynligheter for valg av ulike transportmidler.
-Denne modellen evner til å håndtere avhengige variabler med flere kategorier, den tillater oss også å undersøke hvordan ulike uavhengige variabler, slik som idividuelle kjennetegn, geografisk plassering av bosted og arbeidssted påvirker valg av transportmiddel @zotero-204
-
-Da vi har hatt litt problemer med det fullstendige datasettet vårt (merged_data), har vi utarbeidet et nytt datasett kalt transport_splitt hvor vi har delt opp transportmidlene som var adskilt med semikolon i ‘Hvordan_kommer_du_deg_til_jobb’-kolonnen for å forenkle videre analyse.
-Dette tillot oss å trimme og fjerne tomme verdier fra dataene, slik at kun gyldige svar ble inkludert.
-Videre fjernet vi rader med manglende data og lagde en oppsummering som viser antall ganger hvert transportmiddel ble valgt, hvilket gir oss en klarere oversikt over preferansene i datasettet.
-
-```{r}
-#| echo: false
-clean_data <- transport_splitt %>%
-  filter(!is.na(Hvordan_kommer_du_deg_til_jobb), !is.na(Tid_brukt_til_jobb), !is.na(Kjønn), !is.na(Inntektsgruppe), !is.na(Alder))
-```
-
-```{r}
-model_3 <- multinom(Hvordan_kommer_du_deg_til_jobb ~ Tid_brukt_til_jobb + Inntektsgruppe + Alder + Kjønn + Parkering_ved_jobb, data = clean_data)
-```
-
-Vi benytter *multinom()-*funksjonen for å tilpasse en multinomial logit-modell, som effektivt håndterer kategoriske avhengige variabler ved å estimere sannsynlighetene for hver transportkategori basert på uavhengige faktorer som alder, kjønn, tid brukt til jobb, inntekt og parkering ved jobb.
-Denne tilnærmingen muliggjør en dypere analyse av hvordan ulike demografiske og logistiske faktorer påvirker valg av transportmiddel @zotero-204
-
-```{r}
-# Lag en profesjonell tabell av modellresultater
-stargazer(model_3, type = "text")
-```
-
-### Funn fra modellen
-
-**Tid brukt til jobb:**
-
--   **10-19 minutter:** Bil (Bensin / Diesel) har en signifikant positiv koeffisient på **83.791**, noe som indikerer en sterk preferanse for denne transporttypen når reisetiden er kort.
--   **Over 60 minutter:** Bruk av Bil (Bensin / Diesel) viser en negativ koeffisient **på -31.171**, noe som tyder på en nedgang i preferansen for bilreiser ved lengre pendletid.
-
-**Inntektsgrupper:**
-
--   **700 000+ kroner:** Størst økning i sannsynligheten for å bruke Bil (Elektrisk / Hybrid) med en koeffisient på 143.790, som tydelig reflekterer en høyere tilbøyelighet blant høyinntektstakere til å velge miljøvennlige kjøretøy.
-
--   **0 – 199 000 kroner:** Viser en negativ koeffisient på -39.072 for Bil (Elektrisk / Hybrid), noe som indikerer en lavere sannsynlighet for å velge denne typen transportmiddel blant de med lavere inntekt
-
-**Aldersgruppe:**
-
--   **46-55 år:** Viser den største aversjonen mot å bruke Bil (Bensin / Diesel), med en koeffisient på -81.724, som kan indikere en sterk preferanse for alternative transportformer i denne aldersgruppen.
-
--   **65+ år:** Har en positiv koeffisient på 91.600 for å bruke Bil (Bensin / Diesel), noe som reflekterer økt avhengighet eller preferanse for personbil i de eldre aldersgruppene.
-
-**Kjønn:**
-
--   **Menn:** Viser en negativ koeffisient på -72.909 for valg av Bil (Bensin / Diesel) sammenlignet med kvinner, noe som tyder på mindre preferanse for bilbruk blant menn.
-
-**Parkering ved jobb:**
-
--   **Tilgjengelig parkering:** Positiv koeffisient på 68.712 for Bil (Bensin / Diesel) når parkering er tilgjengelig ved jobb, noe som bekrefter at tilgang til parkering sterkt påvirker valget av bil som transportmiddel.
-
-### P - Verdi
-
-Fra våres resultater er det relativt få variabler med høye p-verdier, noe som indikere at de fleste variablene i modellen har en statistisk signifikant effekt på avhenigige variabler.
-
-**Parkering ved jobb ("Nei")** har en p-verdi på rundt 0.601, som er relativt høy sammenlignet med andre variabler i modellen.
-Dette betyr at effekten av ikke å ha parkering ved jobb ikke er statistisk signifikant når det gjelder valg av transportmiddel, noe som kan tyde på at tilgang til parkering kanskje ikke er en sterk prediktor for transportmiddelvalg i denne modellen.
-
-**Inntektsgruppe (0 - 999 000)** har en p-verdi på 0.649, som også indikerer mangel på statistisk signifikans.
-Dette kan tyde på at inntekt i denne høyeste kategorien ikke nødvendigvis påvirker valg av transportmiddel på en signifikant måte sammenlignet med referansekategorien.
-
-### Nested Logit-model
-
-En Nested Logit-modell ville teoretisk sett vært bedre egnet for å analysere vårt datasett da denne modellen gjør det mulig å ta hensyn til korrelasjon mellom beslektede valgalternativer, noe som er svært relevant i vårt case gitt de ulike transportmidlene @NestedLogit.pdf
-
-Vi valgte imidlertid å benytte oss av den multinomial logit-modell da den i utgangspunktet referer til det samme som Nested Logit-modellen.
-Disse modellene er typer av statistiske modeller som brukes til å modellere avhengighetsforholdet, og ofte for å analysere valgdata der individene velger mellom flere alternative muligheter som for eksempel transportmidler.
-
-Selv om Nested Logit-modellen teoretisk sett kunne tilbytt fordeler ved å håndtere korrelasjoner mellom relaterte valgmuligheter, sto vi overfor tekniske barrierer under dens implementering i R-studio.
-Disse utfordringene knyttet seg til begrensninger i vår datahåndteringskompetanse og utfordringer i R.
-Derfor valgte vi å fortsette med den multinomiale logit-modellen, som allerede var etablert og tilpasset vårt datasett.
-
-Ved å anvende og analysere modellen håper vi å kunne gi konkrete anbefalinger til myndighetene om hvilke tiltak som kan implementeres for å influere transportvalg i en mer bærekraftig og samfunnsøkonomisk ønsket retning.
 
 ## **3.0 Trafikkutvikling på Haugalandet (*Henriette*)**
 
