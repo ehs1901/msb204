@@ -157,7 +157,6 @@ merged_data <- merged_data %>%
 
 ```
 
-<<<<<<< HEAD
 ### 2.2 Modell for analyse av pendlevaner
 
 Dette avnsittet kommer lenger nede i arbeidskravet da vi hadde problemer med rekkefølgen på R-kodene.
@@ -221,8 +220,6 @@ Vi skal kommentere kritiske avstander for valg av ulike reisemåter og undersøk
 
 Tabell 1 viser en oversikt over antall personer per transpportmåte.
 
-=======
->>>>>>> ee9548aeb402fd451efac22632c9d42e4c4f543f
 ```{r}
 #| echo: false
 # Splitt transportmåtene som er separert med semikolon
@@ -369,7 +366,7 @@ Her er noen av de viktigste faktorene myndighetene kan og bør fokusere på:
 
 -   **Fordeler som gratis parkering og tilgang til kollektivfelt**: Myndighetene kan tilby insentiver som tilgang til kollektivfelt, billigere eller gratis parkering for elbiler og andre miljøvennlige alternativer, noe som gjør dem mer attraktive i hverdagen.
 
-    @[bruksfordeler-elbil-nett.pdf](https://www.regjeringen.no/contentassets/65662b6bb87641d186edf4493fba1e77/2022-06-16-bruksfordeler-elbil-nett.pdf){.uri}
+    \@[bruksfordeler-elbil-nett.pdf](https://www.regjeringen.no/contentassets/65662b6bb87641d186edf4493fba1e77/2022-06-16-bruksfordeler-elbil-nett.pdf){.uri}
 
 Myndighetene har flere verktøy for å påvirke kjøretøyvalg i en samfunnsøkonomisk ønsket retning.
 Kombinasjonen av økonomiske insentiver, infrastrukturtjenester, reguleringer og informasjon kan bidra til å øke andelen miljøvennlige kjøretøy og redusere klimagassutslipp, som igjen har positive samfunnsøkonomiske effekter.
