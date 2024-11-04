@@ -159,6 +159,25 @@ merged_data <- merged_data %>%
 
 ```
 
+```{r}
+#| echo: false
+# Splitt transportmåtene som er separert med semikolon
+transport_splitt <- merged_data %>%
+  separate_rows(Hvordan_kommer_du_deg_til_jobb, sep = ";") %>%
+  mutate(Hvordan_kommer_du_deg_til_jobb = str_trim(Hvordan_kommer_du_deg_til_jobb)) %>%
+  filter(Hvordan_kommer_du_deg_til_jobb != "")
+
+# Fjern rader med NA i kolonnen "Hvordan_kommer_du_deg_til_jobb"
+transport_splitt <- transport_splitt %>%
+  filter(!is.na(Hvordan_kommer_du_deg_til_jobb))
+
+# Tell antall ganger hver transportmåte har blitt valgt
+transport_deskriptiv <- transport_splitt %>%
+  group_by(Hvordan_kommer_du_deg_til_jobb) %>%
+  summarise(Antall = n()) %>%
+  arrange(desc(Antall))
+```
+
 ### 2.2 Modell for analyse av pendlevaner
 
 I dette avsnittet skisserer vi en modell for å analysere pendlevaner basert på innsamlede data.
@@ -541,7 +560,7 @@ Denne trenden fortsetter i gruppen 700 000–999 000 kroner, hvor bruken av bil,
 I gruppen med inntekt over 1 000 000 kroner er bruken av bil også svært høy, og andre transportmidler som sykkel og kollektivtransport benyttes sjelden.
 Dette indikerer at høy inntekt er sterkt knyttet til bilbruk, mens lavere inntektsgrupper i større grad er avhengige av rimeligere transportalternativer som gange, sykkel og kollektivtransport.
 
-### 3.0 Pendleatferd over tid
+### 2.5 Pendleatferd over tid
 
 Vi ønsker å se nærmere på pendleatferden på Haugalandet fra 2022, og sammenligne med funnene fra vår spørreundersøkelse.
 Vi har sett på arbeidskravet til gruppe 1 fra 2022, og ser interessante trender og endringer.
@@ -554,7 +573,7 @@ Kvinner tenderer mot å benytte buss og elektrisk/hybridbiler, mens menn foretre
 Fra ung til gammel viser dataene at yngre mennesker oftere benytter kollektivtransport og gange, mens eldre pendlere foretrekker private biler, noe som kan skyldes tilgjengelighetsbehov og komfort.
 @zotero-291
 
-### ASC - En alternativspesifikke konstanter
+### 2.6 ASC - En alternativspesifikke konstanter
 
 I følge artikkelen om valgmengden i beslutninger om kjøretøysvalg av Ton et al. (2020) er Alternative Specific Constants (ASC) en alternativspesifikke konstanter, som fungerer på samme måte som en dummy variabel.
 I en modelleringssammenheng refererer til konstanter som brukes i diskrete valgmodeller, spesielt i logit-modeller som multinomial logit-modell og nested logit-modell.
