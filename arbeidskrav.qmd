@@ -161,76 +161,6 @@ merged_data <- merged_data %>%
 
 ### 2.2 Modell for analyse av pendlevaner
 
-Dette avnsittet kommer lenger nede i arbeidskravet da vi hadde problemer med rekkefølgen på R-kodene.
-
-### 2.3 Myndighetene og virkemiddel for valg av kjøretøy
-
-Når myndighetene ønsker å påvirke valg av kjøretøy i en samfunnsøkonomisk ønsket retning, er det flere faktorer de kan fokusere på.
-De mest effektive tiltakene vil ofte være økonomiske insentiver, reguleringer og bevisstgjøring, som alle kan bidra til å fremme mer bærekraftige valg.
-Her er noen av de viktigste faktorene myndighetene kan og bør fokusere på:
-
-**1. Økonomiske insentiver og avgifter:**
-
--   **Skatteinsentiver for miljøvennlige biler**: Reduksjon i avgifter på elbiler, hybridbiler eller andre lavutslippsbiler, kombinert med høyere avgifter på fossildrevne kjøretøy, kan gjøre miljøvennlige valg økonomisk mer attraktive.
-
--   **Bompenger og veiavgifter**: Myndighetene kan differensiere bompenger basert på utslipp, slik at biler med høyt CO₂-utslipp betaler mer.
-    Dette vil kunne påvirke valg av kjøretøy mot lavutslippsalternativer.
-
--   **Subsidier for elektriske biler**: Støtte til innkjøp av elektriske kjøretøy eller tilskudd til hjemmeladere kan redusere den økonomiske terskelen for å velge miljøvennlige kjøretøy.
-
-**2. Infrastrukturutvikling:**
-
--   **Utbygging av ladestasjoner for elbiler**: Et utvidet nettverk av ladestasjoner vil redusere "rekkeviddeangsten" for elbilkjøpere og gjøre det enklere å velge elektriske kjøretøy.
-
--   **Tilrettelegging for sykkel og kollektivtransport**: Ved å forbedre og subsidere kollektivtransport, sykkelveier og fotgjengertilgang kan myndighetene redusere avhengigheten av privatbiler, spesielt i byområder.
-
-**3. Reguleringer og lovgivning:**
-
--   **Utslippsstandarder**: Myndighetene kan innføre strenge utslippskrav for biler, der bilprodusenter pålegges å produsere kjøretøy med lavere utslipp for å møte reguleringer.
-
--   **Forbud mot fossilbiler**: Etter hvert som teknologi og infrastruktur forbedres, kan myndighetene vurdere å sette en tidsfrist for forbud mot salg av nye fossilbiler, slik som Norge har satt som mål for 2025.
-
-**4. Informasjon og bevisstgjøringskampanjer:**
-
--   **Opplysningskampanjer**: Myndighetene kan gjennomføre kampanjer for å øke bevisstheten rundt miljøkonsekvensene av bilvalg, og fremme fordeler ved å velge elbiler eller hybridbiler.
-
--   **Merking av kjøretøy**: Klar og tydelig merking av kjøretøy med hensyn til utslipp, drivstoffeffektivitet og total eierkostnad kan hjelpe forbrukere med å ta mer informerte beslutninger.
-
-**5. Tilgang til spesialtiltak for miljøvennlige kjøretøy:**
-
--   **Fordeler som gratis parkering og tilgang til kollektivfelt**: Myndighetene kan tilby insentiver som tilgang til kollektivfelt, billigere eller gratis parkering for elbiler og andre miljøvennlige alternativer, noe som gjør dem mer attraktive i hverdagen.
-
-Myndighetene har flere verktøy for å påvirke kjøretøyvalg i en samfunnsøkonomisk ønsket retning.
-Kombinasjonen av økonomiske insentiver, infrastrukturtjenester, reguleringer og informasjon kan bidra til å øke andelen miljøvennlige kjøretøy og redusere klimagassutslipp, som igjen har positive samfunnsøkonomiske effekter.
-
-### 2.4 Deskriptiv statistikk
-
-Vi skal nå presentere en deskriptiv oversikt når det gjelder valg av reisemåter for arbeidsreiser på Haugalandet.
-Vi skal kommentere kritiske avstander for valg av ulike reisemåter og undersøker om det er systematiske forskjeller etter kjønn, alder, inntekt og utdanning.
-
-Tabell 1 viser en oversikt over antall personer per transpportmåte.
-
-```{r}
-#| echo: false
-# Splitt transportmåtene som er separert med semikolon
-transport_splitt <- merged_data %>%
-  separate_rows(Hvordan_kommer_du_deg_til_jobb, sep = ";") %>%
-  mutate(Hvordan_kommer_du_deg_til_jobb = str_trim(Hvordan_kommer_du_deg_til_jobb)) %>%
-  filter(Hvordan_kommer_du_deg_til_jobb != "")
-
-# Fjern rader med NA i kolonnen "Hvordan_kommer_du_deg_til_jobb"
-transport_splitt <- transport_splitt %>%
-  filter(!is.na(Hvordan_kommer_du_deg_til_jobb))
-
-# Tell antall ganger hver transportmåte har blitt valgt
-transport_deskriptiv <- transport_splitt %>%
-  group_by(Hvordan_kommer_du_deg_til_jobb) %>%
-  summarise(Antall = n()) %>%
-  arrange(desc(Antall))
-```
-
-### 2.2 Modell for analyse av pendlevaner
-
 I dette avsnittet skisserer vi en modell for å analysere pendlevaner basert på innsamlede data.
 Vi har valgt å benytte oss av en **multinomial logit-modell** for å estimere sannsynligheter for valg av ulike transportmidler.
 Denne modellen evner til å håndtere avhengige variabler med flere kategorier, den tillater oss også å undersøke hvordan ulike uavhengige variabler, slik som idividuelle kjennetegn, geografisk plassering av bosted og arbeidssted påvirker valg av transportmiddel @zotero-204
@@ -623,6 +553,8 @@ Dette fremhever en sosioøkonomisk faktor der inntekt ikke bare bestemmer tilgan
 Kvinner tenderer mot å benytte buss og elektrisk/hybridbiler, mens menn foretrekker biler generelt.
 Fra ung til gammel viser dataene at yngre mennesker oftere benytter kollektivtransport og gange, mens eldre pendlere foretrekker private biler, noe som kan skyldes tilgjengelighetsbehov og komfort.
 @zotero-291
+
+### ASC - En alternativspesifikke konstanter
 
 I følge artikkelen om valgmengden i beslutninger om kjøretøysvalg av Ton et al. (2020) er Alternative Specific Constants (ASC) en alternativspesifikke konstanter, som fungerer på samme måte som en dummy variabel.
 I en modelleringssammenheng refererer til konstanter som brukes i diskrete valgmodeller, spesielt i logit-modeller som multinomial logit-modell og nested logit-modell.
