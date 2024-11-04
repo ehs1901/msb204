@@ -185,7 +185,7 @@ Denne modellen evner til å håndtere avhengige variabler med flere kategorier, 
 I et universalt valgsett, antar vi at alle alternativer er tilgjengelige for alle beslutningstakere.
 En multinomial logit-modell basert på et universalt valgsett kan utrykkes på følgende måte:
 
-![](images/Skjermbilde 2024-11-01 kl. 09.29.55.png){width="473"}
+![](images/Skjermbilde%202024-11-01%20kl.%2009.29.55.png){width="473"}
 
 ```{r}
 #| echo: false
