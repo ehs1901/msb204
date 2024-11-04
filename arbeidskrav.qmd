@@ -616,6 +616,13 @@ Denne trenden fortsetter i gruppen 700 000–999 000 kroner, hvor bruken av bil,
 I gruppen med inntekt over 1 000 000 kroner er bruken av bil også svært høy, og andre transportmidler som sykkel og kollektivtransport benyttes sjelden.
 Dette indikerer at høy inntekt er sterkt knyttet til bilbruk, mens lavere inntektsgrupper i større grad er avhengige av rimeligere transportalternativer som gange, sykkel og kollektivtransport.
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 32ebc10e1b2d5263f82630abfd75f7bb9c397b98
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 ## \*\*3.0 Trafikkutvikling på Haugalandet
 
 ### 3.1 Data
@@ -624,9 +631,17 @@ Dette indikerer at høy inntekt er sterkt knyttet til bilbruk, mens lavere innte
 
 {r}
 
+<<<<<<< HEAD
 # library(readxl) library(ggplot2) library(dplyr)
 
+=======
+library(readxl) library(ggplot2) library(dplyr)
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 ## 3.0 Trafikkutvikling på Haugalandet
+>>>>>>> 32ebc10e1b2d5263f82630abfd75f7bb9c397b98
 
 ### 3.1 Årsdøgntrafikk
 
@@ -634,13 +649,26 @@ Dette indikerer at høy inntekt er sterkt knyttet til bilbruk, mens lavere innte
 #| echo: false
 # Laster inn data
 
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 32ebc10e1b2d5263f82630abfd75f7bb9c397b98
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 trafikk_data \<- read_excel("\~/Desktop/trafikk data/trafikk_data.xlsx", sheet = "in")
 
 # Filtrer data for utvalgte stasjoner
 
 stations_of_interest \<- c("Toskatjørn", "Haukås", "Grinde nord", "Karmøytunnelen Hellevik", "Karmøytunnelen Håvik") filtered_data \<- trafikk_data\[trafikk_data\$Navn %in% stations_of_interest, \]
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 trafikk_data <- read_excel("trafikk_data.xlsx", sheet = "in")
 
 # Filtrer data for utvalgte stasjoner
@@ -648,7 +676,12 @@ trafikk_data <- read_excel("trafikk_data.xlsx", sheet = "in")
 stations_of_interest <- c("Toskatjørn", "Haukås", "Grinde nord", "Karmøytunnelen Hellevik", "Karmøytunnelen Håvik") 
 
 filtered_data <- trafikk_data[trafikk_data$Navn %in% stations_of_interest,]
+<<<<<<< HEAD
 
+=======
+>>>>>>> 007be02a6ea50591be655a5dc3bed8680a3170a5
+>>>>>>> 32ebc10e1b2d5263f82630abfd75f7bb9c397b98
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 
 # Konverter 'Trafikkmengde' til numerisk
 
@@ -663,18 +696,42 @@ s.na(filtered_data\$Trafikkmengde), \]
 # Grupper data etter 'Navn' og 'År', og beregn gjennomsnittlig trafikkmengde per år
 
 traffic_by_year_station \<- filtered_data %\>% group_by(Navn, År) %\>% summarise(AADT = mean(Trafikkmengde, na.rm = TRUE))
+<<<<<<< HEAD
 
+=======
+=======
+<<<<<<< HEAD
+filtered_data \<- filtered_data\[!i
+s.na(filtered_data\$Trafikkmengde), \]
+
+# Grupper data etter 'Navn' og 'År', og beregn gjennomsnittlig trafikkmengde per år
+
+traffic_by_year_station \<- filtered_data %\>% group_by(Navn, År) %\>% summarise(AADT = mean(Trafikkmengde, na.rm = TRUE))
+=======
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 filtered_data <- filtered_data[!is.na(filtered_data$Trafikkmengde), ]
 
 # Grupper data etter 'Navn' og 'År', og beregn gjennomsnittlig trafikkmengde per år
 
 traffic_by_year_station <- filtered_data %>% group_by(Navn, År) %>% summarise(AADT = mean(Trafikkmengde, na.rm = TRUE))
+<<<<<<< HEAD
 
+=======
+>>>>>>> 007be02a6ea50591be655a5dc3bed8680a3170a5
+>>>>>>> 32ebc10e1b2d5263f82630abfd75f7bb9c397b98
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 
 # Plot trafikkutviklingen med ggplot2
 
 ggplot(traffic_by_year_station, aes(x = År, y = AADT, color = Navn, group = Navn)) + geom_line() + geom_point() + labs(title = "Årsdøgntrafikk, utvikling for utvalgte stasjoner", x = "År", y = "Gjennomsnittlig døgntrafikk") + theme_minimal() + scale_color_discrete(name = "Målestasjon") + theme(legend.position = "bottom")
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 32ebc10e1b2d5263f82630abfd75f7bb9c397b98
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 
 # Utviklingen av disse utvalgte stasjonene mellom år 2010 og 2023 gir ett bilde på hvordan særlig Toskakjønn påvirkes av endringen som følger av åpning av karmøytunnelen i 2013. Utviklingen av grafen til Toskakjønn gir en betydelig redusert gjennomsnittlig andel døgntrafikk fom. år 2013, samme år som karmøytunnelen ble åpnet og som grafen viser tar en del av trafikken parallelt som Toskakjønn reduseres.
 
@@ -685,8 +742,15 @@ ggplot(traffic_by_year_station, aes(x = År, y = AADT, color = Navn, group = Nav
 {r}
 
 library(readxl) library(dplyr) library(ggplot2) library(lubridate)
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 ```
+>>>>>>> 32ebc10e1b2d5263f82630abfd75f7bb9c397b98
 
 Utviklingen av disse utvalgte stasjonene mellom år 2010 og 2023 gir ett bilde på hvordan særlig Toskakjønn påvirkes av endringen som følger av åpning av karmøytunnelen i 2013.
 Utviklingen av grafen til Toskakjønn gir en betydelig redusert gjennomsnittlig andel døgntrafikk fom.
@@ -703,9 +767,19 @@ Denne utviklingen sees særlig i Grinde, en målestasjon fra ett mindre område 
 
 
 trafikk_data \<- read_excel("\~/Desktop/trafikk data/trafikk_data_2.xlsx", sheet = "in")
+<<<<<<< HEAD
 
 trafikk_data <- read_excel("trafikk_data_2.xlsx", sheet = "in")
 
+=======
+=======
+<<<<<<< HEAD
+trafikk_data \<- read_excel("\~/Desktop/trafikk data/trafikk_data_2.xlsx", sheet = "in")
+=======
+trafikk_data <- read_excel("trafikk_data_2.xlsx", sheet = "in")
+>>>>>>> 007be02a6ea50591be655a5dc3bed8680a3170a5
+>>>>>>> 32ebc10e1b2d5263f82630abfd75f7bb9c397b98
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 
 # Kolonnenavn
 
@@ -713,7 +787,14 @@ print(colnames(trafikk_data))
 
 # Filtrer data for å beholde kun felt 1 og 2
 
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 32ebc10e1b2d5263f82630abfd75f7bb9c397b98
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 trafikk_data \<- trafikk_data %\>% filter(Felt %in% c(1, 2))
 
 # Kombiner dato og tidspunkt til en kolonne
@@ -723,7 +804,16 @@ trafikk_data \<- trafikk_data %\>% mutate(Dato = as.Date(Dato), Fra_tidspunkt = 
 # kolonnenavn for kjøretøysammensetning
 
 names(trafikk_data)\[names(trafikk_data) == "\< 5,6m"\] \<- "mindre_5_6m" names(trafikk_data)\[names(trafikk_data) == "\>= 5,6m"\] \<- "mer_5_6m" names(trafikk_data)\[names(trafikk_data) == "5,6m - 7,6m"\] \<- "mellom_5_6_og_7_6" names(trafikk_data)\[names(trafikk_data) == "7,6m - 12,5m"\] \<- "mellom_7_6_og_12_5" names(trafikk_data)\[names(trafikk_data) == "12,5m - 16,0m"\] \<- "mellom_12_5_og_16" names(trafikk_data)\[names(trafikk_data) == "\>= 16,0m"\] \<- "mer_16" names(trafikk_data)\[names(trafikk_data) == "16,0m - 24,0m"\] \<- "mellom_16_og_24" names(trafikk_data)\[names(trafikk_data) == "\>= 24,0m"\] \<- "mer_24"
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+
+# Aggregere trafikkdata per time
+
+=======
+=======
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 trafikk_data <- trafikk_data %>% filter(Felt %in% c(1, 2))
 
 # Kombiner dato og tidspunkt til en kolonne
@@ -745,21 +835,37 @@ names(trafikk_data)[names(trafikk_data) == ">= 24,0m"] <- "mer_24"
 
 # Aggregere trafikkdata per time
 
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+>>>>>>> 32ebc10e1b2d5263f82630abfd75f7bb9c397b98
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 timelig_trafikk \<- trafikk_data %\>% group_by(Hour) %\>% summarise(Trafikkmengde = sum(Trafikkmengde, na.rm = TRUE))
 
 # Analyserer sammensetning av kjøretøy
 
 kjoretoy_sammensetning \<- trafikk_data %\>% group_by(Hour) %\>% summarise( Passasjerbiler = sum(mindre_5_6m + mellom_5_6_og_7_6, na.rm = TRUE),\
 Lastebiler = sum(mellom_7_6_og_12_5 + mellom_12_5_og_16 + mer_16 + mellom_16_og_24 + mer_24, na.rm = TRUE), Totalt = sum(Trafikkmengde, na.rm = TRUE) ) %\>% mutate( Passasjerandel = Passasjerbiler / Totalt, Lastebilandel = Lastebiler / Totalt )
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 timelig_trafikk <- trafikk_data %>% group_by(Hour) %>% summarise(Trafikkmengde = sum(Trafikkmengde, na.rm = TRUE))
 
 # Analyserer sammensetning av kjøretøy
 
 kjoretoy_sammensetning <- trafikk_data %>% group_by(Hour) %>% summarise( Passasjerbiler = sum(mindre_5_6m + mellom_5_6_og_7_6, na.rm = TRUE),
 Lastebiler = sum(mellom_7_6_og_12_5 + mellom_12_5_og_16 + mer_16 + mellom_16_og_24 + mer_24, na.rm = TRUE), Totalt = sum(Trafikkmengde, na.rm = TRUE) ) %>% mutate( Passasjerandel = Passasjerbiler / Totalt, Lastebilandel = Lastebiler / Totalt )
+<<<<<<< HEAD
 
+=======
+>>>>>>> 007be02a6ea50591be655a5dc3bed8680a3170a5
+>>>>>>> 32ebc10e1b2d5263f82630abfd75f7bb9c397b98
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 
 # Plott trafikk per time
 
@@ -767,8 +873,17 @@ ggplot(timelig_trafikk, aes(x = Hour, y = Trafikkmengde)) + geom_line() + labs(t
 
 # Plott andel av kjøretøy per time
 
+<<<<<<< HEAD
+=======
+ggplot(kjoretoy_sammensetning, aes(x = Hour)) + geom_line(aes(y = Passasjerandel, color = "Personbiler")) + geom_line(aes(y = Lastebilandel, color = "Lastebiler")) + labs(title = "Gjennomsnittlig kjøretøysammensetning per time", x = "Tid på dagen", y = "Andel trafikk i %") + scale_color_manual(values = c("blue", "red")) + theme_minimal()
+=======
+<<<<<<< HEAD
+>>>>>>> 32ebc10e1b2d5263f82630abfd75f7bb9c397b98
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 
 ggplot(kjoretoy_sammensetning, aes(x = Hour)) + geom_line(aes(y = Passasjerandel, color = "Personbiler")) + geom_line(aes(y = Lastebilandel, color = "Lastebiler")) + labs(title = "Gjennomsnittlig kjøretøysammensetning per time", x = "Tid på dagen", y = "Andel trafikk i %") + scale_color_manual(values = c("blue", "red")) + theme_minimal()
+=======
+>>>>>>> 007be02a6ea50591be655a5dc3bed8680a3170a5
 
 
 
@@ -778,10 +893,31 @@ ggplot(kjoretoy_sammensetning, aes(x = Hour)) + geom_line(aes(y = Passasjerandel
 # Grafen for gjennomsnittlig trafikk per time viser økende trafikk som starter kl 05.00 - 08.00, deretter hvor trafikken reduseres lett, før den igjen øker fra kl. 09.00 og stiger gjevnt frem mot sitt toppppunkt kl 15.00, før den totale trafikken faller merkant frem mot kl 22.00. Denne tendensen tyder på at det er mye pendling gjennom Karmsundsgaten med sine topp punkt i typisk start/slutt arbeidstid (kl 07-08 og kl. 15-16). Det observeres likevel en jevn økning inn mot kl. 15, som antas å være gjennomgående trafikk, varetransport eller annet, som også er av en betydelig andel.
 
 # Grafen for gjennomsnittlig kjøretøysammensetning per time viser at det er gjennomgående mest personbiler med en andel på over 90 %. Grafen viser likevel en økning i antall lastebiler på nattestid mellom kl. 02.00 og kl. 05.00, før den igjen får en liten stigning til frem mot kl. 09.00, og avtar deretter resten av døgnet.
+<<<<<<< HEAD
 
+=======
+=======
+ggplot(kjoretoy_sammensetning, aes(x = Hour)) + geom_line(aes(y = Passasjerandel, color = "Personbiler")) + geom_line(aes(y = Lastebilandel, color = "Lastebiler")) + labs(title = "Gjennomsnittlig kjøretøysammensetning per time", x = "Tid på dagen", y = "Andel trafikk i %") + scale_color_manual(values = c("blue", "red")) + theme_minimal()
+
+<<<<<<< HEAD
+# Grafen for gjennomsnittlig trafikk per time viser økende trafikk som starter kl 05.00 - 08.00, deretter hvor trafikken reduseres lett, før den igjen øker fra kl. 09.00 og stiger gjevnt frem mot sitt toppppunkt kl 15.00, før den totale trafikken faller merkant frem mot kl 22.00. Denne tendensen tyder på at det er mye pendling gjennom Karmsundsgaten med sine topp punkt i typisk start/slutt arbeidstid (kl 07-08 og kl. 15-16). Det observeres likevel en jevn økning inn mot kl. 15, som antas å være gjennomgående trafikk, varetransport eller annet, som også er av en betydelig andel.
+>>>>>>> 32ebc10e1b2d5263f82630abfd75f7bb9c397b98
+
+# Grafen for gjennomsnittlig kjøretøysammensetning per time viser at det er gjennomgående mest personbiler med en andel på over 90 %. Grafen viser likevel en økning i antall lastebiler på nattestid mellom kl. 02.00 og kl. 05.00, før den igjen får en liten stigning til frem mot kl. 09.00, og avtar deretter resten av døgnet.
+=======
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 ```
 
+<<<<<<< HEAD
+library(readxl) library(dplyr)\
+library(ggplot2) library(lubridate)
+=======
 Dette datasettet analyserer gjennomsnittlig trafikk i perioden 01.08.24 - 15.08.24, samt hvordan trafikken fordeler seg på personbiler og lastebiler for Karmsundsgaten.
+<<<<<<< HEAD
+=======
+>>>>>>> 007be02a6ea50591be655a5dc3bed8680a3170a5
+>>>>>>> 32ebc10e1b2d5263f82630abfd75f7bb9c397b98
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 
 Grafen for gjennomsnittlig trafikk per time viser økende trafikk som starter kl 05.00 - 08.00, deretter hvor trafikken reduseres lett, før den igjen øker fra kl.
 09.00 og stiger gjevnt frem mot sitt toppppunkt kl 15.00, før den totale trafikken faller merkant frem mot kl 22.00.
@@ -802,9 +938,19 @@ Grafen viser likevel en økning i antall lastebiler på nattestid mellom kl.
 
 
 trafikk_data \<- read_excel("\~/Desktop/trafikk data/trafikk_data_2.xlsx", sheet = "in")
+<<<<<<< HEAD
 
 trafikk_data <- read_excel("trafikk_data_2.xlsx", sheet = "in")
 
+=======
+=======
+<<<<<<< HEAD
+trafikk_data \<- read_excel("\~/Desktop/trafikk data/trafikk_data_2.xlsx", sheet = "in")
+=======
+trafikk_data <- read_excel("trafikk_data_2.xlsx", sheet = "in")
+>>>>>>> 007be02a6ea50591be655a5dc3bed8680a3170a5
+>>>>>>> 32ebc10e1b2d5263f82630abfd75f7bb9c397b98
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 
 # Kolonnenavn
 
@@ -812,7 +958,14 @@ print(colnames(trafikk_data))
 
 # Filtrer data
 
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 32ebc10e1b2d5263f82630abfd75f7bb9c397b98
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 trafikk_data \<- trafikk_data %\>% filter(Felt %in% c(1, 2))
 
 # Kombiner dato og tidspunkt til en kolonne
@@ -822,6 +975,21 @@ trafikk_data \<- trafikk_data %\>% mutate(Dato = as.Date(Dato), Fra_tidspunkt = 
 # kolonnenavn for kjøretøysammensetning
 
 names(trafikk_data)\[names(trafikk_data) == "\< 5,6m"\] \<- "mindre_5_6m" names(trafikk_data)\[names(trafikk_data) == "\>= 5,6m"\] \<- "mer_5_6m" names(trafikk_data)\[names(trafikk_data) == "5,6m - 7,6m"\] \<- "mellom_5_6_og_7_6" names(trafikk_data)\[names(trafikk_data) == "7,6m - 12,5m"\] \<- "mellom_7_6_og_12_5" names(trafikk_data)\[names(trafikk_data) == "12,5m - 16,0m"\] \<- "mellom_12_5_og_16" names(trafikk_data)\[names(trafikk_data) == "\>= 16,0m"\] \<- "mer_16" names(trafikk_data)\[names(trafikk_data) == "16,0m - 24,0m"\] \<- "mellom_16_og_24" names(trafikk_data)\[names(trafikk_data) == "\>= 24,0m"\] \<- "mer_24"
+<<<<<<< HEAD
+
+# trafikkdata per time
+
+timelig_trafikk \<- trafikk_data %\>% group_by(Hour) %\>% summarise(Trafikkmengde = sum(Trafikkmengde, na.rm = TRUE))
+
+# Analyserer sammensetning av kjøretøy
+
+kjoretoy_sammensetning \<- trafikk_data %\>% group_by(Hour) %\>% summarise( Passasjerbiler = sum(mindre_5_6m + mellom_5_6_og_7_6, na.rm = TRUE),\
+Lastebiler = sum(mellom_7_6_og_12_5 + mellom_12_5_og_16 + mer_16 + mellom_16_og_24 + mer_24, na.rm = TRUE), Totalt = sum(Trafikkmengde, na.rm = TRUE) ) %\>% mutate( Passasjerandel = Passasjerbiler / Totalt, Lastebilandel = Lastebiler / Totalt )
+
+# Aggregere trafikkdata per dag
+
+daglig_trafikk \<- trafikk_data %\>% group_by(Dato) %\>% summarise(Total_trafikk = sum(Trafikkmengde, na.rm = TRUE))
+=======
 
 # trafikkdata per time
 
@@ -865,7 +1033,12 @@ Lastebiler = sum(mellom_7_6_og_12_5 + mellom_12_5_og_16 + mer_16 + mellom_16_og_
 # Aggregere trafikkdata per dag
 
 daglig_trafikk <- trafikk_data %>% group_by(Dato) %>% summarise(Total_trafikk = sum(Trafikkmengde, na.rm = TRUE))
+<<<<<<< HEAD
 
+=======
+>>>>>>> 007be02a6ea50591be655a5dc3bed8680a3170a5
+>>>>>>> 32ebc10e1b2d5263f82630abfd75f7bb9c397b98
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 
 # Plott total trafikk per dag
 
@@ -875,7 +1048,17 @@ ggplot(daglig_trafikk, aes(x = Dato, y = Total_trafikk)) + geom_line(color = "da
 # Grafen viser den totale mengden trafikk per dag gjennom Karmsundsgaten og hvordan trafikken fordeler seg per dag perioden 01.08.24 - 15.08.24.
 
 # Det sees her ett tydelig mønster for perioden med ett fall på opptil 40 % i helger (lørdager og søndager) for total trafikkmengde per dag.
+<<<<<<< HEAD
 
+=======
+=======
+<<<<<<< HEAD
+# Grafen viser den totale mengden trafikk per dag gjennom Karmsundsgaten og hvordan trafikken fordeler seg per dag perioden 01.08.24 - 15.08.24.
+>>>>>>> 32ebc10e1b2d5263f82630abfd75f7bb9c397b98
+
+# Det sees her ett tydelig mønster for perioden med ett fall på opptil 40 % i helger (lørdager og søndager) for total trafikkmengde per dag.
+=======
+>>>>>>> 1e1f65824aebc270541c3b3cacb7b022eb6dedcc
 ```
 
 Grafen viser den totale mengden trafikk per dag gjennom Karmsundsgaten og hvordan trafikken fordeler seg per dag perioden 01.08.24 - 15.08.24.
