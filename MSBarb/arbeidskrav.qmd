@@ -835,17 +835,22 @@ Den romlige modellen med de beste residualene (SDEM) ser ut til å gi den mest p
 
 -   Diskusjon av resultater
 
-    For denne diskusjonen vil vi fokusere på den hedoniske boligprismodellen, som er en metode for å estimere implisitte priser på boligens egenskaper, slik som størrelse, beliggenhet og sosioøkonomiske faktorer. Hver modell (OLS, SEM, SAR, SLX og SDEM) har blitt brukt for å undersøke hvordan disse egenskapene påvirker boligprisene, og gir oss innsikt i ulike aspekter av romlige avhengigheter.
+    For denne diskusjonen vil vi fokusere på den hedoniske boligprismodellen, som er en metode for å estimere implisitte priser på boligens egenskaper, slik som størrelse, beliggenhet og sosioøkonomiske faktorer.
+    Hver modell (OLS, SEM, SAR, SLX og SDEM) har blitt brukt for å undersøke hvordan disse egenskapene påvirker boligprisene, og gir oss innsikt i ulike aspekter av romlige avhengigheter.
 
     **Økonomisk tolkning av den hedoniske boligprismodellen**
 
-    Den hedoniske modellen antar at boligens pris er et resultat av dens unike egenskaper. Modellen dekomponerer prisen slik at vi kan se hvor mye av prisen som skyldes spesifikke attributter, som antall soverom, boligstørrelse, og lokalsamfunnets egenskaper. I en hedonisk boligprismodell betyr koeffisientene de implisitte prisene på de enkelte egenskapene. For eksempel vil en positiv koeffisient for “sqft_living” indikere at større boliger, alt annet likt, er forbundet med høyere priser.
+    Den hedoniske modellen antar at boligens pris er et resultat av dens unike egenskaper.
+    Modellen dekomponerer prisen slik at vi kan se hvor mye av prisen som skyldes spesifikke attributter, som antall soverom, boligstørrelse, og lokalsamfunnets egenskaper.
+    I en hedonisk boligprismodell betyr koeffisientene de implisitte prisene på de enkelte egenskapene.
+    For eksempel vil en positiv koeffisient for “sqft_living” indikere at større boliger, alt annet likt, er forbundet med høyere priser.
 
     Vi kan illustrere denne tolkningen ved å lage en graf som viser sammenhengen mellom en boligs pris og noen utvalgte egenskaper.
 
     **Grafisk presentasjon**
 
-    En enkel måte å visualisere den økonomiske betydningen på er å vise en graf der x-aksen representerer en boligattributt (for eksempel boligstørrelse eller andel hvite alene) og y-aksen viser boligprisen. Vi kan også inkludere den estimerte koeffisienten for hver modell for å illustrere hvordan romlige effekter endrer betydningen av disse attributtene.
+    En enkel måte å visualisere den økonomiske betydningen på er å vise en graf der x-aksen representerer en boligattributt (for eksempel boligstørrelse eller andel hvite alene) og y-aksen viser boligprisen.
+    Vi kan også inkludere den estimerte koeffisienten for hver modell for å illustrere hvordan romlige effekter endrer betydningen av disse attributtene.
 
     **Diskusjon av de estimerte koeffisientene for hver modell**
 
@@ -855,7 +860,8 @@ Den romlige modellen med de beste residualene (SDEM) ser ut til å gi den mest p
 
     Koeffisient for\*\* sqft_living: Den positive koeffisienten indikerer at større boliger er assosiert med høyere priser.
 
-    Dette er rimelig, ettersom boligkjøpere vanligvis verdsetter større areal. Signifikansen av denne koeffisienten bekrefter at boligstørrelse er en viktig faktor.
+    Dette er rimelig, ettersom boligkjøpere vanligvis verdsetter større areal.
+    Signifikansen av denne koeffisienten bekrefter at boligstørrelse er en viktig faktor.
 
     Koeffisient for\*\* andel_hvit_alene: En positiv eller negativ koeffisient her kan indikere preferanser basert på nabolagssammensetning.
 
@@ -899,6 +905,8 @@ Den romlige modellen med de beste residualene (SDEM) ser ut til å gi den mest p
 
     **Konklusjon**
 
-    Den hedoniske boligprismodellen viser oss hvordan boligkjøpere verdsetter ulike boligelementer, og ved å bruke romlige modeller som SAR, SEM, SLX og SDEM får vi bedre innsikt i de økonomiske effektene av både lokale og globale romlige forhold. Generelt viser analysene at boligens areal (sqft_living) konsekvent er positivt korrelert med pris, mens demografiske variabler som andel_hvit_alene kan ha både direkte og indirekte effekter avhengig av modellvalg. Den romlige modellen med de beste residualene (SDEM) ser ut til å gi den mest pålitelige vurderingen av de økonomiske effektene for både lokale og nabopåvirkninger.
+    Den hedoniske boligprismodellen viser oss hvordan boligkjøpere verdsetter ulike boligelementer, og ved å bruke romlige modeller som SAR, SEM, SLX og SDEM får vi bedre innsikt i de økonomiske effektene av både lokale og globale romlige forhold.
+    Generelt viser analysene at boligens areal (sqft_living) konsekvent er positivt korrelert med pris, mens demografiske variabler som andel_hvit_alene kan ha både direkte og indirekte effekter avhengig av modellvalg.
+    Den romlige modellen med de beste residualene (SDEM) ser ut til å gi den mest pålitelige vurderingen av de økonomiske effektene for både lokale og nabopåvirkninger.
 
 ## Konklusjon
