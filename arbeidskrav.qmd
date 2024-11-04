@@ -262,11 +262,11 @@ Denne tilnærmingen muliggjør en dypere analyse av hvordan ulike demografiske o
 stargazer(model_3, type = "text")
 ```
 
-![](images/Skjermbilde 2024-11-04 kl. 15.17.00.png)
+![](images/Skjermbilde%202024-11-04%20kl.%2015.17.00.png)
 
-![](images/Skjermbilde 2024-11-04 kl. 15.21.05.png)
+![](images/Skjermbilde%202024-11-04%20kl.%2015.21.05.png)
 
-![](images/Skjermbilde 2024-11-04 kl. 15.17.32.png)
+![](images/Skjermbilde%202024-11-04%20kl.%2015.17.32.png)
 
 #### Funn fra modellen
 
@@ -622,6 +622,7 @@ I 2022 og 2024 viser dataene at de med høyere inntekter har en klar preferanse 
 Dette fremhever en sosioøkonomisk faktor der inntekt ikke bare bestemmer tilgangen til bil, men også typen bil som benyttes.Kjønn og alder viser interessante mønstre i begge årene.
 Kvinner tenderer mot å benytte buss og elektrisk/hybridbiler, mens menn foretrekker biler generelt.
 Fra ung til gammel viser dataene at yngre mennesker oftere benytter kollektivtransport og gange, mens eldre pendlere foretrekker private biler, noe som kan skyldes tilgjengelighetsbehov og komfort.
+@zotero-291
 
 I følge artikkelen om valgmengden i beslutninger om kjøretøysvalg av Ton et al. (2020) er Alternative Specific Constants (ASC) en alternativspesifikke konstanter, som fungerer på samme måte som en dummy variabel.
 I en modelleringssammenheng refererer til konstanter som brukes i diskrete valgmodeller, spesielt i logit-modeller som multinomial logit-modell og nested logit-modell.
@@ -629,6 +630,7 @@ ASC kan hjelpe til med å fange opp systematiske preferanser for visse transport
 For eksempel, hvis mange velger bil selv når det ikke er den raskeste eller billigste alternativet, kan en positiv ASC for bilindikere en inneboende preferanse for bilreiser.
 I vårt arbeidskrav kunne det vært nyttig å inkludere ASC for å få en dypere forståelse av valgatferd som ikke umiddelbart forklares gjennom de variablene vi har inkludert.
 Dette kunne gitt oss innsikt i hvorfor noen transportmåter er mer tiltrekkende enn andre.
+@ton2020
 
 ## **5.0 Referanser**
 
