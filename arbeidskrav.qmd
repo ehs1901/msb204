@@ -623,19 +623,12 @@ scale_color_discrete(name = "Målestasjon") +
 theme(legend.position = "bottom")
 ```
 
-Utviklingen av disse utvalgte stasjonene mellom år 2010 og 2023 gir ett bilde på hvordan særlig
-Toskakjønn påvirkes av endringen som følger av åpning av karmøytunnelen i 2013.
+Utviklingen av disse utvalgte stasjonene mellom år 2010 og 2023 gir ett bilde på hvordan særlig Toskakjønn påvirkes av endringen som følger av åpning av karmøytunnelen i 2013.
 Utviklingen av grafen til Toskakjønn gir en betydelig redusert gjennomsnittlig andel døgntrafikk fom.
-år
-2013, samme år som karmøytunnelen ble åpnet og som grafen viser tar en del av trafikken
-parallelt som Toskakjønn reduseres.
+år 2013, samme år som karmøytunnelen ble åpnet og som grafen viser tar en del av trafikken parallelt som Toskakjønn reduseres.
 
-Utviklingen generelt av disse kurvene er gjevnt stigende over de 13årene som blir målt, med
-unntak av en nedgang i 2019 - 2020, som kan forklares med covid-19 utbruddet og mange
-ble sittende på hjemmekontor.
-Denne utviklingen sees særlig i Grinde, en målestasjon fra ett
-mindre område og med mindre gjennomgående trafikk, men ett område som det antas har
-mange pendlere inn til Haugesund, Tysvær og Karmøy.
+Utviklingen generelt av disse kurvene er gjevnt stigende over de 13årene som blir målt, med unntak av en nedgang i 2019 - 2020, som kan forklares med covid-19 utbruddet og mange ble sittende på hjemmekontor.
+Denne utviklingen sees særlig i Grinde, en målestasjon fra ett mindre område og med mindre gjennomgående trafikk, men ett område som det antas har mange pendlere inn til Haugesund, Tysvær og Karmøy.
 
 ### 3.2 Timetrafikk
 
@@ -701,24 +694,15 @@ ggplot(kjoretoy_sammensetning, aes(x = Hour)) +
 
 ```
 
-Dette datasettet analyserer gjennomsnittlig trafikk i perioden 01.08.24 - 15.08.24, samt hvordan
-trafikken fordeler seg på personbiler og lastebiler for Karmsundsgaten.
-Grafen for gjennomsnittlig trafikk per time viser økende trafikk som starter kl 05.00 - 08.00,
-deretter hvor trafikken reduseres lett, før den igjen øker fra kl.
-09.00 og stiger gjevnt frem
-mot sitt toppppunkt kl 15.00, før den totale trafikken faller merkant frem mot kl 22.00.
-Denne
-tendensen tyder på at det er mye pendling gjennom Karmsundsgaten med sine topp punkt i
-typisk start/slutt arbeidstid (kl 07-08 og kl. 15-16).
-Det observeres likevel en jevn økning inn
-mot kl.
-15, som antas å være gjennomgående trafikk, varetransport eller annet, som også er
-av en betydelig andel.
+Dette datasettet analyserer gjennomsnittlig trafikk i perioden 01.08.24 - 15.08.24, samt hvordan trafikken fordeler seg på personbiler og lastebiler for Karmsundsgaten.
+Grafen for gjennomsnittlig trafikk per time viser økende trafikk som starter kl 05.00 - 08.00, deretter hvor trafikken reduseres lett, før den igjen øker fra kl.
+09.00 og stiger gjevnt frem mot sitt toppppunkt kl 15.00, før den totale trafikken faller merkant frem mot kl 22.00.
+Denne tendensen tyder på at det er mye pendling gjennom Karmsundsgaten med sine topp punkt i typisk start/slutt arbeidstid (kl 07-08 og kl. 15-16).
+Det observeres likevel en jevn økning inn mot kl.
+15, som antas å være gjennomgående trafikk, varetransport eller annet, som også er av en betydelig andel.
 
-Grafen for gjennomsnittlig kjøretøysammensetning per time viser at det er gjennomgående
-mest personbiler med en andel på over 90 %.
-Grafen viser likevel en økning i antall lastebiler
-på nattestid mellom kl.
+Grafen for gjennomsnittlig kjøretøysammensetning per time viser at det er gjennomgående mest personbiler med en andel på over 90 %.
+Grafen viser likevel en økning i antall lastebiler på nattestid mellom kl.
 02.00 og kl.
 05.00, før den igjen får en liten stigning til frem mot kl.
 09.00, og avtar deretter resten av døgnet
@@ -779,24 +763,14 @@ labs(title = "Total trafikk per dag", x = "Dato", y = "Total trafikk") +
 theme_minimal()
 ```
 
-Grafen viser den totale mengden trafikk per dag gjennom Karmsundsgaten og hvordan
-trafikken fordeler seg per dag perioden 01.08.24 - 15.08.24.
-Det sees her ett tydelig mønster for perioden med ett fall på opptil 40 % i helger (lørdager og
-søndager) for total trafikkmengde per dag.
-Noe variasjon observeres i total trafikkmengde per dag over perioden som er analysert kan
-forklares med ferieavvikling, særlig i perioden d.d.
-03.08 - 04.08 (lørdag - søndag), som viser en
-lavere frekvens enn påfølgende lørdag og søndag.
-Den totale trafikken f.o.m. 12.08 - 15.08 viser
-også noe høyere frekvens enn foregående uke, som også kan skyldes ferieavvikling.
-Perioden
-01.08 - 15.08 regnes likevel med å være for liten til å konkludere med mønster for ferieavvikling.
-For å studere ferieavvkling og trafikk basert på dette ville det vært gunstigere å gjort ett større
-uttrekk basert på en lengre periode som analyserer trafikken før, under og etter ferieavvikling,
-f.eks periode på 01.06 - 31.08.
-Uttrekket i perioden som er gjort 01.08 - 15.08 antas å være
-i sluttfasen av ferieavvklingen, og trafikk frekvensen viser å være økende i perioden noe som
-kan forklares av dette.
+Grafen viser den totale mengden trafikk per dag gjennom Karmsundsgaten og hvordan trafikken fordeler seg per dag perioden 01.08.24 - 15.08.24.
+Det sees her ett tydelig mønster for perioden med ett fall på opptil 40 % i helger (lørdager og søndager) for total trafikkmengde per dag.
+Noe variasjon observeres i total trafikkmengde per dag over perioden som er analysert kan forklares med ferieavvikling, særlig i perioden d.d.
+03.08 - 04.08 (lørdag - søndag), som viser en lavere frekvens enn påfølgende lørdag og søndag.
+Den totale trafikken f.o.m. 12.08 - 15.08 viser også noe høyere frekvens enn foregående uke, som også kan skyldes ferieavvikling.
+Perioden 01.08 - 15.08 regnes likevel med å være for liten til å konkludere med mønster for ferieavvikling.
+For å studere ferieavvkling og trafikk basert på dette ville det vært gunstigere å gjort ett større uttrekk basert på en lengre periode som analyserer trafikken før, under og etter ferieavvikling, f.eks periode på 01.06 - 31.08.
+Uttrekket i perioden som er gjort 01.08 - 15.08 antas å være i sluttfasen av ferieavvklingen, og trafikk frekvensen viser å være økende i perioden noe som kan forklares av dette.
 
 ## **5.0 Referanser**
 
