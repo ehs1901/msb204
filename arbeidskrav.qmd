@@ -178,17 +178,11 @@ Her er noen av de viktigste faktorene myndighetene kan og bør fokusere på:
 
 -   **Subsidier for elektriske biler**: Støtte til innkjøp av elektriske kjøretøy eller tilskudd til hjemmeladere kan redusere den økonomiske terskelen for å velge miljøvennlige kjøretøy.
 
-    <https://www.nettavisen.no/billig/str%C3%B8m/fordeler-og-ulemper-ved-elbiler/>
-
 **2. Infrastrukturutvikling:**
 
 -   **Utbygging av ladestasjoner for elbiler**: Et utvidet nettverk av ladestasjoner vil redusere "rekkeviddeangsten" for elbilkjøpere og gjøre det enklere å velge elektriske kjøretøy.
 
 -   **Tilrettelegging for sykkel og kollektivtransport**: Ved å forbedre og subsidere kollektivtransport, sykkelveier og fotgjengertilgang kan myndighetene redusere avhengigheten av privatbiler, spesielt i byområder.
-
-    <https://www.regjeringen.no/no/aktuelt/det-skal-bli-bedre-og-enklere-a-lade-bilen/id2950345/>
-
-    <https://www.regjeringen.no/contentassets/75a2e25ed8af4eb5ae32b63c1b3d8353/handlingsplan-for-kollektivtransport.pdf>
 
 **3. Reguleringer og lovgivning:**
 
@@ -196,21 +190,15 @@ Her er noen av de viktigste faktorene myndighetene kan og bør fokusere på:
 
 -   **Forbud mot fossilbiler**: Etter hvert som teknologi og infrastruktur forbedres, kan myndighetene vurdere å sette en tidsfrist for forbud mot salg av nye fossilbiler, slik som Norge har satt som mål for 2025.
 
-    <https://www.tv2.no/broom/forbud-mot-bensin-og-dieselbiler-kan-bli-utsatt/15554926/>
-
 **4. Informasjon og bevisstgjøringskampanjer:**
 
 -   **Opplysningskampanjer**: Myndighetene kan gjennomføre kampanjer for å øke bevisstheten rundt miljøkonsekvensene av bilvalg, og fremme fordeler ved å velge elbiler eller hybridbiler.
 
 -   **Merking av kjøretøy**: Klar og tydelig merking av kjøretøy med hensyn til utslipp, drivstoffeffektivitet og total eierkostnad kan hjelpe forbrukere med å ta mer informerte beslutninger.
 
-    <https://www.regjeringen.no/no/tema/transport-og-kommunikasjon/veg_og_vegtrafikk/faktaartikler-vei-og-ts/norge-er-elektrisk/id2677481/>
-
 **5. Tilgang til spesialtiltak for miljøvennlige kjøretøy:**
 
 -   **Fordeler som gratis parkering og tilgang til kollektivfelt**: Myndighetene kan tilby insentiver som tilgang til kollektivfelt, billigere eller gratis parkering for elbiler og andre miljøvennlige alternativer, noe som gjør dem mer attraktive i hverdagen.
-
-    <https://www.regjeringen.no/contentassets/65662b6bb87641d186edf4493fba1e77/2022-06-16-bruksfordeler-elbil-nett.pdf>
 
 Myndighetene har flere verktøy for å påvirke kjøretøyvalg i en samfunnsøkonomisk ønsket retning.
 Kombinasjonen av økonomiske insentiver, infrastrukturtjenester, reguleringer og informasjon kan bidra til å øke andelen miljøvennlige kjøretøy og redusere klimagassutslipp, som igjen har positive samfunnsøkonomiske effekter.
@@ -269,9 +257,16 @@ Denne tilnærmingen muliggjør en dypere analyse av hvordan ulike demografiske o
 
 ```{r}
 #| echo: false
+#| output: false
 # Lag en profesjonell tabell av modellresultater
 stargazer(model_3, type = "text")
 ```
+
+![](images/Skjermbilde 2024-11-04 kl. 15.17.00.png)
+
+![](images/Skjermbilde 2024-11-04 kl. 15.21.05.png)
+
+![](images/Skjermbilde 2024-11-04 kl. 15.17.32.png)
 
 #### Funn fra modellen
 
@@ -616,7 +611,24 @@ Denne trenden fortsetter i gruppen 700 000–999 000 kroner, hvor bruken av bil,
 I gruppen med inntekt over 1 000 000 kroner er bruken av bil også svært høy, og andre transportmidler som sykkel og kollektivtransport benyttes sjelden.
 Dette indikerer at høy inntekt er sterkt knyttet til bilbruk, mens lavere inntektsgrupper i større grad er avhengige av rimeligere transportalternativer som gange, sykkel og kollektivtransport.
 
-## **4.0 Konklusjon**
+### 3.0 Pendleatferd over tid
+
+Vi ønsker å se nærmere på pendleatferden på Haugalandet fra 2022, og sammenligne med funnene fra vår spørreundersøkelse.
+Vi har sett på arbeidskravet til gruppe 1 fra 2022, og ser interessante trender og endringer.
+Vi legger merke til at i både 2022 og 2024 foretrekker pendlere bil for kortere reiser under 20 minutter.
+Imidlertid viser funn fra 2024 at preferansen for bil (bensin/diesel) avtar markant ved lengre reisetider (over 60 minutter), noe som antyder en mulig skift mot andre transportmidler for lengre reiser, eller en økt bevissthet om kostnader og miljøpåvirkning ved lengre bilreiser.
+Inntekten spiller en viktig rolle i valg av transportmiddel.
+I 2022 og 2024 viser dataene at de med høyere inntekter har en klar preferanse for bilbruk, spesielt for elektriske og hybridbiler, noe som reflekterer en større økonomisk evne til å investere i nyere og mer miljøvennlige teknologier.
+Dette fremhever en sosioøkonomisk faktor der inntekt ikke bare bestemmer tilgangen til bil, men også typen bil som benyttes.Kjønn og alder viser interessante mønstre i begge årene.
+Kvinner tenderer mot å benytte buss og elektrisk/hybridbiler, mens menn foretrekker biler generelt.
+Fra ung til gammel viser dataene at yngre mennesker oftere benytter kollektivtransport og gange, mens eldre pendlere foretrekker private biler, noe som kan skyldes tilgjengelighetsbehov og komfort.
+
+I følge artikkelen om valgmengden i beslutninger om kjøretøysvalg av Ton et al. (2020) er Alternative Specific Constants (ASC) en alternativspesifikke konstanter, som fungerer på samme måte som en dummy variabel.
+I en modelleringssammenheng refererer til konstanter som brukes i diskrete valgmodeller, spesielt i logit-modeller som multinomial logit-modell og nested logit-modell.
+ASC kan hjelpe til med å fange opp systematiske preferanser for visse transportmidler som ikke kan forklares bare ved observerbare faktorer som reisetid, kostnad eller inntekt.
+For eksempel, hvis mange velger bil selv når det ikke er den raskeste eller billigste alternativet, kan en positiv ASC for bilindikere en inneboende preferanse for bilreiser.
+I vårt arbeidskrav kunne det vært nyttig å inkludere ASC for å få en dypere forståelse av valgatferd som ikke umiddelbart forklares gjennom de variablene vi har inkludert.
+Dette kunne gitt oss innsikt i hvorfor noen transportmåter er mer tiltrekkende enn andre.
 
 ## **5.0 Referanser**
 
