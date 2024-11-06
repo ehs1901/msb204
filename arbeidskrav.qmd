@@ -174,6 +174,7 @@ merged_data <- merged_data %>%
 ```
 
 ```{r}
+#| echo: false
 merged_data <- merged_data %>%
   mutate(Inntektsgruppe = case_when(
     Inntektsgruppe %in% c("400 000- 699 000", "500 000 - 700 000") ~ "400 000 - 700 000",
@@ -185,6 +186,32 @@ merged_data <- merged_data %>%
     TRUE ~ Inntektsgruppe
   ))
 
+```
+
+```{r}
+#| echo: false
+merged_data <- merged_data %>%
+  mutate(Alder = case_when(
+    Alder %in% c("19-26", "15-25") ~ "15-26",  # Slå sammen 19-26 og 15-25 til 15-26
+    Alder %in% c("27-35", "26-35") ~ "26-35",  # Slå sammen 27-35 og 26-35 til 26-35
+    Alder == "36-45" ~ "36-45",                # 36-45 forblir som den er
+    Alder == "46-55" ~ "46-55",                # 46-55 forblir som den er
+    Alder == "56-64" ~ "56-64",                # 56-64 forblir som den er
+    Alder == "56-65" ~ "56-65",                # 56-65 forblir som den er
+    Alder == "65+" ~ "65+",                    # 65+ forblir som den er
+    Alder == "0-18" ~ "0-18",                  # 0-18 forblir som den er
+    TRUE ~ Alder                               # Alle andre tilfeller forblir som de er
+  ))
+```
+
+```{r}
+#| echo: false
+merged_data <- merged_data %>%
+  mutate(Parkering_ved_jobb = case_when(
+    str_trim(Parkering_ved_jobb) == "Ja" ~ "Ja",   # Slå sammen "Ja" og "Ja " til "Ja"
+    str_trim(Parkering_ved_jobb) == "Nei" ~ "Nei", # Slå sammen "Nei" og "Nei " til "Nei"
+    TRUE ~ Parkering_ved_jobb                      # Behold andre verdier som de er
+  ))
 ```
 
 ```{r}
@@ -216,12 +243,12 @@ Multinomial logit modell blir ansett som den enkleste og mest populære diskre v
 En multinomial logit-modell genereres ved å anta at de tilfeldige residualene er distribuert IID Gumbel, som også kalles Weibull eller Extreme Value Type 1, EV1.
 Med denne antakelsen er valgsansynligheten:
 
-![](images/Skjermbilde 2024-11-06 kl. 12.00.17.png){width="165"}
+![](images/Skjermbilde%202024-11-06%20kl.%2012.00.17.png){width="165"}
 
 Parameteren β, som måler hvordan nytten påvirker valgsannsynligheten, er normalisert til 1 i praksis, da den ikke kan estimeres separat fra 0 i Viq.
 β er relatert til det vanlige standardavviket til EV1-varianten ved:
 
-![](images/Skjermbilde 2024-11-06 kl. 12.03.30.png){width="92"}
+![](images/Skjermbilde%202024-11-06%20kl.%2012.03.30.png){width="92"}
 
 I tilfeller hvor individer har forskjellige valgsett, er det nødvendig å omskrive modellen\
 basert på den universelle valgsettformuleringen.
@@ -255,66 +282,88 @@ Denne tilnærmingen muliggjør en dypere analyse av hvordan ulike faktorer påvi
 stargazer(model_3, type = "text")
 ```
 
-![](images/Skjermbilde%202024-11-04%20kl.%2015.17.00.png)
+![](images/Skjermbilde 2024-11-06 kl. 12.59.02.png)
 
-![](images/Skjermbilde%202024-11-04%20kl.%2015.21.05.png)
+![](images/Skjermbilde 2024-11-06 kl. 12.59.18.png)
 
-![](images/Skjermbilde%202024-11-04%20kl.%2015.17.32.png)
-
-#### Funn fra modellen
+#### 2.2.1 Funn fra modellen
 
 Multinomial logit-modellen gir estimerte sannsynligheter for at ulike grupper av pendlere vil velge spesifikke transportmidler.
-Ved å analysere disse sannsynlighetene, kan vi identifisere hvilke faktorer som sterkest påvirker valg av transportmiddel.
+Ved å analysere disse sannsynlighetene, kan vi identifisere hvordan ulike faktorer påvirker valg av transportmiddel (bil, buss, sykkel, el-sykkel, el-sparkesykkel, motorsykkel og gange) i forhold til tid brukt til jobb, inntekt, alder, kjønn og parkering ved jobb .
+
+I multinomial logit-modellen blir én kategori fra hver uavhengig variabel valgt som referansekategori.
+Koefisientene for de øvrige kategoriene estimeres relativt til denne referansekategorien, som dermed ikke vises i tabellen.
+I tabellen er referansekategoriene for de ulike variablene som følger:
+
+-   Tid brukt til jobb: "0-19"
+
+-   Inntektsgruppe: "0 - 199 000"
+
+-   Alder: "0-18"
+
+-   Kjønn: "Kvinne"
+
+-   Parkering: "Ja"
 
 **Tid brukt til jobb:**
 
-Basert på resultatene er det tydelig at reisetid har en signifikant innvirkning på valg av transportmiddel for arbeidsreiser.
+-   **10-19 minutter:** Alle transportmidlene, bortsett fra el-sykkel, har en positiv koeffisient, noe som tyder på at personer som pendler i dette tidsintervallet, har en høyere sannsynlighet for å bruke transportmidler som bil, buss, sykkel, gange og motorsykkel. Den negative koeffisienten for el-sykkel indikerer at folk i dette tidsintervallet er mindre tilbøyelige til å bruke dette transportmiddelet.
 
-Korte reisetider (0–9 minutter) reduserer sannsynligheten for å velge bil, mens det øker sannsynligheten for å velge buss, sykkel, EL-sykkel og EL-sparkesykkel .
-Dette antyder at kortere reiser fremmer valg av mer aktive transportmidler.
+-   **20-29 minutter:** Her ser vi en positiv sammenheng for bil, buss, og sykkel, noe som indikerer at personer i denne tidsgruppen har en tendens til å bruke disse transportmidlene. Gange og motorsykkel viser også en positiv koeffisient, mens el-sykkel har en ikke-signifikant negativ sammenheng.
 
-For lengre reisetider, spesielt i intervallet 20–39 minutter, ser vi at sannsynligheten for å bruke buss og bil øker, noe som tyder på at disse transportmidlene foretrekkes når avstanden til jobb er større.
-Samtidig ser vi at el-sparkesykkel og sykkel brukes betydelig mindre ved reisetider over 20 minutter.
+-   **30-39 minutter:** Her ser vi en positiv sammenheng for bil, buss, og sykkel, noe som indikerer at personer i denne tidsgruppen har en tendens til å bruke disse transportmidlene. Gange og motorsykkel viser også en positiv koeffisient, mens el-sykkel har en ikke-signifikant negativ sammenheng.
 
-Ved svært lange reisetider (over 60 minutter) blir bil og buss de mest foretrukne transportmidlene, mens sannsynligheten for å velge aktive transportmidler som gange og sykkel er svært lav.
-Disse funnene indikerer at reisetid har en klar sammenheng med transportmiddelvalg og understreker viktigheten av å tilby kollektivtransport og tilrettelegging for sykling og gange i områder med kortere reiseavstand til arbeidsplasser.
+-   **40-49-minutter:** Bil har en sterk positiv effekt, mens buss er sterkt negativ. Dette kan tyde på at lengre pendletid favoriserer bilbruk, mens buss blir mindre attraktivt som transportmiddel. Gange, samt de sykkelrelaterte transportmidlene, har negative koeffisienter, som reflekterer et skifte mot mer komfortable og praktiske alternativer.
 
-**Tid brukt til jobb:**
+-   **50-59 minutter:** Igjen ser vi en sterk positiv effekt på bil, med en fortsatt negativ effekt for buss, gange og sykkel.
 
--   **10-19 minutter:** Bil (Bensin / Diesel) har en signifikant positiv koeffisient på **83.791**, noe som indikerer en sterk preferanse for denne transporttypen når reisetiden er kort.
--   **Over 60 minutter:** Bruk av Bil (Bensin / Diesel) viser en negativ koeffisient **på -31.171**, noe som tyder på en nedgang i preferansen for bilreiser ved lengre pendletid.
+-   **Over 60 minutter:** I denne kategorien er alle transportmidlene negative, unntatt motorsykkel, som har en sterk positiv koeffisient.
 
 **Inntektsgrupper:**
 
--   **700 000+ kroner:** Størst økning i sannsynligheten for å bruke Bil (Elektrisk / Hybrid) med en koeffisient på 143.790, som tydelig reflekterer en høyere tilbøyelighet blant høyinntektstakere til å velge miljøvennlige kjøretøy.
+-   **200 000 - 500 000:** Personer i denne inntektsgruppen er mer tilbøyelige til å bruke bil, men også el-sparkesykkel, gange, sykkel og buss har en positiv sammenheng. Dette tyder på at personer med middels inntekt har flere transportvalg tilgjengelig, selv om bil fortsatt er det mest brukte alternativet.
 
--   **0 – 199 000 kroner:** Viser en negativ koeffisient på -39.072 for Bil (Elektrisk / Hybrid), noe som indikerer en lavere sannsynlighet for å velge denne typen transportmiddel blant de med lavere inntekt
+-   **400 000 - 700 000:** Denne gruppen viser positive koeffisienter for alle transportmidler, med den sterkeste koeffisienten for el-sykkel, som tyder på at personer i denne inntektsgruppen har høyere sannsynlighet for å bruke el-sykkel som transportmiddel.
+
+-   **700 000 - 999 000:** Det er en negativ effekt for både bil og buss, samt for de andre transportmidlene. Dette kan indikere at personer i denne inntektsgruppen bruker andre transportformer, eller at de har større muligheter til å bruke mer spesialiserte transportmidler som ikke er representert i modellen.
+
+-   **1 000 000 +:** Personer i denne inntektsgruppen har generelt en positiv koeffisient for bil, noe som tyder på at høyinntektsgrupper er mer tilbøyelige til å bruke bil, mens de har negative koeffisienter for transportmidler som buss, gange og sykkel.
 
 **Aldersgruppe:**
 
--   **46-55 år:** Viser den største aversjonen mot å bruke Bil (Bensin / Diesel), med en koeffisient på -81.724, som kan indikere en sterk preferanse for alternative transportformer i denne aldersgruppen.
+-   **15-26:** Alle transportmidlene har positive koeffisienter, med unntak av el-sparkesykkel. Dette tyder på at unge personer er mer tilbøyelige til å bruke bil, buss, sykkel, gange og motorsykkel, mens el-sparkesykkel ikke er like populært blant denne gruppen.
 
--   **65+ år:** Har en positiv koeffisient på 91.600 for å bruke Bil (Bensin / Diesel), noe som reflekterer økt avhengighet eller preferanse for personbil i de eldre aldersgruppene.
+-   **26-35:** Bil (bensin/diesel), el-sykkel, motorsykkel og sykkel har negative koeffisienter, mens bil (elektrisk/hybrid), buss, gange og el-sparkesykkel har positive koeffisienter. Dette kan tyde på at folk i denne aldersgruppen har større tilgang til elektriske og hybridbiler, samt er mer tilbøyelige til å bruke offentlig transport og el-sparkesykkel.
+
+-   **36-45:** Her er alle transportmidlene negative, med unntak av buss. Den positive koeffisienten for buss tyder på at personer i denne gruppen er mer tilbøyelige til å bruke offentlig transport, mens de andre alternativene blir mindre attraktive.
+
+-   **46-55:** Bil (bensin/diesel), el-sykkel og sykkel er negative, mens bil (hybrid/elektrisk), buss, gange, el-sparkesykkel og motorsykkel har positive koeffisienter. Dette kan tyde på at folk i denne aldersgruppen prioriterer komfortable, miljøvennlige alternativer som hybrid- og el-biler, samt offentlig transport.
+
+-   **56-65:** Alle transportmidler har positive koeffisienter, bortsett fra buss og el-sykkel, noe som reflekterer et ønske om fleksible og komfortable transportvalg.
+
+-   **65+:** Alle transportmidlene har negative koeffisienter, med unntak av gange og motorsykkel. Dette tyder på at eldre personer foretrekker å gå, men at de også kan bruke motorsykkel som et alternativ.
 
 **Kjønn:**
 
--   **Menn:** Viser en negativ koeffisient på -72.909 for valg av Bil (Bensin / Diesel) sammenlignet med kvinner, noe som tyder på mindre preferanse for bilbruk blant menn.
+-   **Menn:** Menn har lavere sannsynlighet for å bruke bil, buss, gange, el-sparkesykkel, el-sykkel og sykkel, sammenlignet med kvinner. Motorsykkel har derimot en positiv koeffisient for menn, som tyder på at de er mer tilbøyelige til å bruke motorsykkel enn kvinner.
 
 **Parkering ved jobb:**
 
--   **Tilgjengelig parkering:** Positiv koeffisient på 68.712 for Bil (Bensin / Diesel) når parkering er tilgjengelig ved jobb, noe som bekrefter at tilgang til parkering sterkt påvirker valget av bil som transportmiddel.
+-   **Ikke parkering på jobb:** Fravær av parkering er forbundet med en lavere sannsynlighet for å bruke bil, buss, sykkel, gange og el-sykkel. Derimot har el-sparkesykkel en positiv koeffisient, noe som tyder på at personer som ikke har parkering ved jobb, har en høyere sannsynlighet for å bruke el-sparkesykkel som transportmiddel.
 
-#### P - Verdi
+#### 2.2.2 P - Verdier og signifikans
 
-Fra våres resultater er det relativt få variabler med høye p-verdier, noe som indikere at de fleste variablene i modellen har en statistisk signifikant effekt på avhenigige variabler.
+P-verdiene i tabellen representerer statistisk signifikansnivået for koeffisientene i regresjonsmodellen for ulike transportmidler.
+Generelt, jo lavere p-verdi, desto sterkere bevis er det mot nullhypotesen, som sier at det ikke er noen sammenheng mellom den uavhengige variabelen og den avhengige variabelen.
 
-**Parkering ved jobb ("Nei")** har en p-verdi på rundt 0.601, som er relativt høy sammenlignet med andre variabler i modellen.
-Dette betyr at effekten av ikke å ha parkering ved jobb ikke er statistisk signifikant når det gjelder valg av transportmiddel, noe som kan tyde på at tilgang til parkering kanskje ikke er en sterk prediktor for transportmiddelvalg i denne modellen.
+Generelt sett viser resultatene en høy grad av signifikans for mange av de forklarende variablene i modellen.
+De fleste koeffisientene er statistisk signifikante på 1%-nivå, som indikerer at det er en svært lav sannsynlighet for at disse resultatene skyldes tilfeldigheter.
+Flere av koeffisientene er også signifikante på 5%-nivå, og noen på 10%-nivå, som fortsatt anses som relativt signifikante, selv om usikkerheten er litt høyere.
+Det er imidlertid også flere variabler hvor p-verdiene er høyere enn 0.05, og derfor ikke signifikante, det er f.eks.
+noen aldersgrupper som ikke har klare signifikante koeffisienter i enkelte transportmåter.
+Dette antyder at enkelte faktorer kan ha sterkere eller svakere påvirkning på valget av transportmiddel, avhengig av hvilken gruppe eller forhold som analyseres.
 
-**Inntektsgruppe (0 - 999 000)** har en p-verdi på 0.649, som også indikerer mangel på statistisk signifikans.
-Dette kan tyde på at inntekt i denne høyeste kategorien ikke nødvendigvis påvirker valg av transportmiddel på en signifikant måte sammenlignet med referansekategorien.
-
-#### Nested Logit-model
+#### 2.2.3 Nested Logit-model
 
 En Nested Logit-modell ville teoretisk sett vært bedre egnet for å analysere vårt datasett da denne modellen gjør det mulig å ta hensyn til korrelasjon mellom beslektede valgalternativer, noe som er svært relevant i vårt case gitt de ulike transportmidlene @NestedLogit.pdf
 
@@ -420,23 +469,6 @@ Vi har også valgt å slå sammen sykkel, el-sykkel og el-sparekesykkel til en s
 
 ```{r}
 #| echo: false
-# Gjøre alle observasjoner i 'Tid_brukt_til_jobb' til samme format
-transport_splitt <- transport_splitt %>%
-  mutate(Tid_brukt_til_jobb = case_when(
-    str_detect(Tid_brukt_til_jobb, regex("0\\s*-\\s*9\\s*min(utt)?", ignore_case = TRUE)) ~ "0-9 min",
-    str_detect(Tid_brukt_til_jobb, regex("10\\s*-\\s*19\\s*min(utt)?", ignore_case = TRUE)) ~ "10-19 min",
-    str_detect(Tid_brukt_til_jobb, regex("20\\s*-\\s*29\\s*min(utt)?", ignore_case = TRUE)) ~ "20-29 min",
-    str_detect(Tid_brukt_til_jobb, regex("30\\s*-\\s*39\\s*min(utt)?", ignore_case = TRUE)) ~ "30-39 min",
-    str_detect(Tid_brukt_til_jobb, regex("40\\s*-\\s*49\\s*min(utt)?", ignore_case = TRUE)) ~ "40-49 min",
-    str_detect(Tid_brukt_til_jobb, regex("50\\s*-\\s*59\\s*min(utt)?", ignore_case = TRUE)) ~ "50-59 min",
-    str_detect(Tid_brukt_til_jobb, regex("over\\s*60\\s*min(utt)?", ignore_case = TRUE)) ~ "Over 60 min",
-    TRUE ~ NA_character_  # Håndtere NA eller ukjente verdier
-  ))
-
-```
-
-```{r}
-#| echo: false
 transport_tid <- transport_splitt %>%
   mutate(Hvordan_kommer_du_deg_til_jobb = case_when(
     Hvordan_kommer_du_deg_til_jobb %in% c("Bil (Bensin / Diesel)", "Bil (Elektrisk / Hybrid)") ~ "Bil",
@@ -461,10 +493,10 @@ transport_tid_bredt <- transport_tid %>%
 # Omorganisere kolonnene for å plassere "Annet" sist
 transport_tid_bredt <- transport_tid_bredt %>%
   select(Tid, everything(), -Annet, Annet)
-
+  
 # Vis tabellen med kable
 transport_tid_bredt %>%
-  kable(caption = "Antall personer per transportmåte fordelt på tid",
+  kable(caption = "Antall personer per transportmåte fordelt på tid (minutter)",
         align = "l")  %>%
   kable_styling("striped", full_width = F)
 
