@@ -476,34 +476,36 @@ Derfor kan antall registrerte transportmidler overstige det faktiske antallet pe
 **2022 versus 2024**
 
 ```{r}
+#| echo: false
 library(dplyr)
 library(tidyr)
 library(knitr)
 library(kableExtra)
-#| echo: false
+
 tidligere_data %>%
   separate_rows(Transportmåte_disponibelt, sep = ";\\s*") %>%  # Splitter opp hver transportmåte til egne rader
   filter(Transportmåte_disponibelt != "") %>%  # Fjerner eventuelle tomme verdier
   count(Transportmåte_disponibelt) %>%  # Telle hver enkelt transportmåte
   arrange(desc(n)) %>%  # Sorterer transportmåtene etter antall i synkende rekkefølge
   kable(col.names = c("Transportmåte", "Antall"),
-        caption = "Antall personer per transportmåte",
+        caption = "Antall personer per transportmåte 2022",
         align = "l") %>%
   kable_styling("striped", full_width = F)
 ```
 
 ```{r}
+#| echo: false
 library(dplyr)
 library(tidyr)
 library(knitr)
 library(kableExtra)
-#| echo: false
+
 ny_data %>%
   separate_rows(Transportmåte_disponibelt, sep = ";\\s*") %>%  # Splitter opp hver transportmåte til egne rader
   filter(Transportmåte_disponibelt != "") %>%  # Fjerner eventuelle tomme verdier
   count(Transportmåte_disponibelt) %>%  # Telle hver enkelt transportmåte
   kable(col.names = c("Transportmåte", "Antall"),
-        caption = "Antall personer per transportmåte",
+        caption = "Antall personer per transportmåte 2024",
         align = "l") %>%
   kable_styling("striped", full_width = F)
 ```
