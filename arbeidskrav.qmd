@@ -443,7 +443,7 @@ Kombinasjonen av økonomiske insentiver, infrastrukturtjenester, reguleringer og
 Vi skal nå presentere en deskriptiv oversikt når det gjelder valg av reisemåter for arbeidsreiser på Haugalandet.
 Vi skal kommentere kritiske avstander for valg av ulike reisemåter og undersøker om det er systematiske forskjeller etter kjønn, alder, inntekt og utdanning.
 
-Tabell 1 viser en oversikt over antall personer per transpportmåte.
+Tabell 1 viser en oversikt over antall personer per transpportmåte på data fra både 2022 og 2024 sammen.
 
 ```{r}
 #| echo: false
@@ -472,6 +472,56 @@ Det er også viktig å kommentere at i spørreundersøkelsen ble deltakerne gitt
 Dette betyr at én person kan ha krysset av for både bil og gange.
 Dette gir en mer nyansert innsikt i reisevanene på Haugalandet, siden mange har fleksible eller varierte måter å komme seg til arbeid på, avhengig av daglige behov eller værforhold.
 Derfor kan antall registrerte transportmidler overstige det faktiske antallet personer som har deltatt i undersøkelsen.
+
+**2022 versus 2024**
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(knitr)
+library(kableExtra)
+#| echo: false
+tidligere_data %>%
+  separate_rows(Transportmåte_disponibelt, sep = ";\\s*") %>%  # Splitter opp hver transportmåte til egne rader
+  filter(Transportmåte_disponibelt != "") %>%  # Fjerner eventuelle tomme verdier
+  count(Transportmåte_disponibelt) %>%  # Telle hver enkelt transportmåte
+  arrange(desc(n)) %>%  # Sorterer transportmåtene etter antall i synkende rekkefølge
+  kable(col.names = c("Transportmåte", "Antall"),
+        caption = "Antall personer per transportmåte",
+        align = "l") %>%
+  kable_styling("striped", full_width = F)
+```
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(knitr)
+library(kableExtra)
+#| echo: false
+ny_data %>%
+  separate_rows(Transportmåte_disponibelt, sep = ";\\s*") %>%  # Splitter opp hver transportmåte til egne rader
+  filter(Transportmåte_disponibelt != "") %>%  # Fjerner eventuelle tomme verdier
+  count(Transportmåte_disponibelt) %>%  # Telle hver enkelt transportmåte
+  kable(col.names = c("Transportmåte", "Antall"),
+        caption = "Antall personer per transportmåte",
+        align = "l") %>%
+  kable_styling("striped", full_width = F)
+```
+
+Kommentar til tabellene:
+Vi ønsket også å se på om det var noe forskjell i valg av kjøretøy/fremkomst middel i 2022 sammenlignet med 2024.
+Dersom vi ser på bilbruk, ser vi at det var 61 personer i 2022 som valgte fossil bil, 24 personer som valgte el bil og 6 som valgte hybrid.
+I 2024 derimot var det hele 44 som valgte fossil bil som transportmiddel mens det var 43 som valgte eletrisk/hybrid.
+Her ser vi en klar øking i hybrid/eletrisk bil og en liten nedgang i fossil bil.
+
+Når det kommer til sykkel og gange var det 22 som syklet i 2022 sammenlignet med 34 i 2024, altså en god økning.
+Gange var ikke spesifikt oppført i 2022-dataene, men i 2024 har 34 personer valgt gange som transportmiddel, noe som kan tyde på økt bevissthet rundt bærekraftige transportvalg eller bedre tilrettelegging for fotgjengere.
+
+Buss var heller ikke spesifikt nevnt i 2022-dataene, men i 2024 har 46 personer valgt buss som transportmiddel.
+
+Det er viktig å kommentere at det er forskjellige personer som har svart på disse to undersøkelsene og derfor kan vi kun ta antakelser om trendene vi ser.
+
+**Oversikt over antall personer per transportmåte fordelt på tid.**
 
 For å undersøke kritiske avstander for valg av ulike reisemåter har vi valgt å se nærmere på tidsbruken på arbeidsreisen.
 Tabell 2 presenterer en oversikt over antall personer per transportmåte fordelt på tid.
