@@ -282,9 +282,9 @@ Denne tilnærmingen muliggjør en dypere analyse av hvordan ulike faktorer påvi
 stargazer(model_3, type = "text")
 ```
 
-![](images/Skjermbilde 2024-11-06 kl. 12.59.02.png)
+![](images/Skjermbilde%202024-11-06%20kl.%2012.59.02.png)
 
-![](images/Skjermbilde 2024-11-06 kl. 12.59.18.png)
+![](images/Skjermbilde%202024-11-06%20kl.%2012.59.18.png)
 
 #### 2.2.1 Funn fra modellen
 
@@ -307,13 +307,18 @@ I tabellen er referansekategoriene for de ulike variablene som følger:
 
 **Tid brukt til jobb:**
 
--   **10-19 minutter:** Alle transportmidlene, bortsett fra el-sykkel, har en positiv koeffisient, noe som tyder på at personer som pendler i dette tidsintervallet, har en høyere sannsynlighet for å bruke transportmidler som bil, buss, sykkel, gange og motorsykkel. Den negative koeffisienten for el-sykkel indikerer at folk i dette tidsintervallet er mindre tilbøyelige til å bruke dette transportmiddelet.
+-   **10-19 minutter:** Alle transportmidlene, bortsett fra el-sykkel, har en positiv koeffisient, noe som tyder på at personer som pendler i dette tidsintervallet, har en høyere sannsynlighet for å bruke transportmidler som bil, buss, sykkel, gange og motorsykkel.
+    Den negative koeffisienten for el-sykkel indikerer at folk i dette tidsintervallet er mindre tilbøyelige til å bruke dette transportmiddelet.
 
--   **20-29 minutter:** Her ser vi en positiv sammenheng for bil, buss, og sykkel, noe som indikerer at personer i denne tidsgruppen har en tendens til å bruke disse transportmidlene. Gange og motorsykkel viser også en positiv koeffisient, mens el-sykkel har en ikke-signifikant negativ sammenheng.
+-   **20-29 minutter:** Her ser vi en positiv sammenheng for bil, buss, og sykkel, noe som indikerer at personer i denne tidsgruppen har en tendens til å bruke disse transportmidlene.
+    Gange og motorsykkel viser også en positiv koeffisient, mens el-sykkel har en ikke-signifikant negativ sammenheng.
 
--   **30-39 minutter:** Her ser vi en positiv sammenheng for bil, buss, og sykkel, noe som indikerer at personer i denne tidsgruppen har en tendens til å bruke disse transportmidlene. Gange og motorsykkel viser også en positiv koeffisient, mens el-sykkel har en ikke-signifikant negativ sammenheng.
+-   **30-39 minutter:** Her ser vi en positiv sammenheng for bil, buss, og sykkel, noe som indikerer at personer i denne tidsgruppen har en tendens til å bruke disse transportmidlene.
+    Gange og motorsykkel viser også en positiv koeffisient, mens el-sykkel har en ikke-signifikant negativ sammenheng.
 
--   **40-49-minutter:** Bil har en sterk positiv effekt, mens buss er sterkt negativ. Dette kan tyde på at lengre pendletid favoriserer bilbruk, mens buss blir mindre attraktivt som transportmiddel. Gange, samt de sykkelrelaterte transportmidlene, har negative koeffisienter, som reflekterer et skifte mot mer komfortable og praktiske alternativer.
+-   **40-49-minutter:** Bil har en sterk positiv effekt, mens buss er sterkt negativ.
+    Dette kan tyde på at lengre pendletid favoriserer bilbruk, mens buss blir mindre attraktivt som transportmiddel.
+    Gange, samt de sykkelrelaterte transportmidlene, har negative koeffisienter, som reflekterer et skifte mot mer komfortable og praktiske alternativer.
 
 -   **50-59 minutter:** Igjen ser vi en sterk positiv effekt på bil, med en fortsatt negativ effekt for buss, gange og sykkel.
 
@@ -321,27 +326,34 @@ I tabellen er referansekategoriene for de ulike variablene som følger:
 
 **Inntektsgrupper:**
 
--   **200 000 - 500 000:** Personer i denne inntektsgruppen er mer tilbøyelige til å bruke bil, men også el-sparkesykkel, gange, sykkel og buss har en positiv sammenheng. Dette tyder på at personer med middels inntekt har flere transportvalg tilgjengelig, selv om bil fortsatt er det mest brukte alternativet.
+-   **200 000 - 500 000:** Personer i denne inntektsgruppen er mer tilbøyelige til å bruke bil, men også el-sparkesykkel, gange, sykkel og buss har en positiv sammenheng.
+    Dette tyder på at personer med middels inntekt har flere transportvalg tilgjengelig, selv om bil fortsatt er det mest brukte alternativet.
 
 -   **400 000 - 700 000:** Denne gruppen viser positive koeffisienter for alle transportmidler, med den sterkeste koeffisienten for el-sykkel, som tyder på at personer i denne inntektsgruppen har høyere sannsynlighet for å bruke el-sykkel som transportmiddel.
 
--   **700 000 - 999 000:** Det er en negativ effekt for både bil og buss, samt for de andre transportmidlene. Dette kan indikere at personer i denne inntektsgruppen bruker andre transportformer, eller at de har større muligheter til å bruke mer spesialiserte transportmidler som ikke er representert i modellen.
+-   **700 000 - 999 000:** Det er en negativ effekt for både bil og buss, samt for de andre transportmidlene.
+    Dette kan indikere at personer i denne inntektsgruppen bruker andre transportformer, eller at de har større muligheter til å bruke mer spesialiserte transportmidler som ikke er representert i modellen.
 
 -   **1 000 000 +:** Personer i denne inntektsgruppen har generelt en positiv koeffisient for bil, noe som tyder på at høyinntektsgrupper er mer tilbøyelige til å bruke bil, mens de har negative koeffisienter for transportmidler som buss, gange og sykkel.
 
 **Aldersgruppe:**
 
--   **15-26:** Alle transportmidlene har positive koeffisienter, med unntak av el-sparkesykkel. Dette tyder på at unge personer er mer tilbøyelige til å bruke bil, buss, sykkel, gange og motorsykkel, mens el-sparkesykkel ikke er like populært blant denne gruppen.
+-   **15-26:** Alle transportmidlene har positive koeffisienter, med unntak av el-sparkesykkel.
+    Dette tyder på at unge personer er mer tilbøyelige til å bruke bil, buss, sykkel, gange og motorsykkel, mens el-sparkesykkel ikke er like populært blant denne gruppen.
 
--   **26-35:** Bil (bensin/diesel), el-sykkel, motorsykkel og sykkel har negative koeffisienter, mens bil (elektrisk/hybrid), buss, gange og el-sparkesykkel har positive koeffisienter. Dette kan tyde på at folk i denne aldersgruppen har større tilgang til elektriske og hybridbiler, samt er mer tilbøyelige til å bruke offentlig transport og el-sparkesykkel.
+-   **26-35:** Bil (bensin/diesel), el-sykkel, motorsykkel og sykkel har negative koeffisienter, mens bil (elektrisk/hybrid), buss, gange og el-sparkesykkel har positive koeffisienter.
+    Dette kan tyde på at folk i denne aldersgruppen har større tilgang til elektriske og hybridbiler, samt er mer tilbøyelige til å bruke offentlig transport og el-sparkesykkel.
 
--   **36-45:** Her er alle transportmidlene negative, med unntak av buss. Den positive koeffisienten for buss tyder på at personer i denne gruppen er mer tilbøyelige til å bruke offentlig transport, mens de andre alternativene blir mindre attraktive.
+-   **36-45:** Her er alle transportmidlene negative, med unntak av buss.
+    Den positive koeffisienten for buss tyder på at personer i denne gruppen er mer tilbøyelige til å bruke offentlig transport, mens de andre alternativene blir mindre attraktive.
 
--   **46-55:** Bil (bensin/diesel), el-sykkel og sykkel er negative, mens bil (hybrid/elektrisk), buss, gange, el-sparkesykkel og motorsykkel har positive koeffisienter. Dette kan tyde på at folk i denne aldersgruppen prioriterer komfortable, miljøvennlige alternativer som hybrid- og el-biler, samt offentlig transport.
+-   **46-55:** Bil (bensin/diesel), el-sykkel og sykkel er negative, mens bil (hybrid/elektrisk), buss, gange, el-sparkesykkel og motorsykkel har positive koeffisienter.
+    Dette kan tyde på at folk i denne aldersgruppen prioriterer komfortable, miljøvennlige alternativer som hybrid- og el-biler, samt offentlig transport.
 
 -   **56-65:** Alle transportmidler har positive koeffisienter, bortsett fra buss og el-sykkel, noe som reflekterer et ønske om fleksible og komfortable transportvalg.
 
--   **65+:** Alle transportmidlene har negative koeffisienter, med unntak av gange og motorsykkel. Dette tyder på at eldre personer foretrekker å gå, men at de også kan bruke motorsykkel som et alternativ.
+-   **65+:** Alle transportmidlene har negative koeffisienter, med unntak av gange og motorsykkel.
+    Dette tyder på at eldre personer foretrekker å gå, men at de også kan bruke motorsykkel som et alternativ.
 
 **Kjønn:**
 
