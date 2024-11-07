@@ -510,8 +510,7 @@ ny_data %>%
   kable_styling("striped", full_width = F)
 ```
 
-Kommentar til tabellene:
-Vi ønsket også å se på om det var noe forskjell i valg av kjøretøy/fremkomst middel i 2022 sammenlignet med 2024.
+Kommentar til tabellene: Vi ønsket også å se på om det var noe forskjell i valg av kjøretøy/fremkomst middel i 2022 sammenlignet med 2024.
 Dersom vi ser på bilbruk, ser vi at det var 61 personer i 2022 som valgte fossil bil, 24 personer som valgte el bil og 6 som valgte hybrid.
 I 2024 derimot var det hele 44 som valgte fossil bil som transportmiddel mens det var 43 som valgte eletrisk/hybrid.
 Her ser vi en klar øking i hybrid/eletrisk bil og en liten nedgang i fossil bil.
