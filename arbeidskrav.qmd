@@ -61,7 +61,7 @@ Vi har også måttet endre navn på de fleste variablene slik at felles variable
 Vi hadde også valgt ulik formulering på en rekke svaralternativer i spørreundersøkelsen vår, i forhold til spørreundersøkelsen fra 2022.
 Dette førte til at vi måtte endre på en rekke formuleringer i det sammenslåtte datasettet.
 Vi endret for eksempel "Fossil bil" fra 2022 til "Bil (Bensin/Diesel)" for å samsvare med formuleringen i vårt datasett, Vi slo også sammen "El-bil" og "Hybrid-bil" fra 2022 til "Bil (Elektrisk/Hybrid)".
-Ettersom hver observasjon i variabelen for transportmåter kunne inneholde opptil flere transportalternativer, valgte vi å splitte opp denne variabelen, slik at det ble enklere å lage deskriptiv statistikk og modellformuleringer.
+Ettersom hver observasjon i variabelene som måler hvilke transportmåter respondentene bruker og har tilgjengelig kunne inneholde opptil flere transportalternativer, valgte vi å splitte opp svaralternativene i disse variablene, slik at det ble enklere å lage deskriptiv statistikk og modellformuleringer.
 Etter sammenslåingen av datasettet fra 2022 og datasettet fra 2024, samt en rekke justeringer satt vi igjen med et samlet datasett med 160 observasjoner, som ga oss et grunnlag for videre analyse av pendlevanene på Haugalandet.
 
 ```{r}
