@@ -245,8 +245,8 @@ Med denne antakelsen er valgsansynligheten:
 
 ![](images/Skjermbilde%202024-11-06%20kl.%2012.00.17.png){width="165"}
 
-Parameteren β, som måler hvordan nytten påvirker valgsannsynligheten, er normalisert til 1 i praksis, da den ikke kan estimeres separat fra 0 i Viq.
-β er relatert til det vanlige standardavviket til EV1-varianten ved:
+Parameteren beta, som måler hvordan nytten påvirker valgsannsynligheten, er normalisert til 1 i praksis, da den ikke kan estimeres separat fra 0 i Viq.
+Beta er relatert til det vanlige standardavviket til EV1-varianten ved:
 
 ![](images/Skjermbilde%202024-11-06%20kl.%2012.03.30.png){width="92"}
 
