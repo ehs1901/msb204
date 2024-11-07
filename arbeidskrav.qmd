@@ -177,7 +177,7 @@ merged_data <- merged_data %>%
 #| echo: false
 merged_data <- merged_data %>%
   mutate(Inntektsgruppe = case_when(
-    Inntektsgruppe %in% c("400 000- 699 000", "500 000 - 700 000") ~ "400 000 - 700 000",
+    Inntektsgruppe %in% c("400 000- 699 000", "500 000 - 700 000") ~ "500 000 - 700 000",
     Inntektsgruppe %in% c("700 000- 999 000", "700 000 +") ~ "700 000 - 999 000",
     Inntektsgruppe %in% c("200 000- 399 000", "200 000 - 300 000", "300 000 - 500 000") ~ "200 000 - 500 000",
     Inntektsgruppe %in% c("0- 199 000", "0 - 199 000") ~ "0 - 199 000",
@@ -185,6 +185,19 @@ merged_data <- merged_data %>%
     Inntektsgruppe %in% c("Ønsker ikke å oppgi", "Foretrekker å ikke si", NA) ~ "Ukjent",
     TRUE ~ Inntektsgruppe
   ))
+
+merged_data <- merged_data %>%
+  mutate(Inntektsgruppe = case_when(
+    Inntektsgruppe %in% c("0 - 199 000", "0- 199 000", "0-199 000") ~ "0 - 199 000",
+    Inntektsgruppe %in% c("200 000 - 300 000", "200 000 - 399 000", "300 000 - 500 000", "200 000- 399 000") ~ "200 000 - 500 000",
+    Inntektsgruppe %in% c("500 000 - 600 000", "500 000 - 700 000") ~ "500 000 - 700 000",
+    Inntektsgruppe %in% c("700 000 +", "700 000- 999 000", "700 000 +") ~ "700 000 - 999 999",
+    Inntektsgruppe == "1 000 000+" ~ "1 000 000 +",
+    TRUE ~ Inntektsgruppe  # Behold alle andre verdier som de er (f.eks. NA, "Ønsker ikke å oppgi", osv.)
+  )) %>%
+  # Fjern kategoriene "Ønsker ikke å oppgi", "Foretrekker å ikke si" og rader med NA-verdier
+  filter(!Inntektsgruppe %in% c("Ønsker ikke å oppgi", "Foretrekker å ikke si")) %>%
+  drop_na(Inntektsgruppe)
 
 ```
 
@@ -569,11 +582,9 @@ transport_tid_bredt %>%
 I de korteste tidsintervallene, 0-9 min og 10-19 min, er bil det dominerende transportmiddelet, med totalt 89 personer som velger dette alternativet.
 I samme tidsintervall er bruken av buss begrenset, med 19 personer, noe som kan tyde på at busstilbudet er utilstrekkelig eller at bussene ikke er effektive nok for slike korte distanser.
 Gange og sykkel ser ut til å være aktuelle for korte reiser, med henholdsvis 8 og 13 personer i tidsintervallet 0-9 min, og 5 og 9 personer i tidstintervallet 10-19 min.
-
 Når vi ser på reiser fra 20-39 minutter, er det fortsatt en betydelig andel som bruker bil, med 39 personer registrert.
 Bussbruken synker en del for lengre reiser, med bare 10 personer registrert på reiser med varighet fra 20-39 minutter.
 Gange og sykkelbruk viser også en nedgang i disse lengre tidsintervallene, noe som kan tyde på at disse alternativene oppfattes som mindre praktiske når avstanden øker.
-
 I de lengste tidsintervallene 40-49 min og 50-60+ minm er det henholdsvis 13 og 6 personer som velger bil.
 Det er ikke registrert noe bussbruk eller gange i disse tidsintervallene.
 Det er derimot registrert en person som benytter seg av sykkel for reiser over 60 minutter.
@@ -606,14 +617,12 @@ ggplot(kjonn_transport, aes(x = Kjønn, fill = Hvordan_kommer_du_deg_til_jobb)) 
   )
 ```
 
-**Kommentar til tabell:** Diagrammet viser fordelingen av transportmiddelvalg mellom kvinner og menn på Haugalandet.
+Diagrammet viser fordelingen av transportmiddelvalg mellom kvinner og menn på Haugalandet.
 Resultatene indikerer at det er små kjønnsforskjeller i valg av transportmiddel.
 Både kvinner og menn benytter bil som sitt primære transportmiddel, men kvinner ser ut til å ha en noe større andel som benytter elektrisk eller hybrid bil, mens menn har en noe høyere andel som bruker bensin- eller dieseldrevne biler.
-
 For andre transportmidler som buss, gange og sykkel, er fordelingen mellom kvinner og menn relativt lik.
 Det er en liten forskjell i bussbruk, der kvinner i noe større grad bruker buss enn menn.
 El-sparkesykkel, el-sykkel og andre alternativer utgjør en liten andel av transportmidlene for begge kjønn.
-
 Samlet sett viser diagrammet at kjønn i liten grad påvirker valg av transportmiddel, og at det overordnede bildet viser at både kvinner og menn i stor grad foretrekker bil som sitt hovedtransportmiddel.
 
 ```{r}
@@ -624,12 +633,16 @@ alder_transport <- transport_splitt |>
   select(Alder, Hvordan_kommer_du_deg_til_jobb) |> 
   # Fjern rader med NA-verdier i både Alder og Hvordan_kommer_du_deg_til_jobb
   filter(!is.na(Alder) & !is.na(Hvordan_kommer_du_deg_til_jobb)) |> 
+  
   # Omkategorisering av aldersgrupper
   mutate(Alder = case_when(
-    Alder %in% c("0-18", "15-25", "19-26") ~ "0-26",  # Slå sammen de yngste aldersgruppene
-    Alder %in% c("26-35", "27-35") ~ "27-35",          # Slå sammen 26-35 og 27-35 til en gruppe
-    Alder %in% c("56-64", "56-65") ~ "56-64",          # Slå sammen 56-64 og 56-65 til en gruppe
-    TRUE ~ Alder                                        # Behold andre aldersgrupper som de er
+    Alder %in% c("0-18", "15-26") ~ "0-26",         # Slå sammen de yngste aldersgruppene
+    Alder == "26-35" ~ "26-35",                     # Behold 26-35 som en egen gruppe
+    Alder == "36-45" ~ "36-45",                     # Behold 36-45 som en egen gruppe
+    Alder == "46-55" ~ "46-55",                     # Behold 46-55 som en egen gruppe
+    Alder %in% c("56-64", "56-65") ~ "56-65",       # Slå sammen 56-64 og 56-65 til én gruppe
+    Alder == "65+" ~ "65+",                         # Behold 65+ som egen gruppe
+    TRUE ~ Alder                                    # Behold andre aldersgrupper som de er
   ))
 
 # 2. Visualisering: Fordeling av transportmiddel etter alder
@@ -650,46 +663,31 @@ ggplot(alder_transport, aes(x = Alder, fill = Hvordan_kommer_du_deg_til_jobb)) +
 ```
 
 Diagrammet viser fordelingen av transportmiddelvalg blant ulike aldersgrupper på Haugalandet, med klare forskjeller basert på alder.
-For de yngste gruppene (0-18 år og 15-25 år) er buss og gange de mest brukte transportmidlene, noe som trolig skyldes begrenset tilgang til bil.
-I aldersgruppen 15-25 år ser vi også økt bruk av el-sparkesykkel.
-
-I gruppene 19-26 år og 27-35 år øker bilbruken betydelig, mens kollektivtransport fortsatt er viktig for mange.
-Fra 36 år og oppover blir bil det mest brukte transportmiddelet, med en relativt jevn fordeling mellom bensin/diesel og elektrisk/hybrid.
-Samtidig reduseres bruken av kollektivtransport, gange, og sykkel.
-
-For eldre voksne (56 år og oppover) dominerer fortsatt bil, men det er en økning i bruk av el-sykkel.
+For den yngste gruppen på 0-26 år er bil, både fossildrevet og elektrisk/hybrid mest utbredt.
+Det er også en god andel som benytter seg av buss.
+Det er også en liten andel som går eller benytter El-sykkel.
+I gruppen 26-35 år øker bilbruken, spesielt for elektrisk/hybrid biler.
+Vi ser også at buss og gange fortsatt benyttes.
+Fra 36-45 år er fortsatt bilbruk mest utbredt, med en enda høyere andel som benytter elektrisk/hybrid.
+Det er en liten økning i buss fra forrige aldersintervall, og en negang i gange.
+For aldersgruppen 46-55 år ser vi at fossilbiler er mer brukt enn elektrisk/hybrid.
+Det er i dette aldersintervallet en økning i gange fra forrige intervall.
+Når det gjelder aldersgruppen 56-65 år er bil fortsatt det mest utbredte transportmiddelet, og det en enda større andel som benytter fossil biler.
+Det er også en ganske merkant nedgang i buss, men en økning i El-sykkel.
+Det er fortsatt en liten andel som benytter seg av gange.
 Blant de eldste (65+) er gange det mest brukte transportmiddelet, trolig på grunn av kortere avstander og redusert tilgang til bil.
-
-Samlet sett øker bilbruken med alderen, mens yngre grupper er mer avhengige av kollektivtransport og gange.
-Eldres valg av enklere transportmidler kan skyldes helse og livsstilsendringer.
+Samlet sett øker bilbruken med alderen, og spesielt bruken av fossil biler.
+Yngre grupper er mer avhengige av kollektivtransport.
 
 ```{r}
 #| echo: false
-# 1. Forberedelse av data: Velg kun relevante variabler og slå sammen inntektskategorier
-inntekt_transport_justert <- transport_splitt %>%
-  # Endre navnet til riktig variabel og slå sammen inntektskategorier
-  rename(Inntektsgruppe = Inntektsgruppe) %>%
-  mutate(Inntektsgruppe = case_when(
-    Inntektsgruppe %in% c("0 - 199 000", "0- 199 000") ~ "0 - 199 000",
-    Inntektsgruppe %in% c("200 000 - 300 000", "200 000- 399 000", "300 000 - 500 000") ~ "200 000 - 499 000",  # Slå sammen inntektskategorier
-    Inntektsgruppe %in% c("700 000 +", "700 000- 999 000") ~ "700 000 - 999 000",  # Slå sammen inntektskategoriene
-    Inntektsgruppe == "1 000 000+" ~ "1 000 000 +",  # Endre navn på kategorien
-    TRUE ~ Inntektsgruppe  # Behold andre verdier som de er
-  )) %>%
-  # Fjern kategoriene "Ønsker ikke å oppgi", "Foretrekker å ikke si" og rader med NA-verdier i Inntektsgruppe
-  filter(!Inntektsgruppe %in% c("Ønsker ikke å oppgi", "Foretrekker å ikke si") & !is.na(Inntektsgruppe)) %>%
-  # Fjerne eventuelle NA-verdier i andre relevante kolonner også
-  drop_na(Inntektsgruppe)
-
-# 2. Angi rekkefølgen på inntektsgruppene slik at "1 000 000 +" vises til slutt
-inntekt_transport_justert$Inntektsgruppe <- factor(inntekt_transport_justert$Inntektsgruppe, 
-                                                   levels = c("0 - 199 000", "200 000 - 499 000", 
-                                                              "500 000 - 700 000", "700 000 - 999 000", 
-                                                              "1 000 000 +"),
-                                                   ordered = TRUE)
 
 # 3. Visualisering: Fordeling av transportmiddel etter justert inntektsgruppe
-ggplot(inntekt_transport_justert, aes(x = Inntektsgruppe, fill = Hvordan_kommer_du_deg_til_jobb)) +
+ggplot(transport_splitt %>% 
+         # Fjern "Ukjent" kategorien fra datasettet
+         filter(Inntektsgruppe != "Ukjent") %>% 
+         drop_na(Inntektsgruppe, Hvordan_kommer_du_deg_til_jobb), 
+       aes(x = Inntektsgruppe, fill = Hvordan_kommer_du_deg_til_jobb)) +
   geom_bar(position = "fill") +
   ylab("Prosent") +
   xlab("Inntektsnivå") +
@@ -702,19 +700,29 @@ ggplot(inntekt_transport_justert, aes(x = Inntektsgruppe, fill = Hvordan_kommer_
     plot.title = element_text(size = 14, face = "bold"),  # Juster tittelstørrelse
     axis.text = element_text(size = 12),  # Juster størrelse på akselabels
     legend.position = "bottom"  # Plasser legenden nederst for å spare plass
-  )
+  ) +
+  # Angi rekkefølgen på inntektsgruppene etter stigende inntektsnivå
+  scale_x_discrete(limits = c("0 - 199 000", "200 000 - 500 000", "500 000 - 700 000", "700 000 - 999 000", "1 000 000 +"))
+
 ```
 
-**Kommentar til tabell:** Diagrammet viser fordelingen av transportmiddelvalg blant ulike inntektsgrupper.
-Det er tydelige forskjeller i valg av transportmiddel avhengig av inntektsnivå.
-Blant de med lavest inntekt (0–199 000 kroner) er gange og sykkel de mest brukte transportmidlene, mens bruk av bil er minimal.
-I inntektsgruppen 200 000–499 000 kroner ser vi en økning i bilbruk, spesielt for biler med elektrisk eller hybrid teknologi, men også bensin- og dieseldrevne biler blir mer brukt.
-Buss og gange forblir viktige transportmidler i denne gruppen.
-
-For inntektsgruppen 500 000–700 000 kroner er bil det dominerende transportmiddelet, mens kollektivtransport og gange reduseres betraktelig.
-Denne trenden fortsetter i gruppen 700 000–999 000 kroner, hvor bruken av bil, særlig elektriske og hybride biler, er størst.
-I gruppen med inntekt over 1 000 000 kroner er bruken av bil også svært høy, og andre transportmidler som sykkel og kollektivtransport benyttes sjelden.
-Dette indikerer at høy inntekt er sterkt knyttet til bilbruk, mens lavere inntektsgrupper i større grad er avhengige av rimeligere transportalternativer som gange, sykkel og kollektivtransport.
+I den laveste inntektsgruppen, 0–199 000 kroner, er det mest brukte transportmiddelet bil (bensin/diesel).
+Andelen som bruker bil, er lavere her sammenlignet med høyere inntektsgrupper.
+Dette kan antyde at personer med lavere inntekt ofte velger rimeligere alternativer, kanskje på grunn av kostnadene knyttet til bilhold.
+Det er også en god andel som velger å gå til jobben, og en liten andel som benytter seg av buss.
+I inntektsgruppen 200 000–500 000 ser vi en økt andel som benytter elektriske eller hybride biler.
+Det er også en stor andel som velger buss, mange flere enn i den laveste inntektsgruppen.
+Det er derimot få som benytter seg av gange og andre transportmidler.
+Når det gjelder innteksgruppen 500 000–700 000 kroner er det en ytterligere økning i andelen som benytter elektriske og hybride biler.
+Det er betydelig færre som benytter seg av buss i forhold til de med inntekt fra 200 000 - 500 000 kr.
+Det er derimot en liten andel som benytter gange og El-sykkel.
+For gruppen med inntekt 700 000–999 000 kroner er fortsatt bil det mest brukte trasnportmiddelet.
+Det er en liten andel som benytter seg av buss og noen få som går, bruker el-sykkel eller motorsykkel.
+I den øverste inntektsgruppen, 1 000 000 kroner og oppover, ser vi at det fortsatt er mange som bruker bil.
+Det er en ingen som benytter seg av buss, men vi ser at det er noen som benytter seg av el-sykkel, gange og motorsykkel.
+Det er verdt å nevne at vi har svært få observasjoner i denne inntektsgruppen, noe som kan påvirke resultatene.
+Samlet sett viser diagrammet en klar trend der høyere inntektsgrupper i større grad benytter privatbil, særlig elektriske og hybridmodeller, mens lavere inntektsgrupper er mer avhengige av kollektivtransport og andre rimeligere transportmidler.
+Dette kan antyde at inntektsnivå har betydelig innflytelse på valg av transportmiddel, med økonomisk kapasitet som en mulig forklaring på variasjonene.
 
 ### 2.5 Pendleatferd over tid
 
