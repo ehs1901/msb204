@@ -250,8 +250,7 @@ Beta er relatert til det vanlige standardavviket til EV1-varianten ved:
 
 ![](images/Skjermbilde%202024-11-06%20kl.%2012.03.30.png){width="92"}
 
-I tilfeller hvor individer har forskjellige valgsett, er det nødvendig å omskrive modellen\
-basert på den universelle valgsettformuleringen.
+I tilfeller hvor individer har forskjellige valgsett, er det nødvendig å omskrive modellen basert på den universelle valgsettformuleringen.
 I et universalt valgsett, antar vi at alle alternativer er tilgjengelige for alle beslutningstakere.
 En multinomial logit-modell basert på et universalt valgsett kan utrykkes på følgende måte:
 
