@@ -724,20 +724,50 @@ Det er verdt å nevne at vi har svært få observasjoner i denne inntektsgruppen
 Samlet sett viser diagrammet en klar trend der høyere inntektsgrupper i større grad benytter privatbil, særlig elektriske og hybridmodeller, mens lavere inntektsgrupper er mer avhengige av kollektivtransport og andre rimeligere transportmidler.
 Dette kan antyde at inntektsnivå har betydelig innflytelse på valg av transportmiddel, med økonomisk kapasitet som en mulig forklaring på variasjonene.
 
-### 2.5 Pendleatferd over tid
+### 2.5 Pendleatferd **2022 versus 2024**
 
 Vi ønsker å se nærmere på pendleatferden på Haugalandet fra 2022, og sammenligne med funnene fra vår spørreundersøkelse.
 Vi har sett på arbeidskravet til gruppe 1 fra 2022, og ser interessante trender og endringer.
 Vi legger merke til at i både 2022 og 2024 foretrekker pendlere bil for kortere reiser under 20 minutter.
 Imidlertid viser funn fra 2024 at preferansen for bil (bensin/diesel) avtar markant ved lengre reisetider (over 60 minutter), noe som antyder en mulig skift mot andre transportmidler for lengre reiser, eller en økt bevissthet om kostnader og miljøpåvirkning ved lengre bilreiser.
 Inntekten spiller en viktig rolle i valg av transportmiddel.
+
 I 2022 og 2024 viser dataene at de med høyere inntekter har en klar preferanse for bilbruk, spesielt for elektriske og hybridbiler, noe som reflekterer en større økonomisk evne til å investere i nyere og mer miljøvennlige teknologier.
-Dette fremhever en sosioøkonomisk faktor der inntekt ikke bare bestemmer tilgangen til bil, men også typen bil som benyttes.Kjønn og alder viser interessante mønstre i begge årene.
+Dette fremhever en sosioøkonomisk faktor der inntekt ikke bare bestemmer tilgangen til bil, men også typen bil som benyttes.
+Kjønn og alder viser interessante mønstre i begge årene.
 Kvinner tenderer mot å benytte buss og elektrisk/hybridbiler, mens menn foretrekker biler generelt.
 Fra ung til gammel viser dataene at yngre mennesker oftere benytter kollektivtransport og gange, mens eldre pendlere foretrekker private biler, noe som kan skyldes tilgjengelighetsbehov og komfort.
 @zotero-291
 
-### 2.6 ASC - En alternativspesifikke konstanter
+### **Sammenligning av lokale transportvalg med internasjonale trender**
+
+Fra artikkelen “Choiceset Netherlands” diskuterer det hvordan forskjellige internasjonale studier har vist at urban form og tilgjengeligheten til ulike transportmidler påvirker folks valg av transportmiddel, spesielt i forhold til pendling til jobb.
+Disse studiene har funnet at høyere tetthet, diversitet og godt designet bystruktur (kjent som de tre D’ene: Density, Diversity, and Design) øker sannsynligheten for at individer velger ikke-bilbaserte transportmidler, som kollektivtransport, sykling eller gange.
+
+Fra våres funn for 2024, hvor det er en økning i bruk av elektriske/hybride biler og en mer merkbar bruk av gange og sykkel sammenlignet med 2022, kan reflektere en global trend mot mer bærekraftige og helsefremmende transportformer, noe som også er observert i internasjonale sammenhenger.
+For eksempel, har forskning vist at når byer tilbyr bedre infrastruktur for sykling og gang, øker bruken av disse transportformene.
+Dette er konsistent med en økning i sykling og gang i vårt datasett fra 2022 til 2024, noe som kan indikere en forbedring i lokal infrastruktur eller endret holdning til miljøvennlig transport.
+@ton2020
+
+**NB:** Det er viktig å understreke at datasettet fra 2022 ikke inkluderer gange som et transportalternativ, noe som kan medføre en viss skjevhet i analysen.
+
+Slike sammenligninger kan gi oss verdifull innsikt i hvordan regionale trender i Haugalandet speiler eller avviker fra bredere, internasjonale trender, og kan gi nyttige perspektiver for lokal transportpolitikk og planlegging.
+Våres funn om økende popularitet av elektriske og hybridbiler kan også ses i lys av en global bevegelse mot elektrifisering av transportsektoren som svar på miljøutfordringer.
+
+#### Multimodale tilpasninger
+
+Multimodale tilpasninger refererer til strategier eller tiltak som integrerer flere former for transport for å skape en mer fleksibel og effektiv reiseopplevelse.
+Dette kan inkludere kombinasjonen av forskjellige transportmidler som bil, sykkel, buss og tog innenfor en enkelt reise, eller infrastrukturelle tiltak som forbedrer overgangen mellom disse transportmidlene.
+Målet med multimodale tilpasninger er å gjøre det lettere for folk å velge bort ensidig avhengighet av for eksempel bil, og i stedet bruke en kombinasjon av flere transportmidler basert på hva som er mest effektivt for ulike deler av en reise.
+@ton2020
+
+Ett eksempel på multimodale tilpasninger –\> Sykkel- og busskombinasjoner, hvor reisende kan ta med seg sykler på bussene, eller benytte seg av bysykkelordninger i nærheten av buss- og togstasjoner.
+
+Ved å utforske muligheten for multimodale tilpasninger, som beskrevet i Ton et al., kan vi bedre forstå hvordan et integrert tilbud av ulike transportmidler kan påvirke innbyggernes valg av transportmiddel i Haugalandet.
+For eksempel, implementering av sykkelvennlige tiltak sammen med forbedret tilgang til offentlig transport kan tilrettelegge for mer fleksible reisevaner og støtte opp om en mer bærekraftig transportinfrastruktur.
+
+### 
+2.6 ASC - En alternativspesifikke konstanter
 
 I følge artikkelen om valgmengden i beslutninger om kjøretøysvalg av Ton et al. (2020) er Alternative Specific Constants (ASC) en alternativspesifikke konstanter, som fungerer på samme måte som en dummy variabel.
 I en modelleringssammenheng refererer til konstanter som brukes i diskrete valgmodeller, spesielt i logit-modeller som multinomial logit-modell og nested logit-modell.
